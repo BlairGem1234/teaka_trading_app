@@ -6,15 +6,15 @@ from generate_summary import generate_summary
 def send_email():
     summary = generate_summary()
 
-    recipient = os.environ.get("TEAKA_REPORT_EMAIL_TO")
+    recipient = os.environ.get("TEAKA_REPORT_EMAIL_TO", "blairgem@outlook.com")
     sender = os.environ.get("TEAKA_REPORT_EMAIL_FROM", recipient)
-    smtp_host = os.environ.get("TEAKA_SMTP_HOST", "smtp.gmail.com")
+    smtp_host = os.environ.get("TEAKA_SMTP_HOST", "smtp-mail.outlook.com")
     smtp_port = int(os.environ.get("TEAKA_SMTP_PORT", "587"))
     smtp_user = os.environ.get("TEAKA_SMTP_USER", sender)
     smtp_password = os.environ.get("TEAKA_SMTP_PASSWORD")
 
-    if not recipient or not smtp_password:
-        print("[Teaka Report] Email not sent: TEAKA_REPORT_EMAIL_TO or TEAKA_SMTP_PASSWORD not configured.")
+    if not smtp_password:
+        print("[Teaka Report] Email not sent: TEAKA_SMTP_PASSWORD not configured. Report generated locally.")
         return
 
     msg = EmailMessage()
