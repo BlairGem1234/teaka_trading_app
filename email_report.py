@@ -45,3 +45,8 @@ def send_email():
         smtp.login(smtp_user, smtp_password)
         smtp.send_message(msg)
 
+
+if __name__ == "__main__":
+    send_email()
+
+
