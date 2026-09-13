@@ -6,11 +6,12 @@ from pathlib import Path
 candidates = [
     Path("ev_virtual_brain.json"),
     Path(os.environ.get("TEAKA_BRAIN_FILE", "")),
+    Path(r"C:\EV_Operator\teaka_trading_app\ev_virtual_brain.json"),
     Path(os.environ.get("EV_Files", r"C:\EV_Files")) / "ev_virtual_brain.json",
     Path(r"C:\EV_Files\ev_virtual_brain.json"),
 ]
 
-path = next((p for p in candidates if p and p.is_file()), Path(r"C:\EV_Files\ev_virtual_brain.json"))
+path = next((p for p in candidates if p and p.is_file()), Path("ev_virtual_brain.json"))
 
 try:
     with open(path, "r", encoding="utf-8") as f:

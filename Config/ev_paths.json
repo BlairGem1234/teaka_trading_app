@@ -10,6 +10,8 @@
     "Minerals": "C:\\EV_AI\\Minerals",
     "Memory": "C:\\EV_AI\\Cursor\\Memory\\EV_MEMORY.json",
     "Operator": "C:\\EV_Operator",
+    "Teaka_trading_app": "C:\\EV_Operator\\teaka_trading_app",
+    "Teaka_brain": "C:\\EV_Operator\\teaka_trading_app\\ev_virtual_brain.json",
     "Node_runtime": "C:\\EV_Node",
     "Node_data": "D:\\EV_Node",
     "Ollama_endpoint": "http://127.0.0.1:11434",

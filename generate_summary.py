@@ -21,10 +21,12 @@ def generate_summary():
         "notes": "System stable. No anomalies."
     }
 
-    # Default to local reports directory if C:/EV_Files is not mounted (e.g. cloud/linux test)
+    # Default to C:/EV_Operator or C:/EV_Files, fallback to local reports directory
     ev_files = os.environ.get("EV_Files")
     if ev_files:
         folder = os.path.join(ev_files, "teaka_trading_app", "daily_reports")
+    elif os.path.exists("C:/EV_Operator/teaka_trading_app"):
+        folder = "C:/EV_Operator/teaka_trading_app/daily_reports"
     elif os.path.exists("C:/EV_Files"):
         folder = "C:/EV_Files/teaka_trading_app/daily_reports"
     else:
