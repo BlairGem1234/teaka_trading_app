@@ -21,7 +21,16 @@ def generate_summary():
         "notes": "System stable. No anomalies."
     }
 
-    folder = "E:/EV_Files/teaka_trading_app/daily_reports/"
+    # Default to C:/EV_Operator or C:/EV_Files, fallback to local reports directory
+    ev_files = os.environ.get("EV_Files")
+    if ev_files:
+        folder = os.path.join(ev_files, "teaka_trading_app", "daily_reports")
+    elif os.path.exists("C:/EV_Operator/teaka_trading_app"):
+        folder = "C:/EV_Operator/teaka_trading_app/daily_reports"
+    elif os.path.exists("C:/EV_Files"):
+        folder = "C:/EV_Files/teaka_trading_app/daily_reports"
+    else:
+        folder = os.path.join(os.path.dirname(__file__), "reports", "daily_reports")
     archive = os.path.join(folder, "archive")
     os.makedirs(archive, exist_ok=True)
 

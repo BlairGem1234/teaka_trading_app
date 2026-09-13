@@ -31,7 +31,8 @@ BRAIN_CANDIDATES = [
     CROSS_DEVICE_BRAIN,
     ROOT / "ev_virtual_brain.json",
     Path(os.environ.get("TEAKA_BRAIN_FILE", "")),
-    Path(r"E:\EV_Files\ev_virtual_brain.json"),
+    Path(r"C:\EV_Operator\teaka_trading_app\ev_virtual_brain.json"),
+    Path(r"C:\EV_Files\ev_virtual_brain.json"),
 ]
 
 
@@ -39,7 +40,7 @@ def load_brain() -> dict:
     for path in BRAIN_CANDIDATES:
         if path and path.is_file():
             try:
-                return json.loads(path.read_text(encoding="utf-8"))
+                return json.loads(path.read_text(encoding="utf-8-sig"))
             except (OSError, json.JSONDecodeError):
                 continue
     return {"status": "brain_missing", "hint": "ev_virtual_brain.json not found"}
