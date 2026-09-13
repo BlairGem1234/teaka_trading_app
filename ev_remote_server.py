@@ -21,7 +21,7 @@ else:
 # Load Brain Memory (if available)
 def load_brain():
     if os.path.exists(BRAIN_FILE):
-        with open(BRAIN_FILE, "r") as f:
+        with open(BRAIN_FILE, "r", encoding="utf-8-sig") as f:
             return json.load(f)
     return {"error": "Brain file missing"}
 

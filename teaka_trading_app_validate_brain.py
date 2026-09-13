@@ -14,7 +14,7 @@ candidates = [
 path = next((p for p in candidates if p and p.is_file()), Path("ev_virtual_brain.json"))
 
 try:
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, "r", encoding="utf-8-sig") as f:
         data = json.load(f)
     print("✅ JSON is valid. Top‐level keys:", list(data.keys())[:5])
     print("Path:", path)

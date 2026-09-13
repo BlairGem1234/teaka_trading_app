@@ -40,7 +40,7 @@ def load_brain() -> dict:
     for path in BRAIN_CANDIDATES:
         if path and path.is_file():
             try:
-                return json.loads(path.read_text(encoding="utf-8"))
+                return json.loads(path.read_text(encoding="utf-8-sig"))
             except (OSError, json.JSONDecodeError):
                 continue
     return {"status": "brain_missing", "hint": "ev_virtual_brain.json not found"}

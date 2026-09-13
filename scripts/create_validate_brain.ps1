@@ -25,7 +25,7 @@ if path is None:
     sys.exit(1)
 
 try:
-    data = json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8-sig"))
     print("JSON is valid. Top-level keys:", list(data.keys())[:5])
     print("Path:", path)
 except Exception as exc:
