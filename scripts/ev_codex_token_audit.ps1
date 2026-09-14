@@ -5,6 +5,10 @@
 param(
     [string[]]$SearchRoots = @(
         "C:\EV_Operator",
+        "C:\EV_AI",
+        "C:\EV_AI\Codex",
+        "C:\EV_AI\Cursor",
+        "C:\EV_Files",
         "C:\Users\blair\EV_Git\teaka_trading_app",
         "C:\Users\GEMBotSys\EV_Link"
     ),
@@ -64,7 +68,7 @@ foreach ($port in $WatchPorts) {
 
 # 3. Config files
 Write-Host "`n[3] Clock / throttle config (first hits)" -ForegroundColor Yellow
-$configNames = @("ev_clock.json", "ev_clock_throttle.js", "ev_devtools_cloak.py")
+$configNames = @("ev_clock.json", "ev_clock_throttle.js", "ev_devtools_cloak.py", "EV_MEMORY.json")
 foreach ($root in $SearchRoots) {
     if (-not (Test-Path -LiteralPath $root)) { continue }
     foreach ($cn in $configNames) {

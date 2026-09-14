@@ -10,7 +10,7 @@ Safe paths and inventory only — no secrets.
 | **Fing (Windows)** | Canonical exe confirmed: `C:\Program Files\Fing\Fing.exe`. Desktop shortcut fixed. Launch with `-Verb RunAs` waits on **UAC**. Process often **exits immediately** — needs console exit code + `main.log` (see below). |
 | **Mirror Downloads** | Inspected `OneDriveMirror\Downloads` — **Fing.dmg** / **Fing (1).dmg** only (macOS); **no** Windows Fing installer there. |
 | **ChatGPT.dmg in mirror** | Extracted tree shows **ChatGPT.app** + **LicensePlist** (`*.plist` under `com.mono0926.LicensePlist/`). Swift packages (swift-markdown, LiveKitWebRTC, Sentry, etc.) are **normal OpenAI macOS app dependencies**, not TeAka/Fing malware. |
-| **Codex / EV Cloak** | Local only (`C:\EV_Operator\`). Duplicate `ev_devtools_cloak.py` + Stable+Beta Codex = **token burn**. See **`docs/EV_CODEX_CLOAK_AND_TOKENS.md`** + `scripts\ev_codex_token_audit.ps1`. Cloud chats **cannot** run Cloak — use Desktop for fixes. |
+| **Codex / Cloak Clock** | **Cloak** = Python proxy process; **Clock** = `ev_clock.json` / throttle JS. Your banner: `C:\EV_AI\Codex`, `C:\EV_Operator`. **4 Cloak PIDs = fix now.** Glossary: **`docs/CLOAK_CLOCK_GLOSSARY.md`**. Scripts: `ev_codex_token_audit.ps1 -StopDuplicates`. |
 | **TeAka cloud** | Paper bridge: `connect_python.py` on **5050**; `main` @ BoltBuddy+phone merge. |
 | **Google Drive EV logs** | Referenced in open PR work (EV_Brain / bridge sync). Folder id from agent notes: `15kPq7T_iarOY4FCkeGptje8c4fwu5LxC` — link Drive MCP in Cursor to index from cloud. |
 

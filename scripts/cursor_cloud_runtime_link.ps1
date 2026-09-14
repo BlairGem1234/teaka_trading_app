@@ -17,17 +17,23 @@ param(
     [switch]$OpenLinks,
     [switch]$RunCodexAudit,
     [switch]$AppendClockLog,
-    [string]$EvOperatorRoot = "C:\EV_Operator"
+    [string]$EvOperatorRoot = "C:\EV_Operator",
+    [string[]]$EvSearchRoots = @(
+        "C:\EV_Operator",
+        "C:\EV_AI",
+        "C:\EV_AI\Codex",
+        "C:\EV_AI\Cursor",
+        "C:\EV_Files"
+    )
 )
 
 $ErrorActionPreference = "SilentlyContinue"
 
 if (-not $RepoRoot) {
-    $RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-    if (Test-Path "C:\Users\blair\EV_Git\teaka_trading_app\.git") {
+    if (Test-Path -LiteralPath "C:\Users\blair\EV_Git\teaka_trading_app\.git") {
         $RepoRoot = "C:\Users\blair\EV_Git\teaka_trading_app"
-    } elseif (Test-Path (Join-Path $PSScriptRoot "..\..\.git")) {
-        $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+    } else {
+        $RepoRoot = Split-Path $PSScriptRoot -Parent
     }
 }
 
@@ -120,18 +126,31 @@ if ($cursorProcs) {
 
 $pyCloak = Get-CimInstance Win32_Process -Filter "Name = 'python.exe' OR Name = 'pythonw.exe'" |
     Where-Object { $_.CommandLine -match "ev_devtools_cloak|devtools_cloak" }
-Write-Host "  Cloak Python processes: $(@($pyCloak).Count)" -ForegroundColor $(if (@($pyCloak).Count -gt 1) { "Red" } else { "Green" })
+$cloakCount = @($pyCloak).Count
+Write-Host "  Cloak Python processes: $cloakCount (want 0 or 1 — see docs/CLOAK_CLOCK_GLOSSARY.md)" -ForegroundColor $(if ($cloakCount -gt 1) { "Red" } else { "Green" })
+if ($cloakCount -gt 0) {
+    $pyCloak | ForEach-Object {
+        $cmd = (Get-CimInstance Win32_Process -Filter "ProcessId = $($_.ProcessId)").CommandLine
+        Write-Host "    PID $($_.ProcessId): $cmd" -ForegroundColor DarkGray
+    }
+}
 
-# EV clock files
-Write-Host "`n[3] EV clock / throttle (Cloak timing)" -ForegroundColor Yellow
-$clockCandidates = @(
+# EV clock files (Cloak Clock = clock config + cloak process)
+Write-Host "`n[3] Cloak Clock — throttle files (ev_clock*.json / ev_clock_throttle.js)" -ForegroundColor Yellow
+$clockCandidates = @()
+foreach ($root in $EvSearchRoots) {
+    if (-not (Test-Path -LiteralPath $root)) { continue }
+    $clockCandidates += Join-Path $root "Config\ev_clock.json"
+    $clockCandidates += Join-Path $root "Bridge\ev_clock_throttle.js"
+}
+$clockCandidates += @(
     Join-Path $EvOperatorRoot "Config\ev_clock.json",
     Join-Path $EvOperatorRoot "Bridge\ev_clock_throttle.js"
 )
 $clockFound = @()
-foreach ($c in $clockCandidates) {
+foreach ($c in ($clockCandidates | Select-Object -Unique)) {
     if (Test-Path -LiteralPath $c) {
-        $clockFound += $c
+        if ($clockFound -notcontains $c) { $clockFound += $c }
         Write-Host "  [found] $c" -ForegroundColor Green
         if ($c -like "*.json") {
             try {
@@ -145,10 +164,12 @@ foreach ($c in $clockCandidates) {
     }
 }
 if ($clockFound.Count -eq 0) {
-    Write-Host "  No ev_clock at default paths — searching under $EvOperatorRoot ..." -ForegroundColor Yellow
-    if (Test-Path -LiteralPath $EvOperatorRoot) {
-        Get-ChildItem -LiteralPath $EvOperatorRoot -Include "ev_clock.json", "ev_clock_throttle.js" -Recurse -ErrorAction SilentlyContinue |
-            Select-Object -First 4 FullName, LastWriteTime | Format-Table -AutoSize
+    Write-Host "  No clock files at usual Config/Bridge paths — searching EV_AI + EV_Operator ..." -ForegroundColor Yellow
+    foreach ($root in $EvSearchRoots) {
+        if (-not (Test-Path -LiteralPath $root)) { continue }
+        Get-ChildItem -LiteralPath $root -Include "ev_clock.json", "ev_clock_throttle.js", "*devtools*cloak*.py" -Recurse -ErrorAction SilentlyContinue |
+            Select-Object -First 6 FullName, LastWriteTime |
+            Format-Table -AutoSize
     }
 }
 
