@@ -156,12 +156,17 @@ function Get-RepoCard {
     }
 }
 
-$roots = [System.Collections.Generic.List[string]]::new()
-if (Test-Path $EvGitRoot) {
-    Get-ChildItem -LiteralPath $EvGitRoot -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+function Add-GitChildren {
+    param([string]$Root)
+    if (-not (Test-Path -LiteralPath $Root)) { return }
+    Get-ChildItem -LiteralPath $Root -Directory -ErrorAction SilentlyContinue | ForEach-Object {
         if (Test-Path (Join-Path $_.FullName ".git")) { [void]$roots.Add($_.FullName) }
     }
 }
+
+$roots = [System.Collections.Generic.List[string]]::new()
+Add-GitChildren -Root $EvGitRoot
+Add-GitChildren -Root "D:\EV_Files\Git"
 foreach ($probe in $ExtraProbeRoots) {
     Find-GitRoots -Root $probe -MaxDepth 2 | ForEach-Object { [void]$roots.Add($_) }
 }
