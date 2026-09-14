@@ -1,4 +1,6 @@
-# C EV brain + EV AI + EV Files + EV core
+# EV Command + C EV brain + EV AI + EV Files + EV core
+
+**EV Command** is the **main system** (operator command plane). **C EV brain** is the masher under it. See `docs/EV_COMMAND_MAIN_SYSTEM.md`.
 
 Your Ev repo **`ev.full_crypto_starforge_vr_system_map.v1`** map (`EV_FULL_CRYPTO_STARFORGE_VR_SYSTEM_MAP_20260811`) describes the **full stack** C EV brain sits on top of — not just TeAka or a single git clone.
 

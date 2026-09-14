@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "federation", "cbrain", "coremap", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "federation", "cbrain", "coremap", "evcommand", "stack", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -76,6 +76,8 @@ Actions:
   federation    - All EV_Git clones + roles (Ev, TeAka, GEMBot29, Starforge…) -> scratch\ev_federation_registry.json
   cbrain        - C EV brain: status or -Start via scripts\run_cbrain.ps1
   coremap       - Ev full crypto/Starforge/VR system map + EV_AI/EV_Files path check
+  evcommand     - EV Command main system check -> scratch\ev_command_status.json
+  stack         - evcommand + cbrain + coremap (full operator stack status)
   all           - pull + cursor + codex + fing (in that order)
   help   - this text
 
@@ -159,6 +161,18 @@ switch ($Action) {
         )
     }
     "coremap" {
+        Run-Script "ev_core_system_map_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_core_system_map_status.json"))
+    }
+    "evcommand" {
+        Run-Script "ev_command_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_command_status.json"))
+    }
+    "stack" {
+        Run-Script "ev_command_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_command_status.json"))
+        Run-Script "run_cbrain.ps1" @(
+            "-StatusOnly",
+            "-SaveTo", (Join-Path $scratch "cbrain_run_log.txt"),
+            "-JsonSaveTo", (Join-Path $scratch "cbrain_status.json")
+        )
         Run-Script "ev_core_system_map_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_core_system_map_status.json"))
     }
     "all" {

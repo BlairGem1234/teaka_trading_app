@@ -90,9 +90,10 @@ $corePaths = @(
 $out = [ordered]@{
     generated_at = (Get-Date).ToString("o")
     naming       = @{
+        main_system          = "EV Command (operator command plane — run this stack from EV Terminal / Send-EVCommand)"
         canonical_brain_name = "C EV brain (masher / master index)"
         map_ev_brain_path    = "C:\EV_Brain in system map = resolver/mirror root label, not the name 'C EV brain'"
-        runs                 = @("C EV brain masher", "EV AI (C:\EV_AI)", "EV Files (D/E)", "EV core layers per map", "Starforge vault/runtime", "ev-node (EV_Node)")
+        runs                 = @("EV Command", "C EV brain masher", "EV AI (C:\EV_AI)", "EV Files (D/E)", "EV core layers per map", "Starforge vault/runtime", "ev-node (EV_Node)")
     }
     ev_repo      = $ev
     system_map   = @{
