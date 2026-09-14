@@ -104,7 +104,10 @@ $out | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $SaveTo -Encoding utf8
 Write-Host "=== EV Command (main system) check ===" -ForegroundColor Cyan
 Write-Host "Command plane first; C EV brain + EV AI + EV Files sit under it.`n" -ForegroundColor DarkGray
 if ($sendEv) {
-    foreach ($s in $sendEv) { Write-Host "Send-EVCommand: $($s.FullName)" -ForegroundColor Green }
+    foreach ($s in $sendEv) {
+        $tag = if ($s.FullName -match '\\EV_AI\\') { "preferred" } elseif ($s.FullName -match 'GEMBot29') { "legacy" } else { "ok" }
+        Write-Host "Send-EVCommand [$tag]: $($s.FullName)" -ForegroundColor Green
+    }
 } else {
     Write-Host "Send-EVCommand.ps1 not found — check Git_Satellite_Brain or GEMBot29." -ForegroundColor Yellow
 }

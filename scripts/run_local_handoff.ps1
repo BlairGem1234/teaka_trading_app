@@ -171,15 +171,23 @@ switch ($Action) {
         Run-Script "cross_device_brain_check.ps1" @("-SaveTo", (Join-Path $scratch "cross_device_brain_status.json"))
     }
     "stack" {
+        Write-Host "`n>>> [1/5] EV Command (main system)" -ForegroundColor Cyan
         Run-Script "ev_command_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_command_status.json"))
+        Write-Host "`n>>> [2/5] C EV brain (master masher)" -ForegroundColor Cyan
         Run-Script "run_cbrain.ps1" @(
             "-StatusOnly",
             "-SaveTo", (Join-Path $scratch "cbrain_run_log.txt"),
             "-JsonSaveTo", (Join-Path $scratch "cbrain_status.json")
         )
+        Write-Host "`n>>> [3/5] Cross-device phone brain (:5050)" -ForegroundColor Cyan
         Run-Script "cross_device_brain_check.ps1" @("-SaveTo", (Join-Path $scratch "cross_device_brain_status.json"))
+        Write-Host "`n>>> [4/5] EV core / Starforge system map" -ForegroundColor Cyan
         Run-Script "ev_core_system_map_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_core_system_map_status.json"))
+        Write-Host "`n>>> [5/5] TeAka + Ev evlink" -ForegroundColor Cyan
         Run-Script "ev_teaka_ev_bridge_summary.ps1" @("-SaveTo", (Join-Path $scratch "ev_teaka_ev_link.json"))
+        Write-Host "`nStack done. Cloud paths under scratch\:" -ForegroundColor Green
+        Write-Host "  ev_command_status.json, cbrain_status.json, cross_device_brain_status.json"
+        Write-Host "  ev_core_system_map_status.json, ev_teaka_ev_link.json"
     }
     "all" {
         $cursorArgs = @("-AppendClockLog")
