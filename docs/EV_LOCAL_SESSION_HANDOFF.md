@@ -65,14 +65,25 @@ Then paste **only** `ExitCode`, stderr, and `main.log` tail into Cursor (or tell
 
 Scripts in the repo are **not** run by the cloud agent on your PC. Use **one launcher**:
 
+**Handoff scripts (`run_stack.ps1`, `ev_docker_stack_check.ps1`, …) live on branch `cursor/local-handoff-notes-8248` until PR #9 merges.** If `pwsh` says a script “is not recognized”, you are on `main` or an old pull — run:
+
+```powershell
+cd C:\Users\blair\EV_Git\teaka_trading_app
+pwsh -NoProfile -File .\scripts\ensure_handoff_scripts.ps1 -FixGit
+```
+
 **Copy this whole block into PowerShell (first time + every run):**
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
 cd C:\Users\blair\EV_Git\teaka_trading_app
-git pull
-pwsh -NoProfile -File .\scripts\run_local_handoff.ps1
+git fetch origin cursor/local-handoff-notes-8248
+git checkout cursor/local-handoff-notes-8248
+git pull origin cursor/local-handoff-notes-8248
+pwsh -NoProfile -File .\scripts\run_stack.ps1
 ```
+
+Or one entry: `pwsh -NoProfile -File .\scripts\pull_ev_scratch_handoff.ps1` (fetch/checkout handoff + stack + scratch index).
 
 Menu picks **cursor** / **codex** / **fing** / **all**. No `pwsh` installed? Use:
 
