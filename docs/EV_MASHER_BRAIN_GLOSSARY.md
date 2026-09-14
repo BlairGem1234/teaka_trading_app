@@ -31,4 +31,15 @@ When someone says “wire the brain,” they usually mean **masher + operator ru
 3. **“Satellite”** → add-on to run the brain, not brain authority.  
 4. **TeAka** → trading + `5050` + handoff `scratch\`; it **consumes** operator/masher signals, it is not the masher.
 
-Handoff scripts (`federation`, `evlink`) map **git and ports**; they do not replace masher logic. Say **`scratch\ev_federation_registry.json`** to cloud agents for federation, not “read EV brain” unless you mean a specific file path.
+Handoff scripts (`federation`, `evlink`) map **git and ports**; they do not replace masher logic.
+
+**Run / check The Brain (masher) on PC:**
+
+```powershell
+cd C:\Users\blair\EV_Git\teaka_trading_app
+git pull
+pwsh -NoProfile -File .\scripts\run_cbrain.ps1 -StatusOnly
+pwsh -NoProfile -File .\scripts\run_cbrain.ps1 -Start -WithCloak
+```
+
+Log: `scratch\cbrain_run_log.txt`. Pin a custom entry: one line in `scratch\cbrain_launcher.txt`.

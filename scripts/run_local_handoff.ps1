@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "federation", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "federation", "cbrain", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -74,6 +74,7 @@ Actions:
   gembot        - Find GemBot/EV_Link + Ev repo -> scratch\gembot_repo_check.txt
   evlink        - TeAka + Ev + PC5000 probes -> scratch\ev_teaka_ev_link.json
   federation    - All EV_Git clones + roles (Ev, TeAka, GEMBot29, Starforge…) -> scratch\ev_federation_registry.json
+  cbrain        - The Brain (masher): status or -Start via scripts\run_cbrain.ps1
   all           - pull + cursor + codex + fing (in that order)
   help   - this text
 
@@ -148,6 +149,9 @@ switch ($Action) {
     }
     "federation" {
         Run-Script "ev_federation_git_scan.ps1" @("-SaveTo", (Join-Path $scratch "ev_federation_registry.json"))
+    }
+    "cbrain" {
+        Run-Script "run_cbrain.ps1" @("-StatusOnly", "-SaveTo", (Join-Path $scratch "cbrain_run_log.txt"))
     }
     "all" {
         $cursorArgs = @("-AppendClockLog")
