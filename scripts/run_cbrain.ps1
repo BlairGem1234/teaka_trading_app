@@ -297,7 +297,7 @@ if ($StatusOnly -and -not $Start) {
     Log-Line "JSON: $JsonSaveTo"
     Log-Line "Also for cloud: scratch\ev_teaka_ev_link.json (run: run_local_handoff.ps1 -Action evlink -SkipPull)"
     Log-Line "EV Command main system: run_local_handoff.ps1 -Action evcommand -SkipPull"
-    exit 0
+    return
 }
 
 if (-not $Start) {
@@ -309,7 +309,7 @@ Usage:
   pwsh -NoProfile -File scripts\run_cbrain.ps1 -Start -WithCloak -WithSatellite
 
 "@ -ForegroundColor White
-    exit 0
+    return
 }
 
 Start-CloakIfRequested

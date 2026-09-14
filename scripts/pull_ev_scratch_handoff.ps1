@@ -36,12 +36,21 @@ Write-Host "Repo: $root`n" -ForegroundColor DarkGray
 
 Set-Location $root
 
+$handoffBranch = "cursor/local-handoff-notes-8248"
 if (-not $SkipGitPull) {
-    Write-Host ">>> git pull" -ForegroundColor Yellow
-    & git fetch origin
+    Write-Host ">>> git fetch + pull ($handoffBranch)" -ForegroundColor Yellow
+    & git fetch origin $handoffBranch
     if ($LASTEXITCODE -ne 0) { Write-Host "git fetch warning exit $LASTEXITCODE" -ForegroundColor Yellow }
-    & git pull
-    if ($LASTEXITCODE -ne 0) { Write-Host "git pull warning exit $LASTEXITCODE" -ForegroundColor Yellow }
+    $cur = git branch --show-current 2>$null
+    if ($cur -ne $handoffBranch) {
+        Write-Host "Current branch '$cur' — checking out $handoffBranch" -ForegroundColor Yellow
+        & git checkout $handoffBranch
+    }
+    & git pull origin $handoffBranch
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "git pull warning exit $LASTEXITCODE — trying plain git pull" -ForegroundColor Yellow
+        & git pull
+    }
 }
 
 $handoff = Join-Path $root "scripts\run_local_handoff.ps1"

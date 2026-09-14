@@ -99,7 +99,11 @@ if ($Action -eq "help") {
     exit 0
 }
 
-if (-not $SkipPull -and $Action -in @("menu", "all", "fing", "codex", "cursor")) {
+$pullActions = @(
+    "menu", "all", "fing", "codex", "cursor",
+    "stack", "pullscratch", "docker", "federation", "cbrain", "coremap", "evcommand", "phonebrain", "evlink"
+)
+if (-not $SkipPull -and $Action -in $pullActions) {
     try {
         Invoke-GitPull -Root $repo
     } catch {
@@ -109,6 +113,31 @@ if (-not $SkipPull -and $Action -in @("menu", "all", "fing", "codex", "cursor"))
 
 $scratch = Join-Path $repo "scratch"
 if (-not (Test-Path $scratch)) { New-Item -ItemType Directory -Path $scratch | Out-Null }
+
+function Test-HandoffScripts {
+    param([string[]]$Names)
+    $missing = @()
+    foreach ($n in $Names) {
+        $p = Join-Path $repo "scripts\$n"
+        if (-not (Test-Path $p)) { $missing += $n }
+    }
+    if ($missing.Count -gt 0) {
+        Write-Host "`nMissing script(s) on disk (wrong branch or need git pull):" -ForegroundColor Red
+        foreach ($m in $missing) { Write-Host "  scripts\$m" -ForegroundColor Red }
+        Write-Host @"
+
+Fix (copy block):
+  cd $repo
+  git fetch origin cursor/local-handoff-notes-8248
+  git checkout cursor/local-handoff-notes-8248
+  git pull origin cursor/local-handoff-notes-8248
+  pwsh -NoProfile -File .\scripts\ensure_handoff_scripts.ps1
+
+"@ -ForegroundColor Yellow
+        return $false
+    }
+    return $true
+}
 
 function Run-Script {
     param([string]$Name, [string[]]$ExtraArgs)
@@ -121,8 +150,8 @@ function Run-Script {
     $prevEap = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
     try {
-        # Same process — avoids nested pwsh stopping stack after step 1 on Windows
-        & $path @ExtraArgs
+        # Child process so child 'exit' does not stop stack / handoff mid-run
+        & pwsh -NoProfile -File $path @ExtraArgs
     } catch {
         Write-Host "Script $Name error: $_" -ForegroundColor Red
     } finally {
@@ -181,12 +210,18 @@ switch ($Action) {
         Run-Script "cross_device_brain_check.ps1" @("-SaveTo", (Join-Path $scratch "cross_device_brain_status.json"))
     }
     "docker" {
+        if (-not (Test-HandoffScripts -Names @("ev_docker_stack_check.ps1"))) { break }
         Run-Script "ev_docker_stack_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_docker_stack_status.json"))
     }
     "pullscratch" {
         Run-Script "pull_ev_scratch_handoff.ps1" @("-AlsoFederation")
     }
     "stack" {
+        $need = @(
+            "ev_command_check.ps1", "run_cbrain.ps1", "cross_device_brain_check.ps1",
+            "ev_core_system_map_check.ps1", "ev_teaka_ev_bridge_summary.ps1"
+        )
+        if (-not (Test-HandoffScripts -Names $need)) { break }
         Write-Host "`n>>> [1/5] EV Command (main system)" -ForegroundColor Cyan
         Run-Script "ev_command_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_command_status.json"))
         Write-Host "`n>>> [2/5] C EV brain (master masher)" -ForegroundColor Cyan

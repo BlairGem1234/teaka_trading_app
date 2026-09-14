@@ -9,8 +9,16 @@ if (Test-Path "C:\Users\blair\EV_Git\teaka_trading_app") { $repo = "C:\Users\bla
 $scratch = Join-Path $repo "scratch"
 if (-not (Test-Path $scratch)) { New-Item -ItemType Directory -Path $scratch | Out-Null }
 
-Write-Host "=== EV stack (single process) ===" -ForegroundColor Cyan
+Write-Host "=== EV stack ===" -ForegroundColor Cyan
 Write-Host "Repo: $repo`n" -ForegroundColor DarkGray
+
+$ensure = Join-Path $repo "scripts\ensure_handoff_scripts.ps1"
+if (-not (Test-Path (Join-Path $repo "scripts\ev_docker_stack_check.ps1"))) {
+    Write-Host "Missing handoff scripts (run_stack / docker check). Run:" -ForegroundColor Red
+    Write-Host "  pwsh -NoProfile -File .\scripts\ensure_handoff_scripts.ps1 -FixGit`n" -ForegroundColor Yellow
+    if (Test-Path $ensure) { & pwsh -NoProfile -File $ensure; exit 1 }
+    exit 1
+}
 
 Write-Host "Tip: Docker EV chain first — scripts\ev_docker_stack_check.ps1 -StartDesktop then -ComposeUp`n" -ForegroundColor DarkGray
 
@@ -32,7 +40,7 @@ foreach ($s in $steps) {
         Write-Host "Missing $path" -ForegroundColor Red
         continue
     }
-    & $path @($s.a)
+    & pwsh -NoProfile -File $path @($s.a)
 }
 
 Write-Host "`nStack finished. scratch\:" -ForegroundColor Green
