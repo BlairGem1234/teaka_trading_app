@@ -41,6 +41,37 @@ Beta Codex was **stopped** in that thread; open item was confirming **Stable-onl
    - **Cloud agent**: TeAka repo, docs, PRs.  
    - **Desktop agent**: `C:\EV_Operator\`, Fing, Cloak, Codex Stable hooks.
 
+## Link cloud chats + runtime on your PC (PowerShell)
+
+This does **not** merge Cursor threads in the cloud. It **registers** agent URLs locally, snapshots Cloak/clock/ports, and writes small JSON you can point agents at.
+
+```powershell
+cd C:\Users\blair\EV_Git\teaka_trading_app
+git pull
+pwsh -File scripts\cursor_cloud_runtime_link.ps1 -AppendClockLog -RunCodexAudit
+```
+
+Optional: open both agent pages in the browser:
+
+```powershell
+pwsh -File scripts\cursor_cloud_runtime_link.ps1 -OpenLinks
+```
+
+Add a **new** cloud run from its URL (`bc-...` id):
+
+```powershell
+pwsh -File scripts\cursor_cloud_runtime_link.ps1 -RegisterBcId bc-YOUR-ID-HERE -RegisterName "My thread"
+```
+
+Outputs:
+
+| File | Purpose |
+|------|---------|
+| `scratch/cursor_agent_registry.json` | Your linked agent bcIds + names |
+| `scratch/cursor_cloud_runtime.json` | Latest runtime + Cloak count + clock paths |
+| `scratch/cursor_clock_events.jsonl` | Append-only “clock” log each run (with `-AppendClockLog`) |
+| `bridge/inbox/CURSOR_CLOUD_RUNTIME_*.json` | Copy for TeAka audit |
+
 ## Audit on your PC
 
 ```powershell

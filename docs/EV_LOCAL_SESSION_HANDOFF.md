@@ -61,6 +61,23 @@ Then paste **only** `ExitCode`, stderr, and `main.log` tail into Cursor (or tell
 
 **What those Swift `.plist` files in the mirror were:** LicensePlist entries inside extracted **ChatGPT.app** (macOS), not Fing or TeAka — see table above.
 
+## Link this cloud chat to the EV / Codex thread (local)
+
+Cursor keeps **one transcript per agent URL**. To **continue the same thread**, open that run in the browser — do not start a brand-new agent if you want history.
+
+```powershell
+cd C:\Users\blair\EV_Git\teaka_trading_app
+git pull
+pwsh -File scripts\cursor_cloud_runtime_link.ps1 -AppendClockLog -OpenLinks
+```
+
+| Thread | URL |
+|--------|-----|
+| Fing + handoff (this line of work) | https://cursor.com/agents/bc-70aa0aeb-0d8a-4d84-9114-c299b5fe8248 |
+| EV / Codex / Cloak | https://cursor.com/agents/bc-b9fdc66e-2374-47ba-9788-073c9a6bf902 |
+
+Then tell any agent: “read `scratch\cursor_cloud_runtime.json`” instead of pasting long logs.
+
 ## Cursor HTTP 500 when pasting
 
 Usually **Cursor server error** on large messages, not TeAka port 5000. Mitigations:

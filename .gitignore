@@ -8,6 +8,10 @@ Config/*credentials*.json
 *.pem
 *.key
 
+# Local diagnostics (keep out of git)
+scratch/*
+!scratch/.gitkeep
+
 # Paper runtime state and logs
 paper_trading/state/
 *.jsonl
