@@ -151,7 +151,11 @@ switch ($Action) {
         Run-Script "ev_federation_git_scan.ps1" @("-SaveTo", (Join-Path $scratch "ev_federation_registry.json"))
     }
     "cbrain" {
-        Run-Script "run_cbrain.ps1" @("-StatusOnly", "-SaveTo", (Join-Path $scratch "cbrain_run_log.txt"))
+        Run-Script "run_cbrain.ps1" @(
+            "-StatusOnly",
+            "-SaveTo", (Join-Path $scratch "cbrain_run_log.txt"),
+            "-JsonSaveTo", (Join-Path $scratch "cbrain_status.json")
+        )
     }
     "all" {
         $cursorArgs = @("-AppendClockLog")

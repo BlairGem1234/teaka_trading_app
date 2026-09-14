@@ -2,9 +2,11 @@
 
 Use this so TeAka / Cursor / PC5000 docs do not talk past each other.
 
-## The Brain = **Masher**
+## The Brain = **Masher** (master index)
 
-**The Brain** is the **masher** — the layer that merges profiles, bridge JSON, git state, and operator context into what EV actually runs on. That is **not** the same thing as a folder or repo literally named `EV_Brain`.
+**The Brain** is the **masher** — the **master** merge/index layer (on the order of **~5 million tracked files** in your RoboShady/Starforge plane). It merges profiles, bridge JSON, git state, and operator context. That is **not** the same thing as a folder or repo literally named `EV_Brain`.
+
+**RoboShady** runtime probes under `Ev\bridge\live\pc5000\*roboshady*` describe how that index runs. **Starforge** (`D:\Dropbox\Starforge`, vault spells) feeds the Robo/masher stack — checked by `run_cbrain.ps1` without walking every file.
 
 When someone says “wire the brain,” they usually mean **masher + operator runtime**, not “open any file called ev_brain.”
 
