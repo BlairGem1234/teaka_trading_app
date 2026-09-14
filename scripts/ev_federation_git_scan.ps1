@@ -198,7 +198,7 @@ $operatorPy = "C:\EV_Operator\DevToolsRuntime\python_env\Scripts\python.exe"
 $brainNote = @{
     ev_operator_python = (Test-Path $operatorPy)
     ev_operator_cloak  = (Test-Path "C:\EV_Operator\DevToolsRuntime\ev_devtools_cloak.py")
-    profile_split      = "The Brain = masher only. Git_Satellite_Brain = add-on to RUN the brain (not a second brain). Ev/EV_Operator = operator plane. EV_Brain* / ev_*_brain.json = artifacts — not the masher. Personal Codex/GPT = separate profile."
+    profile_split      = "C EV brain = masher/master index (~5M, RoboShady+Starforge). Git_Satellite_Brain = add-on to RUN C EV brain. Ev/EV_Operator = operator plane. EV_Brain* folders / ev_*_brain.json = artifacts — not C EV brain. Personal Codex/GPT = separate profile."
     port_roles         = @{
         "5000"  = "GEMBot Flask (legacy); often off if sidecar moved"
         "5050"  = "TeAka connect_python paper bridge"

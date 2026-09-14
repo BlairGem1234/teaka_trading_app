@@ -74,7 +74,7 @@ Actions:
   gembot        - Find GemBot/EV_Link + Ev repo -> scratch\gembot_repo_check.txt
   evlink        - TeAka + Ev + PC5000 probes -> scratch\ev_teaka_ev_link.json
   federation    - All EV_Git clones + roles (Ev, TeAka, GEMBot29, Starforge…) -> scratch\ev_federation_registry.json
-  cbrain        - The Brain (masher): status or -Start via scripts\run_cbrain.ps1
+  cbrain        - C EV brain: status or -Start via scripts\run_cbrain.ps1
   all           - pull + cursor + codex + fing (in that order)
   help   - this text
 

@@ -1,5 +1,5 @@
 # === run_cbrain.ps1 ===
-# Run The Brain (masher) on PC5000 — discovers launchers under Ev + EV_Operator.
+# Run / check **C EV brain** (masher / master index) on PC5000 — Ev + EV_Operator + RoboShady + Starforge.
 # Satellite (Git_Satellite_Brain) is optional add-on via -WithSatellite.
 #
 #   pwsh -NoProfile -File scripts\run_cbrain.ps1 -StatusOnly
@@ -228,9 +228,9 @@ if (-not $StarforgeRoot) {
     }
 }
 
-Write-Host "=== C Brain (masher / master index) ===" -ForegroundColor Cyan
+Write-Host "=== C EV brain (masher / master index) ===" -ForegroundColor Cyan
 Write-Host "Ev root: $ev" -ForegroundColor DarkGray
-Write-Host "The Brain = masher (master file index). RoboShady + Starforge checked in status.`n" -ForegroundColor DarkGray
+Write-Host "C EV brain = masher (~5M index). RoboShady + Starforge in status. Not EV_Brain Drive folder.`n" -ForegroundColor DarkGray
 
 $launchers = Find-CBrainLaunchers -Root $ev
 $statusTool = Join-Path $ev "tools\pc5000\Get-PC5000EVLiveBrainStatus.ps1"
