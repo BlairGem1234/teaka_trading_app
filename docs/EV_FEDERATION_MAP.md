@@ -2,6 +2,32 @@
 
 You track **one machine (PC5000 / Blair PC)** through **many git roots**. They are **not** one brain and **not** one AI profile: **operator/system** (Ev, EV_Operator, Cloak, PC5000 bridge JSON) vs **personal** (Codex/GPT workspaces).
 
+## Git remotes (your PC5000 inventory)
+
+| Path | Remote | Role |
+|------|--------|------|
+| `C:\Users\Blair\EV_Git\Ev` | BlairGem1234/Ev | **Primary operator / PC5000** |
+| `...\Ev-EVBot-Operator`, `...\Ev-fuzzy-on-main` | same Ev remote | Extra worktrees — pick one primary |
+| `...\teaka_trading_app` | BlairGem1234/teaka_trading_app | Recovery fork + handoff scripts |
+| `...\teaka_trading_app_CANONICAL`, `\_tmp_teaka_github_main` | BlairGem/teaka_trading_app | Upstream mirrors |
+| `...\GEMBot29` | blairgem/GEMBot29 | Legacy sidecar |
+| `...\GPT_AI_Workspace` | BlairGem1234/GPT_AI_Workspace | Personal GPT workspace git |
+| `...\Pc-5000-curser-` | BlairGem1234/Pc-5000-curser- | PC5000 + Cursor ops |
+| `...\MT_GREENLAND`, Green-Earth demo | geo repos | Minerals / demo |
+| `D:\EV_Files\EV_Node` | evstack/ev-node | EV blockchain node |
+| `D:\Dropbox\Starforge` | BlairGem/starforge | Starforge vault git |
+
+## Google Drive / OneDrive / Dropbox
+
+| Layer | Mapped? | How |
+|-------|---------|-----|
+| **Local git federation** | Yes | `ev_federation_git_scan.ps1` → `scratch\ev_federation_registry.json` |
+| **Google Drive (cloud)** | Not automatic | Cloud agents need **Google Drive MCP** in Cursor, or Ev node `EV_GOOGLE_DRIVE_LAUNCHER_BRIDGE_*.json` on disk |
+| **Local Drive mount** | Shallow probe | Same script searches `Google Drive`, DriveFS root, OneDrive, Dropbox for `EV_Brain`, `EV_CloudProject`, `*pc5000*` (depth-limited) |
+| **Handoff folder id** | Reference only | `15kPq7T_iarOY4FCkeGptje8c4fwu5LxC` — index in Drive MCP when authenticated |
+
+Drive is a **sync/index plane**, not a git remote. Tie-break order: **Ev `bridge/live/pc5000`** (live) → **EV_Operator** (runtime) → **Drive exports** (archive) → **GEMBot29** (legacy).
+
 ## Canonical vs legacy (from your scan)
 
 | Layer | Where | Role |

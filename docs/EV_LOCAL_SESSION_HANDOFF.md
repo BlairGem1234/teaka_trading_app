@@ -12,7 +12,7 @@ Safe paths and inventory only — no secrets.
 | **ChatGPT.dmg in mirror** | Extracted tree shows **ChatGPT.app** + **LicensePlist** (`*.plist` under `com.mono0926.LicensePlist/`). Swift packages (swift-markdown, LiveKitWebRTC, Sentry, etc.) are **normal OpenAI macOS app dependencies**, not TeAka/Fing malware. |
 | **Codex / Cloak Clock** | **Cloak** = Python proxy process; **Clock** = `ev_clock.json` / throttle JS. Your banner: `C:\EV_AI\Codex`, `C:\EV_Operator`. **4 Cloak PIDs = fix now.** Glossary: **`docs/CLOAK_CLOCK_GLOSSARY.md`**. Scripts: `ev_codex_token_audit.ps1 -StopDuplicates`. |
 | **TeAka cloud** | Paper bridge: `connect_python.py` on **5050**; `main` @ BoltBuddy+phone merge. |
-| **Google Drive EV logs** | Referenced in open PR work (EV_Brain / bridge sync). Folder id from agent notes: `15kPq7T_iarOY4FCkeGptje8c4fwu5LxC` — link Drive MCP in Cursor to index from cloud. |
+| **Google Drive EV logs** | **Local map:** `federation` action probes Google Drive / OneDrive / Dropbox mounts. **Cloud map:** authenticate Google Drive MCP in Cursor (folder id `15kPq7T_iarOY4FCkeGptje8c4fwu5LxC`). Ev may also reference `brain/nodes/EV_GOOGLE_DRIVE_LAUNCHER_BRIDGE_*.json`. |
 
 ## Mirror / “hidden” filesystem (OneDrive ↔ Dropbox audit)
 

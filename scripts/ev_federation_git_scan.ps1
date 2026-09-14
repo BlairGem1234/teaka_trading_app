@@ -5,18 +5,32 @@
 #   pwsh -NoProfile -File scripts\ev_federation_git_scan.ps1 -SaveTo scratch\ev_federation_registry.json
 
 param(
-    [string]$EvGitRoot = "C:\Users\blair\EV_Git",
-    [string[]]$ExtraProbeRoots = @("D:\Starforge", "E:\EV_Files", "C:\EV_Operator"),
+    [string]$EvGitRoot = "",
+    [string[]]$ExtraProbeRoots = @(
+        "D:\Dropbox\Starforge",
+        "D:\Starforge",
+        "D:\EV_Files\EV_Node",
+        "D:\EV_Files\Git",
+        "E:\EV_Files",
+        "C:\EV_Operator"
+    ),
+    [switch]$SkipCloudDriveProbe,
     [string]$TeakaRoot = "",
     [string]$SaveTo = ""
 )
 
 $ErrorActionPreference = "SilentlyContinue"
 
+if (-not $EvGitRoot) {
+    foreach ($c in @("C:\Users\blair\EV_Git", "C:\Users\Blair\EV_Git")) {
+        if (Test-Path $c) { $EvGitRoot = $c; break }
+    }
+    if (-not $EvGitRoot) { $EvGitRoot = "C:\Users\blair\EV_Git" }
+}
 if (-not $TeakaRoot) {
     $TeakaRoot = Split-Path $PSScriptRoot -Parent
-    if (Test-Path "C:\Users\blair\EV_Git\teaka_trading_app\.git") {
-        $TeakaRoot = "C:\Users\blair\EV_Git\teaka_trading_app"
+    if (Test-Path (Join-Path $EvGitRoot "teaka_trading_app\.git")) {
+        $TeakaRoot = Join-Path $EvGitRoot "teaka_trading_app"
     }
 }
 $scratch = Join-Path $TeakaRoot "scratch"
@@ -27,14 +41,62 @@ function Get-RepoRole {
     param([string]$Name, [string]$Remote)
     $n = $Name.ToLowerInvariant()
     $r = ($Remote + "").ToLowerInvariant()
-    if ($n -eq "ev" -or $r -match "/ev\.git") { return "operator_pc5000_brain_bridge" }
-    if ($n -match "teaka") { return "trading_paper_phone_5050" }
+    if ($n -eq "ev" -and $r -match "/ev\.git") { return "operator_pc5000_primary" }
+    if ($r -match "blairgem1234/ev\.git" -and $n -ne "ev") { return "operator_ev_worktree_clone" }
+    if ($n -match "teaka" -and $n -match "canonical") { return "trading_teaka_upstream_mirror" }
+    if ($n -match "teaka|_tmp_teaka") { return "trading_paper_phone_5050" }
     if ($n -match "gembot29|gembot") { return "legacy_gembot_flask_qwen_sidecar" }
-    if ($n -match "starforge") { return "vault_spells_starforge" }
-    if ($n -match "evstack|ev-node|evstack") { return "ev_blockchain_stack_node" }
+    if ($n -match "gpt_ai_workspace") { return "personal_gpt_workspace_git" }
+    if ($n -match "pc-5000-curser|pc5000") { return "pc5000_cursor_ops_git" }
+    if ($n -match "mt_greenland|green-earth") { return "geo_minerals_project_git" }
+    if ($n -match "starforge" -or $r -match "starforge") { return "vault_spells_starforge" }
+    if ($r -match "evstack/ev-node") { return "ev_blockchain_ev_node" }
+    if ($n -match "ev-node|evstack") { return "ev_blockchain_stack_node" }
     if ($n -match "evbot|operator") { return "evbot_operator_git" }
-    if ($r -match "evstack|geo") { return "ev_stack_external" }
     return "other_ev_git"
+}
+
+function Get-CloudDriveProbe {
+    $candidates = [System.Collections.Generic.List[string]]::new()
+    foreach ($p in @(
+        "$env:USERPROFILE\Google Drive",
+        "$env:USERPROFILE\My Drive",
+        "G:\My Drive",
+        "G:\",
+        "$env:USERPROFILE\OneDrive",
+        "C:\Users\blair\OneDrive",
+        "C:\Users\Blair\OneDrive",
+        "D:\Dropbox",
+        "C:\Users\blair\OneDrive\OneDrive\Imports\blairgem@outlook.com - Dropbox\Mirror_Audit"
+    )) {
+        if ($p -and (Test-Path -LiteralPath $p)) { [void]$candidates.Add((Resolve-Path -LiteralPath $p).Path) }
+    }
+    # DriveFS mount (common on Win11)
+    $dfs = Join-Path $env:LOCALAPPDATA "Google\DriveFS\root"
+    if (Test-Path $dfs) { [void]$candidates.Add((Resolve-Path $dfs).Path) }
+
+    $evNamePatterns = @("EV_Brain", "EV Brain", "EV_CloudProject", "EV_Link", "ev_brain", "bridge")
+    $hits = @()
+    foreach ($root in ($candidates | Select-Object -Unique)) {
+        $row = [ordered]@{ root = $root; ev_like_paths = @(); sample_files = @() }
+        foreach ($pat in $evNamePatterns) {
+            Get-ChildItem -LiteralPath $root -Directory -Filter $pat -Recurse -Depth 3 -ErrorAction SilentlyContinue |
+                Select-Object -First 5 |
+                ForEach-Object { [void]$row.ev_like_paths.Add($_.FullName) }
+        }
+        Get-ChildItem -LiteralPath $root -Include "*EV_GOOGLE_DRIVE*", "*ev_brain*", "*pc5000*" -Recurse -Depth 4 -File -ErrorAction SilentlyContinue |
+            Select-Object -First 8 |
+            ForEach-Object { [void]$row.sample_files.Add(@{ path = $_.FullName; bytes = $_.Length; mtime = $_.LastWriteTime.ToString("o") }) }
+        if ($row.ev_like_paths.Count -gt 0 -or $row.sample_files.Count -gt 0) {
+            $hits += $row
+        }
+    }
+    return @{
+        probed              = @($candidates | Select-Object -Unique)
+        ev_hits             = $hits
+        google_drive_folder_id_note = "15kPq7T_iarOY4FCkeGptje8c4fwu5LxC (from handoff — use Cursor Google Drive MCP to index cloud-side; this probe is local mount only)"
+        cloud_agent_indexed = $false
+    }
 }
 
 function Find-GitRoots {
@@ -62,8 +124,14 @@ function Get-RepoCard {
     $name = Split-Path $Root -Leaf
     $role = Get-RepoRole -Name $name -Remote $remote
     $warn = @()
+    if ($role -eq "operator_ev_worktree_clone") {
+        $warn += "Second Ev checkout — same remote as Ev; use one primary working copy for PC5000 bridge commits."
+    }
     if ($role -eq "legacy_gembot_flask_qwen_sidecar") {
         $warn += "Old layout: pip/Lib often inside repo — prefer Ev + C:\EV_Operator for operator truth."
+    }
+    if ($role -eq "trading_teaka_upstream_mirror" -or $name -match "_tmp_") {
+        $warn += "Extra TeAka clone — handoff scripts default to teaka_trading_app (BlairGem1234 fork)."
     }
     if (Test-Path (Join-Path $Root "Lib\site-packages\pip")) {
         $warn += "Contains Lib/site-packages (venv-in-repo); do not treat pip diff as EV source changes."
@@ -102,9 +170,11 @@ $uniqueRoots = $roots | Select-Object -Unique | Sort-Object {
     $leaf = Split-Path $_ -Leaf
     switch -Regex ($leaf) {
         "^Ev$" { 0 }
-        "teaka" { 1 }
-        "GEMBot" { 2 }
-        default { 3 }
+        "^EV_Node$" { 1 }
+        "Starforge" { 2 }
+        "teaka_trading_app$" { 3 }
+        "GEMBot" { 4 }
+        default { 5 }
     }
 }, { $_ }
 
@@ -132,13 +202,17 @@ $out = [ordered]@{
     ev_git_root    = $EvGitRoot
     teaka_handoff  = $TeakaRoot
     canonical_hint = @{
-        operator_git = "C:\Users\blair\EV_Git\Ev"
-        trading_git  = "C:\Users\blair\EV_Git\teaka_trading_app"
-        legacy_gembot = "C:\Users\blair\EV_Git\GEMBot29 (sidecar history; pip-in-repo)"
-        runtime      = "C:\EV_Operator + C:\EV_AI\Codex"
+        operator_git   = Join-Path $EvGitRoot "Ev"
+        ev_node_git    = "D:\EV_Files\EV_Node -> evstack/ev-node"
+        starforge_git  = "D:\Dropbox\Starforge -> BlairGem/starforge"
+        trading_git    = Join-Path $EvGitRoot "teaka_trading_app"
+        gpt_workspace  = Join-Path $EvGitRoot "GPT_AI_Workspace"
+        legacy_gembot  = Join-Path $EvGitRoot "GEMBot29"
+        runtime        = "C:\EV_Operator + C:\EV_AI\Codex"
     }
     repos          = @($cards)
     brain_operator = $brainNote
+    cloud_drives   = if ($SkipCloudDriveProbe) { @{ skipped = $true } } else { Get-CloudDriveProbe }
 }
 
 $out | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $SaveTo -Encoding utf8
@@ -150,5 +224,12 @@ foreach ($c in $cards) {
     Write-Host "  $($c.branch) | $($c.head)" -ForegroundColor Gray
     foreach ($w in $c.warnings) { Write-Host "  WARN: $w" -ForegroundColor Yellow }
 }
+if ($out.cloud_drives.probed) {
+    Write-Host "`n[Cloud drive local mounts probed]" -ForegroundColor Cyan
+    $out.cloud_drives.probed | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
+    if ($out.cloud_drives.ev_hits.Count -eq 0) {
+        Write-Host "  No EV_Brain/bridge hits in shallow scan — Drive may be online-only or different letter." -ForegroundColor Yellow
+    }
+}
 Write-Host "`nSaved: $SaveTo" -ForegroundColor Green
-Write-Host "Cloud: scratch\ev_federation_registry.json (+ evlink JSON if you run -Action evlink)" -ForegroundColor DarkGray
+Write-Host "Git map: scratch\ev_federation_registry.json | Google cloud index: Drive MCP (not auto from this script)" -ForegroundColor DarkGray
