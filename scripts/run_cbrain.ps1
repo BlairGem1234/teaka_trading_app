@@ -21,7 +21,9 @@ param(
     [string]$JsonSaveTo = ""
 )
 
-$ErrorActionPreference = "SilentlyContinue"
+$ErrorActionPreference = "Continue"
+
+Write-Host "run_cbrain.ps1 starting..." -ForegroundColor Cyan
 
 function Resolve-EvRoot {
     if ($EvRoot -and (Test-Path $EvRoot)) { return $EvRoot }
@@ -181,27 +183,8 @@ function Get-RoboShadyStarforgeStatus {
 
 function Find-CBrainLaunchers {
     param([string]$Root)
-    $patterns = @(
-        "*masher*",
-        "*master*",
-        "*cbrain*",
-        "*CBrain*",
-        "*Hello*EV*",
-        "*hello*ev*operator*",
-        "*pc5000*brain*",
-        "*Run*Brain*",
-        "*Start*Brain*"
-    )
     $found = @()
-    foreach ($pat in $patterns) {
-        Get-ChildItem -LiteralPath $Root -Include $pat -Recurse -File -ErrorAction SilentlyContinue |
-            Where-Object {
-                $_.Extension -in @(".ps1", ".py", ".bat", ".cmd") -and
-                $_.FullName -notmatch '\\\.venv\\|\\Lib\\site-packages\\|node_modules'
-            } |
-            ForEach-Object { $found += $_ }
-    }
-    # Known Ev PC5000 tools (from your tree)
+    # Known paths first — never full-repo recurse (Ev tree is huge / ~5M index)
     foreach ($rel in @(
         "tools\pc5000\Get-PC5000EVLiveBrainStatus.ps1",
         "scripts\pc5000_ev_google_drive_brain_bootstrap.ps1",
@@ -209,6 +192,19 @@ function Find-CBrainLaunchers {
     )) {
         $p = Join-Path $Root $rel
         if (Test-Path $p) { $found += Get-Item $p }
+    }
+    $scanDirs = @("tools", "scripts", "tools\pc5000", "brain", "reconstruction") | ForEach-Object { Join-Path $Root $_ }
+    $patterns = @("*masher*", "*cbrain*", "*Hello*EV*", "*pc5000*brain*", "*Run*Brain*", "*Start*Brain*")
+    foreach ($dir in $scanDirs) {
+        if (-not (Test-Path -LiteralPath $dir)) { continue }
+        foreach ($pat in $patterns) {
+            Get-ChildItem -LiteralPath $dir -Filter $pat -Recurse -Depth 3 -File -ErrorAction SilentlyContinue |
+                Where-Object {
+                    $_.Extension -in @(".ps1", ".py", ".bat", ".cmd") -and
+                    $_.FullName -notmatch 'site-packages|\.venv\\|node_modules'
+                } |
+                ForEach-Object { $found += $_ }
+        }
     }
     $found | Sort-Object FullName -Unique
 }
@@ -299,6 +295,8 @@ if ($StatusOnly -and -not $Start) {
     $log | Set-Content -LiteralPath $SaveTo -Encoding utf8
     Log-Line "`nSaved: $SaveTo"
     Log-Line "JSON: $JsonSaveTo"
+    Log-Line "Also for cloud: scratch\ev_teaka_ev_link.json (run: run_local_handoff.ps1 -Action evlink -SkipPull)"
+    Log-Line "EV Command main system: run_local_handoff.ps1 -Action evcommand -SkipPull"
     exit 0
 }
 

@@ -61,12 +61,13 @@ function Get-JsonTopKeys {
 
 $summary = [ordered]@{
     generated_at = (Get-Date).ToString("o")
+    main_system  = "EV Command (command plane) -> C EV brain (masher) -> EV AI / EV Files / EV core"
     teaka        = Get-GitMini -Root $TeakaRoot
     ev           = Get-GitMini -Root $EvRoot
     teaka_signals = @{}
     ev_bridge_live = @{}
     ports        = @{}
-    note         = "TeAka = trading/paper bridge; Ev = operator + PC5000 live JSON. Cloud reads this file from scratch."
+    note         = "Tell cloud agent: scratch\ev_teaka_ev_link.json (+ ev_command_status.json, cbrain_status.json after stack action)"
 }
 
 # TeAka: status_report + connect_python presence
