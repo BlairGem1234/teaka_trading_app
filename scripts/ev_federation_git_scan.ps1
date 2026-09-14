@@ -53,6 +53,10 @@ function Get-RepoRole {
     if ($r -match "evstack/ev-node") { return "ev_blockchain_ev_node" }
     if ($n -match "ev-node|evstack") { return "ev_blockchain_stack_node" }
     if ($n -match "evbot|operator") { return "evbot_operator_git" }
+    if ($n -eq "clock" -or $r -match "ev_brain_clock") { return "ev_brain_clock_git" }
+    if ($n -eq "cursor" -or $r -match "cursor_master") { return "cursor_master_ev_setup_git" }
+    if ($n -match "git_satellite_brain") { return "ev_github_operator_satellite_brain" }
+    if ($n -eq "memories" -or $r -match "codex") { return "codex_memories_baseline_git" }
     return "other_ev_git"
 }
 
@@ -171,7 +175,12 @@ foreach ($probe in $ExtraProbeRoots) {
     Find-GitRoots -Root $probe -MaxDepth 2 | ForEach-Object { [void]$roots.Add($_) }
 }
 
-$uniqueRoots = $roots | Select-Object -Unique | Sort-Object {
+$uniqueRoots = $roots | ForEach-Object {
+    try { (Get-Item -LiteralPath $_).FullName.ToLowerInvariant() } catch { $_.ToLowerInvariant() }
+} | Select-Object -Unique | ForEach-Object {
+    # restore original casing from first matching root
+    $roots | Where-Object { ((Get-Item -LiteralPath $_).FullName.ToLowerInvariant()) -eq $_ } | Select-Object -First 1
+} | Sort-Object {
     $leaf = Split-Path $_ -Leaf
     switch -Regex ($leaf) {
         "^Ev$" { 0 }
@@ -212,7 +221,11 @@ $out = [ordered]@{
         starforge_git  = "D:\Dropbox\Starforge -> BlairGem/starforge"
         trading_git    = Join-Path $EvGitRoot "teaka_trading_app"
         gpt_workspace  = Join-Path $EvGitRoot "GPT_AI_Workspace"
+        ev_brain_clock = Join-Path $EvGitRoot "Clock"
+        cursor_master  = Join-Path $EvGitRoot "Cursor"
+        git_satellite  = Join-Path $EvGitRoot "Git_Satellite_Brain"
         legacy_gembot  = Join-Path $EvGitRoot "GEMBot29"
+        handoff_branch = "teaka_trading_app on cursor/local-handoff-notes-8248 until PR merge"
         runtime        = "C:\EV_Operator + C:\EV_AI\Codex"
     }
     repos          = @($cards)

@@ -16,6 +16,10 @@ You track **one machine (PC5000 / Blair PC)** through **many git roots**. They a
 | `...\MT_GREENLAND`, Green-Earth demo | geo repos | Minerals / demo |
 | `D:\EV_Files\EV_Node` | evstack/ev-node | EV blockchain node |
 | `D:\Dropbox\Starforge` | BlairGem/starforge | Starforge vault git |
+| `...\Clock` | BlairGem1234/EV_Brain_Clock | Cloak/clock git (timezone deps) |
+| `...\Cursor` | BlairGem1234/Cursor_Master | Cursor EV automation / shell rules |
+| `...\Git_Satellite_Brain` | (local) | EV GitHub Operator satellite |
+| `...\memories` | Codex git baseline | Personal Codex memories — not operator Ev |
 
 ## Google Drive / OneDrive / Dropbox
 
