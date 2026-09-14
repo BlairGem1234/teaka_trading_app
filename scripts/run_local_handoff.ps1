@@ -43,8 +43,8 @@ function Invoke-GitPull {
     Write-Host "`n>>> git pull (origin, current branch)" -ForegroundColor Cyan
     Push-Location $Root
     try {
-        git fetch origin 2>&1 | Write-Host
-        git pull 2>&1 | Write-Host
+        & git fetch origin
+        & git pull
     } finally {
         Pop-Location
     }
@@ -117,10 +117,18 @@ function Run-Script {
         return
     }
     Write-Host "`n========== $Name ==========" -ForegroundColor Cyan
-    if (Get-Command pwsh -ErrorAction SilentlyContinue) {
-        & pwsh -NoProfile -File $path @ExtraArgs
-    } else {
-        & powershell -NoProfile -ExecutionPolicy Bypass -File $path @ExtraArgs
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        # Same process — avoids nested pwsh stopping stack after step 1 on Windows
+        & $path @ExtraArgs
+    } catch {
+        Write-Host "Script $Name error: $_" -ForegroundColor Red
+    } finally {
+        $ErrorActionPreference = $prevEap
+    }
+    if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
+        Write-Host "Script $Name exit code $LASTEXITCODE (stack continues)" -ForegroundColor Yellow
     }
 }
 

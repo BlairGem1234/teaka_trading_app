@@ -38,8 +38,10 @@ Set-Location $root
 
 if (-not $SkipGitPull) {
     Write-Host ">>> git pull" -ForegroundColor Yellow
-    git fetch origin 2>&1 | ForEach-Object { Write-Host $_ }
-    git pull 2>&1 | ForEach-Object { Write-Host $_ }
+    & git fetch origin
+    if ($LASTEXITCODE -ne 0) { Write-Host "git fetch warning exit $LASTEXITCODE" -ForegroundColor Yellow }
+    & git pull
+    if ($LASTEXITCODE -ne 0) { Write-Host "git pull warning exit $LASTEXITCODE" -ForegroundColor Yellow }
 }
 
 $handoff = Join-Path $root "scripts\run_local_handoff.ps1"
@@ -48,8 +50,13 @@ if (-not (Test-Path $handoff)) {
     exit 1
 }
 
-Write-Host "`n>>> run_local_handoff -Action stack" -ForegroundColor Yellow
-& pwsh -NoProfile -File $handoff -Action stack -SkipPull
+Write-Host "`n>>> run_stack.ps1 (all handoff JSON)" -ForegroundColor Yellow
+$stackScript = Join-Path $root "scripts\run_stack.ps1"
+if (Test-Path $stackScript) {
+    & $stackScript
+} else {
+    & pwsh -NoProfile -File $handoff -Action stack -SkipPull
+}
 
 if ($AlsoFederation) {
     Write-Host "`n>>> run_local_handoff -Action federation" -ForegroundColor Yellow
