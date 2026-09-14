@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -67,8 +67,9 @@ Actions:
   pull   - git pull only
   fing   - Fing diagnose -> scratch\fing_diag.txt
   codex  - Codex/Cloak audit -> scratch\codex_audit.txt
-  cursor - Link cloud agents + runtime -> scratch\cursor_cloud_runtime.json
-  all    - pull + cursor + codex + fing (in that order)
+  cursor        - Link cloud agents + runtime -> scratch\cursor_cloud_runtime.json
+  cursorinstall - Cursor.exe paths, shortcuts, duplicate Codex warning
+  all           - pull + cursor + codex + fing (in that order)
   help   - this text
 
 If 'pwsh' is missing, use Windows PowerShell 5:
@@ -125,6 +126,9 @@ switch ($Action) {
         if ($OpenAgentLinks) { $cursorArgs += "-OpenLinks" }
         Run-Script "cursor_cloud_runtime_link.ps1" $cursorArgs
     }
+    "cursorinstall" {
+        Run-Script "cursor_install_check.ps1" @("-SaveTo", (Join-Path $scratch "cursor_install_check.txt"))
+    }
     "all" {
         $cursorArgs = @("-AppendClockLog")
         if ($OpenAgentLinks) { $cursorArgs += "-OpenLinks" }
@@ -135,19 +139,21 @@ switch ($Action) {
     default {
         Show-Help
         Write-Host "Choose action (pull is done automatically unless -SkipPull):" -ForegroundColor Yellow
-        Write-Host "  1) cursor - Cloud agent link + runtime clock log"
-        Write-Host "  2) codex  - Cloak/Codex token audit"
-        Write-Host "  3) fing   - Fing launch diagnose"
-        Write-Host "  4) all    - Run 1+2+3"
-        Write-Host "  5) pull   - Git pull only"
+        Write-Host "  1) cursor        - Cloud agent link + runtime clock log"
+        Write-Host "  2) codex         - Cloak/Codex token audit"
+        Write-Host "  3) fing          - Fing launch diagnose"
+        Write-Host "  4) cursorinstall - Cursor paths + duplicate Codex check"
+        Write-Host "  5) all           - Run 1+2+3"
+        Write-Host "  6) pull          - Git pull only"
         Write-Host "  h) help"
-        $choice = Read-Host "Enter 1-5 or h"
+        $choice = Read-Host "Enter 1-6 or h"
         switch ($choice) {
             "1" { & $PSCommandPath -Action cursor -SkipPull }
             "2" { & $PSCommandPath -Action codex -SkipPull }
             "3" { & $PSCommandPath -Action fing -SkipPull }
-            "4" { & $PSCommandPath -Action all -SkipPull }
-            "5" { Invoke-GitPull -Root $repo }
+            "4" { & $PSCommandPath -Action cursorinstall -SkipPull }
+            "5" { & $PSCommandPath -Action all -SkipPull }
+            "6" { Invoke-GitPull -Root $repo }
             default { Show-Help }
         }
     }
