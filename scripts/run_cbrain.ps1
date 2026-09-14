@@ -264,6 +264,12 @@ foreach ($port in @(8080, 5050, 5056, 5000, 11434)) {
     $statusJson.ports["$port"] = Test-PortListening $port
 }
 
+$coreMapScript = Join-Path $PSScriptRoot "ev_core_system_map_check.ps1"
+if (Test-Path $coreMapScript) {
+    Log-Line "`n--- EV AI / EV Files / EV core (system map) ---"
+    & pwsh -NoProfile -File $coreMapScript -EvRoot $ev 2>&1 | ForEach-Object { Log-Line $_ }
+}
+
 if (-not $SkipRoboShadyCheck -or -not $SkipStarforgeCheck) {
     Log-Line "`n--- RoboShady + Starforge (probe JSON only) ---"
     $rs = Get-RoboShadyStarforgeStatus -Ev $ev -Starforge $(if ($SkipStarforgeCheck) { "" } else { $StarforgeRoot })

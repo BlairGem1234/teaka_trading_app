@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "federation", "cbrain", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "federation", "cbrain", "coremap", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -75,6 +75,7 @@ Actions:
   evlink        - TeAka + Ev + PC5000 probes -> scratch\ev_teaka_ev_link.json
   federation    - All EV_Git clones + roles (Ev, TeAka, GEMBot29, Starforge…) -> scratch\ev_federation_registry.json
   cbrain        - C EV brain: status or -Start via scripts\run_cbrain.ps1
+  coremap       - Ev full crypto/Starforge/VR system map + EV_AI/EV_Files path check
   all           - pull + cursor + codex + fing (in that order)
   help   - this text
 
@@ -156,6 +157,9 @@ switch ($Action) {
             "-SaveTo", (Join-Path $scratch "cbrain_run_log.txt"),
             "-JsonSaveTo", (Join-Path $scratch "cbrain_status.json")
         )
+    }
+    "coremap" {
+        Run-Script "ev_core_system_map_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_core_system_map_status.json"))
     }
     "all" {
         $cursorArgs = @("-AppendClockLog")

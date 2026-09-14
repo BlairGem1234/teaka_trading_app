@@ -8,7 +8,7 @@ Use this so TeAka / Cursor / PC5000 docs do not talk past each other.
 
 | Say | Meaning |
 |-----|---------|
-| **C EV brain** | Live masher / master index + RoboShady runtime |
+| **C EV brain** | Live masher / master index + RoboShady runtime; drives **EV AI**, **EV Files**, **EV core** per `ev.full_crypto_starforge_vr_system_map.v1` |
 | **masher / master** | Same thing — merge + index mechanics |
 | **`EV_Brain` on Drive** | Sync/archive label — **not** C EV brain |
 | **`Ev` git** | Operator + PC5000 bridge — feeds C EV brain, is not the brain |
