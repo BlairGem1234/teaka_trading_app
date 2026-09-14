@@ -38,8 +38,8 @@ Set-Location $root
 
 if (-not $SkipGitPull) {
     Write-Host ">>> git pull" -ForegroundColor Yellow
-    git fetch origin 2>&1 | Write-Host
-    git pull 2>&1 | Write-Host
+    git fetch origin 2>&1 | ForEach-Object { Write-Host $_ }
+    git pull 2>&1 | ForEach-Object { Write-Host $_ }
 }
 
 $handoff = Join-Path $root "scripts\run_local_handoff.ps1"
