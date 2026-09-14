@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -71,6 +71,7 @@ Actions:
   cursorinstall - Cursor.exe paths, shortcuts, duplicate Codex warning
   pick          - Which Codex/Cloak EV should use (scores running PIDs)
   gitrefs       - Git remotes + tracked EV path docs in this repo only
+  gembot        - Find GemBot/EV_Link (incl. gembot29 under EV_Git) -> scratch\gembot_repo_check.txt
   all           - pull + cursor + codex + fing (in that order)
   help   - this text
 
@@ -137,6 +138,9 @@ switch ($Action) {
     "gitrefs" {
         Run-Script "ev_git_repos_check.ps1" @()
     }
+    "gembot" {
+        Run-Script "ev_gembot_repo_check.ps1" @("-SaveTo", (Join-Path $scratch "gembot_repo_check.txt"))
+    }
     "all" {
         $cursorArgs = @("-AppendClockLog")
         if ($OpenAgentLinks) { $cursorArgs += "-OpenLinks" }
@@ -153,8 +157,9 @@ switch ($Action) {
         Write-Host "  4) cursorinstall - Cursor paths + duplicate Codex check"
         Write-Host "  5) all           - Run 1+2+3"
         Write-Host "  6) pull          - Git pull only"
+        Write-Host "  7) gembot        - GemBot / EV_Link auto check"
         Write-Host "  h) help"
-        $choice = Read-Host "Enter 1-6 or h"
+        $choice = Read-Host "Enter 1-7 or h"
         switch ($choice) {
             "1" { & $PSCommandPath -Action cursor -SkipPull }
             "2" { & $PSCommandPath -Action codex -SkipPull }
@@ -162,6 +167,7 @@ switch ($Action) {
             "4" { & $PSCommandPath -Action cursorinstall -SkipPull }
             "5" { & $PSCommandPath -Action all -SkipPull }
             "6" { Invoke-GitPull -Root $repo }
+            "7" { & $PSCommandPath -Action gembot -SkipPull }
             default { Show-Help }
         }
     }
