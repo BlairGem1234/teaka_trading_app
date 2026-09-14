@@ -123,9 +123,22 @@ $keyFiles = @(
     "ev_brain_state.json"
 )
 
-foreach ($dir in $unique) {
+function Test-SkipScanPath {
+    param([string]$FullName)
+    return $FullName -match '\\(\.venv|venv|Lib\\site-packages|node_modules|\\Scripts\\pip|\\dist-info)\\'
+}
+
+foreach ($dir in ($unique | Sort-Object {
+    if ($_ -match '\\Ev$') { 0 } elseif ($_ -match 'GEMBot29') { 2 } else { 1 }
+})) {
     Out-Report "`n----------------------------------------" "Cyan"
     Out-Report "ROOT: $dir" "Yellow"
+    if ($dir -match 'GEMBot29') {
+        Out-Report "ROLE: legacy GEMBot29 (Flask/Qwen sidecar); operator truth is Ev + C:\EV_Operator. Git may show huge pip/Lib noise — ignore." "Yellow"
+    }
+    if ($dir -match '\\Ev$') {
+        Out-Report "ROLE: canonical operator / PC5000 brain + bridge git (track this for live probes)." "Green"
+    }
 
     $gitDir = Join-Path $dir ".git"
     if (Test-Path $gitDir) {
@@ -133,8 +146,10 @@ foreach ($dir in $unique) {
         Out-Report "[Git remote]" "Yellow"
         git remote -v 2>&1 | ForEach-Object { Out-Report "  $_" }
         Out-Report "[Git branch] $(git branch --show-current 2>&1)" "Yellow"
-        $st = git status -sb 2>&1 | Out-String
-        Out-Report "[Git status]`n$st" "Gray"
+        $stLine = git status -sb 2>&1 | Select-Object -First 1
+        $mod = @(git status -sb --untracked-files=no 2>&1 | Select-String "^\s*[MADRCU]").Count
+        $un = @(git status -sb 2>&1 | Select-String "^\?\?").Count
+        Out-Report "[Git status] $stLine | modified~$mod untracked~$un (full log omitted for GEMBot/pip repos)" "Gray"
         Out-Report "[Recent commit]" "Yellow"
         git log -1 --oneline 2>&1 | ForEach-Object { Out-Report "  $_" }
         Pop-Location
@@ -144,7 +159,9 @@ foreach ($dir in $unique) {
 
     Out-Report "[Key files]" "Yellow"
     foreach ($kf in $keyFiles) {
-        $hits = Get-ChildItem -LiteralPath $dir -Filter $kf -Recurse -ErrorAction SilentlyContinue | Select-Object -First 5
+        $hits = Get-ChildItem -LiteralPath $dir -Filter $kf -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { -not (Test-SkipScanPath $_.FullName) } |
+            Select-Object -First 5
         if ($hits) {
             foreach ($h in $hits) {
                 Out-Report "  OK $($h.FullName) ($($h.Length) bytes, $($h.LastWriteTime))" "Green"
@@ -152,11 +169,12 @@ foreach ($dir in $unique) {
         }
     }
 
-    Out-Report "[EV / Codex / Cloak refs in *.py, *.md, *.json (sample)]" "Yellow"
+    Out-Report "[EV / Codex / Cloak refs (project files only, no site-packages)]" "Yellow"
     Get-ChildItem -LiteralPath $dir -Include *.py, *.md, *.json, *.yaml, *.ps1 -Recurse -ErrorAction SilentlyContinue |
-        Select-Object -First 400 |
+        Where-Object { -not (Test-SkipScanPath $_.FullName) } |
+        Select-Object -First 250 |
         ForEach-Object {
-            Select-String -LiteralPath $_.FullName -Pattern "EV_Operator|EV_AI|ev_devtools_cloak|Codex|5056|5000|Flask" -ErrorAction SilentlyContinue
+            Select-String -LiteralPath $_.FullName -Pattern "EV_Operator|EV_AI|ev_devtools_cloak|Codex|5056|5000|Flask|PC5000" -ErrorAction SilentlyContinue
         } |
         Select-Object -First 20 |
         ForEach-Object { Out-Report "  $($_.Path):$($_.LineNumber) $($_.Line.Trim())" "DarkGray" }
@@ -192,11 +210,11 @@ foreach ($port in @(5000, 5055, 5056, 8080, 11434)) {
     }
 }
 
+Out-Report "`n[Federation scan]" "Yellow"
+Out-Report "  pwsh -NoProfile -File scripts\ev_federation_git_scan.ps1" "Gray"
 Out-Report "`n[TeAka cross-check]" "Yellow"
 Out-Report "  This handoff repo: $teakaRoot" "Gray"
-Out-Report "  Run pick + codex after GemBot check:" "Gray"
-Out-Report "    pwsh -NoProfile -File scripts\run_local_handoff.ps1 -Action pick -SkipPull" "Gray"
-Out-Report "    pwsh -NoProfile -File scripts\run_local_handoff.ps1 -Action codex -SkipPull" "Gray"
+Out-Report "  evlink + federation -> scratch\ev_teaka_ev_link.json + scratch\ev_federation_registry.json" "Gray"
 
 $lines | Set-Content -LiteralPath $SaveTo -Encoding utf8
 Out-Report "`nSaved: $SaveTo" "Green"

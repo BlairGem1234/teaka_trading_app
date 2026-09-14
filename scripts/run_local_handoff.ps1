@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "federation", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -73,6 +73,7 @@ Actions:
   gitrefs       - Git remotes + tracked EV path docs in this repo only
   gembot        - Find GemBot/EV_Link + Ev repo -> scratch\gembot_repo_check.txt
   evlink        - TeAka + Ev + PC5000 probes -> scratch\ev_teaka_ev_link.json
+  federation    - All EV_Git clones + roles (Ev, TeAka, GEMBot29, Starforge…) -> scratch\ev_federation_registry.json
   all           - pull + cursor + codex + fing (in that order)
   help   - this text
 
@@ -144,6 +145,9 @@ switch ($Action) {
     }
     "evlink" {
         Run-Script "ev_teaka_ev_bridge_summary.ps1" @("-SaveTo", (Join-Path $scratch "ev_teaka_ev_link.json"))
+    }
+    "federation" {
+        Run-Script "ev_federation_git_scan.ps1" @("-SaveTo", (Join-Path $scratch "ev_federation_registry.json"))
     }
     "all" {
         $cursorArgs = @("-AppendClockLog")
