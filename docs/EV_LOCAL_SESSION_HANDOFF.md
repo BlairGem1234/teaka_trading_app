@@ -137,7 +137,7 @@ Usually **Cursor server error** on large messages, not TeAka port 5000. Mitigati
 | Paper bridge | `connect_python.py` (:5050) |
 | PC5000 git diagnostic drop | `bridge/inbox/PC5000_GIT_ACCESS_DIAGNOSTIC_001.json` |
 | GEMBot paths | `docs/GEMBotSys_path_map.txt` |
-| Masher / brain naming | **The Brain = masher** — not `EV_Brain` Drive folders; see `docs/EV_MASHER_BRAIN_GLOSSARY.md` |
+| Masher / brain naming | **C EV brain = masher**; Drive/Dropbox/OneDrive = mirrors; Ignis7 = battery project; see `docs/EV_BRAIN_ENV_LAYERS.md` |
 | Brain snapshot (TeAka copy) | `ev_virtual_brain.json` (artifact — not the masher) |
 
 ## Open follow-ups

@@ -21,7 +21,9 @@ When someone says “run the brain,” they mean **C EV brain** (masher + operat
 
 | Name | What it actually is |
 |------|---------------------|
-| **`EV_Brain` (Drive / folders)** | Sync / archive / launcher paths (e.g. Google Drive exports, `EV_GOOGLE_DRIVE_LAUNCHER_BRIDGE_*.json`) |
+| **`EV_Brain` (Drive / folders)** | Sync / archive / launcher paths (e.g. Google Drive exports, `EV_GOOGLE_DRIVE_LAUNCHER_BRIDGE_*.json`) — **mirror envs**, not separate mashers |
+| **Ignis7 (`C:\EV_Brain\Ignis7`)** | Battery cycle **sim/project** EV built — **not** C EV brain |
+| **Google / Dropbox / OneDrive “brain”** | Per-env **mirrors and indexes** feeding the masher — see `EV_BRAIN_ENV_LAYERS.md` |
 | **`ev_virtual_brain.json` / `ev_brain_state.json` (TeAka or Ev copies)** | Snapshots or inputs the masher (or operator) may read — **not** the masher itself |
 | **`Ev` git repo** | Operator + PC5000 bridge + evidence — **control plane git**, not the masher |
 | **`Git_Satellite_Brain` git** | **Add-on** to help **run C EV brain** — GitHub Operator helper, not a second brain |
