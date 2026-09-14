@@ -88,8 +88,18 @@ From repo root you can also run: `.\Run-LocalHandoff.ps1 -Action all`
 | `codex` | `ev_codex_token_audit.ps1` |
 | `fing` | `fing_diagnose.ps1` |
 | `all` | all three after `git pull` |
+| `pick` | which Codex/Cloak is STANDARD vs ABNORMAL → `scratch\ev_canonical_choice.json` |
+| `gembot` | scan GemBot / EV_Link / `EV_Git\*gem*` → `scratch\gembot_repo_check.txt` |
 
 Outputs go to **`scratch\`** (gitignored). Point the cloud agent at those files, not huge pastes.
+
+**GemBot 29 (or any clone under `EV_Git`):**
+
+```powershell
+pwsh -NoProfile -File .\scripts\run_local_handoff.ps1 -Action gembot -SkipPull
+# or explicit folder:
+pwsh -NoProfile -File .\scripts\ev_gembot_repo_check.ps1 -RepoPath "C:\Users\blair\EV_Git\<your-gembot-repo>"
+```
 
 ## Link this cloud chat to the EV / Codex thread (local)
 
