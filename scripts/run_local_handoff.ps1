@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "federation", "cbrain", "coremap", "evcommand", "phonebrain", "stack", "pullscratch", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "federation", "cbrain", "coremap", "evcommand", "phonebrain", "docker", "stack", "pullscratch", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -78,6 +78,7 @@ Actions:
   coremap       - Ev full crypto/Starforge/VR system map + EV_AI/EV_Files path check
   evcommand     - EV Command main system check -> scratch\ev_command_status.json
   phonebrain    - Cross-device phone brain (:5050 + Cross_device_brain.json)
+  docker        - Docker Desktop + EV compose/ev-reth check -> scratch\ev_docker_stack_status.json
   stack         - evcommand + cbrain + phonebrain + coremap + evlink
   pullscratch   - git pull + stack + scratch index (scripts\pull_ev_scratch_handoff.ps1)
   all           - pull + cursor + codex + fing (in that order)
@@ -178,6 +179,9 @@ switch ($Action) {
     }
     "phonebrain" {
         Run-Script "cross_device_brain_check.ps1" @("-SaveTo", (Join-Path $scratch "cross_device_brain_status.json"))
+    }
+    "docker" {
+        Run-Script "ev_docker_stack_check.ps1" @("-SaveTo", (Join-Path $scratch "ev_docker_stack_status.json"))
     }
     "pullscratch" {
         Run-Script "pull_ev_scratch_handoff.ps1" @("-AlsoFederation")

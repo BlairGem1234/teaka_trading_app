@@ -12,7 +12,10 @@ if (-not (Test-Path $scratch)) { New-Item -ItemType Directory -Path $scratch | O
 Write-Host "=== EV stack (single process) ===" -ForegroundColor Cyan
 Write-Host "Repo: $repo`n" -ForegroundColor DarkGray
 
+Write-Host "Tip: Docker EV chain first — scripts\ev_docker_stack_check.ps1 -StartDesktop then -ComposeUp`n" -ForegroundColor DarkGray
+
 $steps = @(
+    @{ n = "ev_docker_stack_check.ps1"; a = @("-SaveTo", (Join-Path $scratch "ev_docker_stack_status.json")) },
     @{ n = "ev_command_check.ps1"; a = @("-SaveTo", (Join-Path $scratch "ev_command_status.json")) },
     @{ n = "run_cbrain.ps1"; a = @("-StatusOnly", "-SaveTo", (Join-Path $scratch "cbrain_run_log.txt"), "-JsonSaveTo", (Join-Path $scratch "cbrain_status.json")) },
     @{ n = "cross_device_brain_check.ps1"; a = @("-SaveTo", (Join-Path $scratch "cross_device_brain_status.json")) },
