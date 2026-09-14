@@ -55,7 +55,7 @@ function Get-RepoRole {
     if ($n -match "evbot|operator") { return "evbot_operator_git" }
     if ($n -eq "clock" -or $r -match "ev_brain_clock") { return "ev_brain_clock_git" }
     if ($n -eq "cursor" -or $r -match "cursor_master") { return "cursor_master_ev_setup_git" }
-    if ($n -match "git_satellite_brain") { return "ev_github_operator_satellite_brain" }
+    if ($n -match "git_satellite_brain") { return "brain_run_addon_git_satellite" }
     if ($n -eq "memories" -or $r -match "codex") { return "codex_memories_baseline_git" }
     return "other_ev_git"
 }
@@ -198,7 +198,7 @@ $operatorPy = "C:\EV_Operator\DevToolsRuntime\python_env\Scripts\python.exe"
 $brainNote = @{
     ev_operator_python = (Test-Path $operatorPy)
     ev_operator_cloak  = (Test-Path "C:\EV_Operator\DevToolsRuntime\ev_devtools_cloak.py")
-    profile_split      = "The Brain = masher (merge authority). Ev/EV_Operator/PC5000 bridge = operator plane. EV_Brain* paths and ev_*_brain.json = artifacts/satellites — not the masher. Personal Codex/GPT = separate profile."
+    profile_split      = "The Brain = masher only. Git_Satellite_Brain = add-on to RUN the brain (not a second brain). Ev/EV_Operator = operator plane. EV_Brain* / ev_*_brain.json = artifacts — not the masher. Personal Codex/GPT = separate profile."
     port_roles         = @{
         "5000"  = "GEMBot Flask (legacy); often off if sidecar moved"
         "5050"  = "TeAka connect_python paper bridge"

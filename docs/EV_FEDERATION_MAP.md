@@ -20,7 +20,7 @@ You track **one machine (PC5000 / Blair PC)** through **many git roots**. They a
 | `D:\Dropbox\Starforge` | BlairGem/starforge | Starforge vault git |
 | `...\Clock` | BlairGem1234/EV_Brain_Clock | Cloak/clock git (timezone deps) |
 | `...\Cursor` | BlairGem1234/Cursor_Master | Cursor EV automation / shell rules |
-| `...\Git_Satellite_Brain` | (local) | GitHub Operator **satellite** (feeds masher stack — not the masher) |
+| `...\Git_Satellite_Brain` | (local) | **Add-on** to run The Brain (masher) — GitHub Operator helper, not a second brain |
 | `...\memories` | Codex git baseline | Personal Codex memories — not operator Ev |
 
 ## Google Drive / OneDrive / Dropbox
