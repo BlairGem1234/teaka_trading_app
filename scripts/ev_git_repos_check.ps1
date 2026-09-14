@@ -3,7 +3,7 @@
 #   pwsh -NoProfile -File scripts\ev_git_repos_check.ps1
 
 $ErrorActionPreference = "SilentlyContinue"
-$repoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+$repoRoot = Split-Path $PSScriptRoot -Parent
 if (Test-Path "C:\Users\blair\EV_Git\teaka_trading_app\.git") {
     $repoRoot = "C:\Users\blair\EV_Git\teaka_trading_app"
 }
