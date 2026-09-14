@@ -46,34 +46,20 @@ C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Fing.lnk
 C:\Users\Blair\Desktop\Fing.lnk  → should target Program Files exe
 ```
 
-## Fing — next diagnostic (paste in PowerShell)
+## Fing — next diagnostic (PowerShell)
 
-When `-Verb RunAs` shows no process, **UAC may be blocking** or the app **exits cleanly**. Run **without** elevation first to capture exit code:
+When `-Verb RunAs` shows no process, **UAC may be blocking** or the app **exits cleanly**. Run **without** elevation first to capture exit code.
+
+**From repo (recommended):**
 
 ```powershell
-Write-Host "=== FING CONSOLE EXIT CODE ===" -ForegroundColor Cyan
-$psi = New-Object System.Diagnostics.ProcessStartInfo
-$psi.FileName = "C:\Program Files\Fing\Fing.exe"
-$psi.Arguments = "--enable-logging --v=1 --disable-gpu"
-$psi.RedirectStandardOutput = $true
-$psi.RedirectStandardError = $true
-$psi.UseShellExecute = $false
-$psi.CreateNoWindow = $true
-$p = [System.Diagnostics.Process]::Start($psi)
-$out = $p.StandardOutput.ReadToEnd()
-$err = $p.StandardError.ReadToEnd()
-$p.WaitForExit(15000)
-Write-Host "ExitCode: $($p.ExitCode)" -ForegroundColor $(if ($p.ExitCode -eq 0){"Green"}else{"Red"})
-if ($out) { Write-Host "--- stdout ---"; $out }
-if ($err) { Write-Host "--- stderr ---"; $err }
-$log = "$env:APPDATA\Fing\logs\main.log"
-if (Test-Path $log) { Write-Host "--- main.log tail ---"; Get-Content $log -Tail 20 }
-Get-ChildItem "C:\Program Files\Fing" -Filter "*.exe" | Format-Table Name, Length, LastWriteTime -AutoSize
+cd C:\Users\blair\EV_Git\teaka_trading_app
+pwsh -File scripts\fing_diagnose.ps1 -SaveTo scratch\fing_diag.txt
 ```
 
-Paste **only** `ExitCode`, stderr, and `main.log` tail back here (small chunk — avoids Cursor **HTTP 500** on huge pastes).
+Then paste **only** `ExitCode`, stderr, and `main.log` tail into Cursor (or tell the agent: `scratch\fing_diag.txt`). The script clears stale locks/GPU cache, checks `Get-Service *fing*`, lists `C:\Program Files\Fing\*.exe`, runs a synchronous launch, and optionally saves output to avoid **HTTP 500** on huge pastes.
 
-**Also check:** `Get-Service *fing*` and `%APPDATA%\Fing\` lock files (already in prior scripts).
+**What those Swift `.plist` files in the mirror were:** LicensePlist entries inside extracted **ChatGPT.app** (macOS), not Fing or TeAka — see table above.
 
 ## Cursor HTTP 500 when pasting
 
