@@ -61,6 +61,36 @@ Then paste **only** `ExitCode`, stderr, and `main.log` tail into Cursor (or tell
 
 **What those Swift `.plist` files in the mirror were:** LicensePlist entries inside extracted **ChatGPT.app** (macOS), not Fing or TeAka — see table above.
 
+## Run git scripts locally (PowerShell) — start here
+
+Scripts in the repo are **not** run by the cloud agent on your PC. Use **one launcher**:
+
+**Copy this whole block into PowerShell (first time + every run):**
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+cd C:\Users\blair\EV_Git\teaka_trading_app
+git pull
+pwsh -NoProfile -File .\scripts\run_local_handoff.ps1
+```
+
+Menu picks **cursor** / **codex** / **fing** / **all**. No `pwsh` installed? Use:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_local_handoff.ps1 -Action all
+```
+
+From repo root you can also run: `.\Run-LocalHandoff.ps1 -Action all`
+
+| `-Action` | Runs |
+|-----------|------|
+| `cursor` | `cursor_cloud_runtime_link.ps1` (+ clock log) |
+| `codex` | `ev_codex_token_audit.ps1` |
+| `fing` | `fing_diagnose.ps1` |
+| `all` | all three after `git pull` |
+
+Outputs go to **`scratch\`** (gitignored). Point the cloud agent at those files, not huge pastes.
+
 ## Link this cloud chat to the EV / Codex thread (local)
 
 Cursor keeps **one transcript per agent URL**. To **continue the same thread**, open that run in the browser — do not start a brand-new agent if you want history.

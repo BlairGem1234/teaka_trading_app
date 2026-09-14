@@ -1,0 +1,157 @@
+# === run_local_handoff.ps1 ===
+# One entry point on Blair PC: pull repo + run handoff / Fing / Codex / Cursor link scripts.
+#
+# First time (copy entire block into PowerShell):
+#   Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+#   cd C:\Users\blair\EV_Git\teaka_trading_app
+#   git pull
+#   pwsh -NoProfile -File .\scripts\run_local_handoff.ps1
+#
+# Or double-click flow after git is cloned:
+#   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
+
+param(
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "help")]
+    [string]$Action = "menu",
+    [switch]$SkipPull,
+    [switch]$OpenAgentLinks
+)
+
+$ErrorActionPreference = "Stop"
+
+function Get-RepoRoot {
+    if ($env:TEAKA_REPO_ROOT -and (Test-Path (Join-Path $env:TEAKA_REPO_ROOT ".git"))) {
+        return (Resolve-Path $env:TEAKA_REPO_ROOT).Path
+    }
+    $here = $PSScriptRoot
+    if ($here) {
+        $root = Split-Path $here -Parent
+        if (Test-Path (Join-Path $root ".git")) { return (Resolve-Path $root).Path }
+    }
+    $candidates = @(
+        "C:\Users\blair\EV_Git\teaka_trading_app",
+        "C:\Users\Blair\EV_Git\teaka_trading_app"
+    )
+    foreach ($c in $candidates) {
+        if (Test-Path (Join-Path $c ".git")) { return $c }
+    }
+    throw "TeAka repo not found. Clone to C:\Users\blair\EV_Git\teaka_trading_app or set `$env:TEAKA_REPO_ROOT"
+}
+
+function Invoke-GitPull {
+    param([string]$Root)
+    Write-Host "`n>>> git pull (origin, current branch)" -ForegroundColor Cyan
+    Push-Location $Root
+    try {
+        git fetch origin 2>&1 | Write-Host
+        git pull 2>&1 | Write-Host
+    } finally {
+        Pop-Location
+    }
+}
+
+function Show-Help {
+    Write-Host @"
+
+TeAka local handoff launcher
+============================
+Repo scripts live under:  <repo>\scripts\
+
+Run this file:
+  pwsh -NoProfile -File .\scripts\run_local_handoff.ps1
+  pwsh -NoProfile -File .\scripts\run_local_handoff.ps1 -Action all
+  pwsh -NoProfile -File .\scripts\run_local_handoff.ps1 -Action fing
+
+Actions:
+  menu   - pick from list (default)
+  pull   - git pull only
+  fing   - Fing diagnose -> scratch\fing_diag.txt
+  codex  - Codex/Cloak audit -> scratch\codex_audit.txt
+  cursor - Link cloud agents + runtime -> scratch\cursor_cloud_runtime.json
+  all    - pull + cursor + codex + fing (in that order)
+  help   - this text
+
+If 'pwsh' is missing, use Windows PowerShell 5:
+  powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_local_handoff.ps1
+
+"@ -ForegroundColor White
+}
+
+$repo = Get-RepoRoot
+Write-Host "TeAka repo: $repo" -ForegroundColor Green
+Set-Location $repo
+
+if ($Action -eq "help") {
+    Show-Help
+    exit 0
+}
+
+if (-not $SkipPull -and $Action -in @("menu", "all", "fing", "codex", "cursor")) {
+    try {
+        Invoke-GitPull -Root $repo
+    } catch {
+        Write-Host "git pull failed (offline or no git?). Continuing with local files..." -ForegroundColor Yellow
+    }
+}
+
+$scratch = Join-Path $repo "scratch"
+if (-not (Test-Path $scratch)) { New-Item -ItemType Directory -Path $scratch | Out-Null }
+
+function Run-Script {
+    param([string]$Name, [string[]]$ExtraArgs)
+    $path = Join-Path $repo "scripts\$Name"
+    if (-not (Test-Path $path)) {
+        Write-Host "Missing: $path" -ForegroundColor Red
+        return
+    }
+    Write-Host "`n========== $Name ==========" -ForegroundColor Cyan
+    if (Get-Command pwsh -ErrorAction SilentlyContinue) {
+        & pwsh -NoProfile -File $path @ExtraArgs
+    } else {
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $path @ExtraArgs
+    }
+}
+
+switch ($Action) {
+    "pull" { exit 0 }
+    "fing" {
+        Run-Script "fing_diagnose.ps1" @("-SaveTo", (Join-Path $scratch "fing_diag.txt"))
+    }
+    "codex" {
+        Run-Script "ev_codex_token_audit.ps1" @("-SaveTo", (Join-Path $scratch "codex_audit.txt"))
+    }
+    "cursor" {
+        $cursorArgs = @("-AppendClockLog", "-RunCodexAudit")
+        if ($OpenAgentLinks) { $cursorArgs += "-OpenLinks" }
+        Run-Script "cursor_cloud_runtime_link.ps1" $cursorArgs
+    }
+    "all" {
+        $cursorArgs = @("-AppendClockLog")
+        if ($OpenAgentLinks) { $cursorArgs += "-OpenLinks" }
+        Run-Script "cursor_cloud_runtime_link.ps1" $cursorArgs
+        Run-Script "ev_codex_token_audit.ps1" @("-SaveTo", (Join-Path $scratch "codex_audit.txt"))
+        Run-Script "fing_diagnose.ps1" @("-SaveTo", (Join-Path $scratch "fing_diag.txt"))
+    }
+    default {
+        Show-Help
+        Write-Host "Choose action (pull is done automatically unless -SkipPull):" -ForegroundColor Yellow
+        Write-Host "  1) cursor - Cloud agent link + runtime clock log"
+        Write-Host "  2) codex  - Cloak/Codex token audit"
+        Write-Host "  3) fing   - Fing launch diagnose"
+        Write-Host "  4) all    - Run 1+2+3"
+        Write-Host "  5) pull   - Git pull only"
+        Write-Host "  h) help"
+        $choice = Read-Host "Enter 1-5 or h"
+        switch ($choice) {
+            "1" { & $PSCommandPath -Action cursor -SkipPull }
+            "2" { & $PSCommandPath -Action codex -SkipPull }
+            "3" { & $PSCommandPath -Action fing -SkipPull }
+            "4" { & $PSCommandPath -Action all -SkipPull }
+            "5" { Invoke-GitPull -Root $repo }
+            default { Show-Help }
+        }
+    }
+}
+
+Write-Host "`nDone. Small results are under: $scratch" -ForegroundColor Green
+Write-Host "Tell Cursor cloud agent: scratch\cursor_cloud_runtime.json (or fing_diag.txt)" -ForegroundColor DarkGray
