@@ -57,3 +57,47 @@ TeAka :5050        →  cross-device phone brain      (parallel, not in Docker)
 ```
 
 Cloud agent: `scratch\ev_docker_stack_status.json` + `scratch\cbrain_status.json`.
+
+## If you see EXT4 / `iget: checksum invalid` in Docker logs
+
+That output is from **inside Docker Desktop’s WSL2 VM** (`docker-desktop` / `nbd0` / `sdf` ~1 TiB virtual disk). It means the **Docker Linux disk image is corrupted or was mounted `noload` while tools (`find`, `python3`, `du`) scanned it**. It is **not** C EV brain, not TeAka, not `C:\EV_Brain` on Windows NTFS.
+
+**Normal noise (ignore):** `hvc0` / securetty, `FS-Cache: Duplicate cookie`, `tmpfs: Unknown parameter 'noswap'`, `Pacific/Auckland tzdata`, `CheckConnection: v4 succeeded`, docker0/cni0 veth up/down when containers restart.
+
+**Do not** stay logged in at `docker-desktop login: root` for EV work — use **Windows PowerShell** + `docker` CLI.
+
+### Fix order (Windows host)
+
+1. **Stop scanning the broken mount** — close anything running `find`/`du` over Docker’s internal ext4 from WSL.
+
+2. **Restart WSL + Docker**
+
+```powershell
+wsl --shutdown
+# Start Docker Desktop from the tray / Start menu; wait until Engine running
+docker info
+docker ps -a
+```
+
+3. **If `docker info` fails or containers keep dying** — Docker Desktop → **Settings → Troubleshoot** → **Restart Docker Desktop**. If still broken: **Clean / Purge data** or **Reset to factory defaults** (removes local images/containers — git repos on `C:\` / `D:\EV_Files` are untouched).
+
+4. **Recreate EV stack** after engine is healthy:
+
+```powershell
+cd D:\EV_Files\EV_Node   # if that is your compose tree
+docker compose down
+docker compose up -d
+```
+
+5. **Run operator stack on Windows** (always):
+
+```powershell
+cd C:\Users\blair\EV_Git\teaka_trading_app
+pwsh -NoProfile -File .\scripts\run_stack.ps1
+```
+
+### Do not run `e2fsck` inside `docker-desktop` unless Docker support/docs say so
+
+Manual fsck on Docker’s internal VHDX can make things worse. Prefer **WSL shutdown + Docker reset** or **move disk image** (Settings → Resources → Advanced) after backup of anything you still need from containers.
+
+Until the disk is clean, treat **Docker EV chain (8545)** as **untrusted**; **C EV brain / EV Command on `C:\`** can still be checked with `run_stack.ps1`.
