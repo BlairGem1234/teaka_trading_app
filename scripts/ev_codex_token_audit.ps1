@@ -35,7 +35,7 @@ if ($py) {
         }
     } | Format-List
 
-    $cloak = @($py | Where-Object { $_.CommandLine -match "ev_devtools_cloak|devtools_cloak" })
+    $cloak = @($py | Where-Object { $_.CommandLine -match "ev_devtools_cloak|devtools_cloak|ev_devtools_cloak\.py" })
     if ($cloak.Count -gt 1 -and $StopDuplicates) {
         $keep = $cloak | Sort-Object CreationDate -Descending | Select-Object -First 1
         $kill = $cloak | Where-Object { $_.ProcessId -ne $keep.ProcessId }
@@ -43,6 +43,8 @@ if ($py) {
             Write-Host "Stopping duplicate Cloak PID $($k.ProcessId)" -ForegroundColor Red
             Stop-Process -Id $k.ProcessId -Force -ErrorAction SilentlyContinue
         }
+        Start-Sleep -Seconds 1
+        Write-Host "Kept Cloak PID $($keep.ProcessId) (newest ev_devtools_cloak)" -ForegroundColor Green
     } elseif ($cloak.Count -gt 1) {
         Write-Host "WARNING: $($cloak.Count) ev_devtools_cloak-like processes. Re-run with -StopDuplicates to keep newest only." -ForegroundColor Red
     }
@@ -86,10 +88,16 @@ Write-Host @"
 - Cloud agents do not use EV Cloak; fix duplicates on Desktop/local PowerShell.
 "@ -ForegroundColor DarkGray
 
+$pyNow = Get-CimInstance Win32_Process -Filter "Name = 'python.exe' OR Name = 'pythonw.exe'" |
+    Where-Object { $_.CommandLine -match "cloak|codex|ev_devtools|DevToolsRuntime" }
+$cloakNow = @($pyNow | Where-Object { $_.CommandLine -match "cloak|ev_devtools_cloak" })
+$codexExeCount = @(Get-Process -Name "codex" -ErrorAction SilentlyContinue).Count
+
 $summary = @(
-    "Cloak-like Python count: $(@($py | Where-Object { $_.CommandLine -match 'cloak' }).Count)"
-    "Codex-like Python count: $(@($py | Where-Object { $_.CommandLine -match 'codex' }).Count)"
-    "Ports checked: $($WatchPorts -join ', ')"
+    "Cloak-like Python count (after cleanup): $($cloakNow.Count)"
+    "Codex.exe process count (Stable/Beta apps): $codexExeCount"
+    "Codex-like Python count: $(@($pyNow | Where-Object { $_.CommandLine -match 'codex' }).Count)"
+    "Ports checked: $($WatchPorts -join ', ') (5057 may be Docker — read [2] output)"
 )
 
 Write-Host "`n--- SUMMARY ---" -ForegroundColor Cyan

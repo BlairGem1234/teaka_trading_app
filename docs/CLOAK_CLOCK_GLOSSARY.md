@@ -12,3 +12,5 @@ On your EV Terminal profile these work **together**; people often say **Cloak Cl
 **Rule of thumb:** Cloak = **process** (should be **0 or 1**, not 4). Clock = **JSON/JS settings** Cloak reads. If the handoff script says “no ev_clock at default paths”, search `C:\EV_AI` and `C:\EV_Operator` (see `scripts\ev_codex_token_audit.ps1`).
 
 **Token burn:** Multiple **Codex.exe** (Stable + Beta) **plus** multiple **Cloak** PIDs multiply background work. Fix Cloak first, then one Codex.
+
+**EV Terminal (your PC):** Use **Stable Codex** under `C:\EV_AI\Codex` — not the Microsoft Store **CodexBeta** app. Cloak script: `C:\EV_Operator\DevToolsRuntime\ev_devtools_cloak.py`. Port **5056** is often Cloak; **5057** on your machine may be **Docker** (`com.docker.backend.exe`), not Codex — do not kill Docker to “fix Codex.”
