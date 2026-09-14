@@ -1,6 +1,6 @@
 # How “brain” names fit together (honest map)
 
-You are not wrong to be unsure — the word **brain** is used for **different layers**. Only one layer is **C EV brain** (the masher). The rest are **mirrors, nodes, or project artifacts**.
+You are not wrong to be unsure — the word **brain** is used for **different layers**. **Master** = **C EV brain** (masher). **Phone lane** = **cross-device phone brain** (TeAka `:5050` + `Cross_device_brain.json`) — syncs with PC, does **not** replace the masher. Other names are mirrors, nodes, or projects.
 
 ## One sentence
 
@@ -10,7 +10,8 @@ You are not wrong to be unsure — the word **brain** is used for **different la
 
 | Name you hear | What it usually is | Main brain? |
 |---------------|-------------------|-------------|
-| **C EV brain** | Masher / master index (~5M file index, RoboShady runtime) | **Yes — this is the one** |
+| **C EV brain** | **Master** masher / index (~5M, RoboShady, PC5000) | **Yes — master** |
+| **Cross-device phone brain** | `bridge/brain/Cross_device_brain.json`, Pythonista/Scriptable → `POST /api/phone/brain/sync` on **5050** | **Phone sync brain** — feeds PC, not master |
 | **EV Command** | Main operator command plane (Terminal, Send-EVCommand, bridges) | **Main system you run** (feeds C EV brain) |
 | **`C:\EV_Brain\…` path** | Filesystem root for resolver, manifests, exports (Ignis7, Sovereign_Core, …) | **Path label**, not a second masher |
 | **Google Drive “brain”** | DriveFS mirror, Cello/SQLite metrics, `EV_Brain` cloud folder | **Mirror / archive / index source** → feeds masher |
@@ -79,6 +80,7 @@ pwsh -NoProfile -File .\scripts\run_local_handoff.ps1 -Action stack -SkipPull
 | `scratch\ev_core_system_map_status.json` | EV AI, EV Files, crypto/Starforge map header |
 | `scratch\ev_federation_registry.json` | All EV_Git clones + local Drive mount probe |
 | `scratch\ev_teaka_ev_link.json` | TeAka ↔ Ev bridge |
+| `scratch\cross_device_brain_status.json` | Phone brain file + :5050 API probe |
 
 Tell the cloud agent those paths (or paste the JSON files once).
 
