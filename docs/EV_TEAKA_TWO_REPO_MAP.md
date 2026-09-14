@@ -1,6 +1,6 @@
 # TeAka + Ev — why both exist (two-repo map)
 
-You are not imagining a split: **trading / paper / dashboard** live mainly in **TeAka**, while **operator, PC5000 bridge, GemBot stack, RoboShady runtime** live in private **`Ev`**. They talk through **bridge JSON**, **Flask ports**, and shared **brain** files — not one monorepo.
+You are not imagining a split: **trading / paper / dashboard** live mainly in **TeAka**, while **operator, PC5000 bridge, GemBot stack, RoboShady runtime** live in private **`Ev`**. They talk through **bridge JSON**, **Flask ports**, and inputs to **the masher (The Brain)** — not one monorepo. Files named `ev_*brain*` are not the masher; see `EV_MASHER_BRAIN_GLOSSARY.md`.
 
 ## Roles
 

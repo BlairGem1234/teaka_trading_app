@@ -1,6 +1,8 @@
 # EV federation map (PC5000 / `C:\Users\blair\EV_Git`)
 
-You track **one machine (PC5000 / Blair PC)** through **many git roots**. They are **not** one brain and **not** one AI profile: **operator/system** (Ev, EV_Operator, Cloak, PC5000 bridge JSON) vs **personal** (Codex/GPT workspaces).
+You track **one machine (PC5000 / Blair PC)** through **many git roots**. They are **not** one AI profile: **system masher (The Brain)** vs **personal** Codex/GPT workspaces.
+
+**Naming:** **The Brain = masher** (merge/runtime authority). **`EV_Brain` folders/repos**, `ev_*_brain.json`, and **`Ev` git** are **not** interchangeable with “the brain” — see `docs/EV_MASHER_BRAIN_GLOSSARY.md`.
 
 ## Git remotes (your PC5000 inventory)
 
@@ -18,7 +20,7 @@ You track **one machine (PC5000 / Blair PC)** through **many git roots**. They a
 | `D:\Dropbox\Starforge` | BlairGem/starforge | Starforge vault git |
 | `...\Clock` | BlairGem1234/EV_Brain_Clock | Cloak/clock git (timezone deps) |
 | `...\Cursor` | BlairGem1234/Cursor_Master | Cursor EV automation / shell rules |
-| `...\Git_Satellite_Brain` | (local) | EV GitHub Operator satellite |
+| `...\Git_Satellite_Brain` | (local) | GitHub Operator **satellite** (feeds masher stack — not the masher) |
 | `...\memories` | Codex git baseline | Personal Codex memories — not operator Ev |
 
 ## Google Drive / OneDrive / Dropbox

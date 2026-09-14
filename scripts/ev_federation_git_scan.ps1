@@ -198,7 +198,7 @@ $operatorPy = "C:\EV_Operator\DevToolsRuntime\python_env\Scripts\python.exe"
 $brainNote = @{
     ev_operator_python = (Test-Path $operatorPy)
     ev_operator_cloak  = (Test-Path "C:\EV_Operator\DevToolsRuntime\ev_devtools_cloak.py")
-    profile_split      = "System/operator brain (Ev, EV_Operator, PC5000 bridge) vs personal GPT/Codex profiles — not one shared AI identity."
+    profile_split      = "The Brain = masher (merge authority). Ev/EV_Operator/PC5000 bridge = operator plane. EV_Brain* paths and ev_*_brain.json = artifacts/satellites — not the masher. Personal Codex/GPT = separate profile."
     port_roles         = @{
         "5000"  = "GEMBot Flask (legacy); often off if sidecar moved"
         "5050"  = "TeAka connect_python paper bridge"
