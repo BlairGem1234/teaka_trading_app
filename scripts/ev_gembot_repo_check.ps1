@@ -45,6 +45,11 @@ if ($RepoPath -and (Test-Path -LiteralPath $RepoPath)) {
     [void]$candidates.Add((Resolve-Path -LiteralPath $RepoPath).Path)
 }
 
+$evRepoDefault = Join-Path $EvGitRoot "Ev"
+if ((Test-Path (Join-Path $evRepoDefault ".git")) -and -not $RepoPath) {
+    [void]$candidates.Add((Resolve-Path $evRepoDefault).Path)
+}
+
 $probeRoots = @(
     $EvGitRoot,
     "C:\Users\Blair\EV_Git",
@@ -155,6 +160,15 @@ foreach ($dir in $unique) {
         } |
         Select-Object -First 20 |
         ForEach-Object { Out-Report "  $($_.Path):$($_.LineNumber) $($_.Line.Trim())" "DarkGray" }
+
+    $pc5000Live = Join-Path $dir "bridge\live\pc5000"
+    if (Test-Path $pc5000Live) {
+        Out-Report "[PC5000 live bridge (newest 8 files)]" "Yellow"
+        Get-ChildItem -LiteralPath $pc5000Live -File -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 8 |
+            ForEach-Object { Out-Report "  $($_.Name)  $($_.LastWriteTime)" "Gray" }
+    }
 
     $gemBotSub = Join-Path $dir "GemBot"
     if (Test-Path $gemBotSub) {

@@ -89,7 +89,8 @@ From repo root you can also run: `.\Run-LocalHandoff.ps1 -Action all`
 | `fing` | `fing_diagnose.ps1` |
 | `all` | all three after `git pull` |
 | `pick` | which Codex/Cloak is STANDARD vs ABNORMAL → `scratch\ev_canonical_choice.json` |
-| `gembot` | scan GemBot / EV_Link / `EV_Git\*gem*` → `scratch\gembot_repo_check.txt` |
+| `gembot` | scan **`EV_Git\Ev`** + GemBot / EV_Link → `scratch\gembot_repo_check.txt` |
+| `evlink` | TeAka + **Ev** + latest `bridge/live/pc5000` probes → `scratch\ev_teaka_ev_link.json` |
 
 Outputs go to **`scratch\`** (gitignored). Point the cloud agent at those files, not huge pastes.
 

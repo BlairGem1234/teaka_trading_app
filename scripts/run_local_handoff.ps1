@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "gembot", "evlink", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -71,7 +71,8 @@ Actions:
   cursorinstall - Cursor.exe paths, shortcuts, duplicate Codex warning
   pick          - Which Codex/Cloak EV should use (scores running PIDs)
   gitrefs       - Git remotes + tracked EV path docs in this repo only
-  gembot        - Find GemBot/EV_Link (incl. gembot29 under EV_Git) -> scratch\gembot_repo_check.txt
+  gembot        - Find GemBot/EV_Link + Ev repo -> scratch\gembot_repo_check.txt
+  evlink        - TeAka + Ev + PC5000 probes -> scratch\ev_teaka_ev_link.json
   all           - pull + cursor + codex + fing (in that order)
   help   - this text
 
@@ -140,6 +141,9 @@ switch ($Action) {
     }
     "gembot" {
         Run-Script "ev_gembot_repo_check.ps1" @("-SaveTo", (Join-Path $scratch "gembot_repo_check.txt"))
+    }
+    "evlink" {
+        Run-Script "ev_teaka_ev_bridge_summary.ps1" @("-SaveTo", (Join-Path $scratch "ev_teaka_ev_link.json"))
     }
     "all" {
         $cursorArgs = @("-AppendClockLog")
