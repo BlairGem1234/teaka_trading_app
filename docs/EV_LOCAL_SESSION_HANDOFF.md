@@ -10,7 +10,7 @@ Safe paths and inventory only — no secrets.
 | **Fing (Windows)** | Canonical exe confirmed: `C:\Program Files\Fing\Fing.exe`. Desktop shortcut fixed. Launch with `-Verb RunAs` waits on **UAC**. Process often **exits immediately** — needs console exit code + `main.log` (see below). |
 | **Mirror Downloads** | Inspected `OneDriveMirror\Downloads` — **Fing.dmg** / **Fing (1).dmg** only (macOS); **no** Windows Fing installer there. |
 | **ChatGPT.dmg in mirror** | Extracted tree shows **ChatGPT.app** + **LicensePlist** (`*.plist` under `com.mono0926.LicensePlist/`). Swift packages (swift-markdown, LiveKitWebRTC, Sentry, etc.) are **normal OpenAI macOS app dependencies**, not TeAka/Fing malware. |
-| **Codex / EV Cloak** | Separate thread: duplicate `ev_devtools_cloak.py`, Stable+Beta Codex, ports **5056/5057**, clock files `C:\EV_Operator\Config\ev_clock.json` + `Bridge\ev_clock_throttle.js`. Beta killed; Cloak→Stable wiring still to confirm. |
+| **Codex / EV Cloak** | Local only (`C:\EV_Operator\`). Duplicate `ev_devtools_cloak.py` + Stable+Beta Codex = **token burn**. See **`docs/EV_CODEX_CLOAK_AND_TOKENS.md`** + `scripts\ev_codex_token_audit.ps1`. Cloud chats **cannot** run Cloak — use Desktop for fixes. |
 | **TeAka cloud** | Paper bridge: `connect_python.py` on **5050**; `main` @ BoltBuddy+phone merge. |
 | **Google Drive EV logs** | Referenced in open PR work (EV_Brain / bridge sync). Folder id from agent notes: `15kPq7T_iarOY4FCkeGptje8c4fwu5LxC` — link Drive MCP in Cursor to index from cloud. |
 
@@ -81,6 +81,6 @@ Usually **Cursor server error** on large messages, not TeAka port 5000. Mitigati
 ## Open follow-ups
 
 1. Fing: exit code + service + `main.log` crash reason  
-2. EV Cloak: which Codex build Stable uses + clock throttle values  
+2. EV Cloak: run `ev_codex_token_audit.ps1`; confirm Stable-only + throttle files (see `EV_CODEX_CLOAK_AND_TOKENS.md`)  
 3. Google Drive: index `EV_Brain` / log JSON once Drive MCP authenticated  
 4. Mirror: optionally copy `downloaded-logs-*.json` into `bridge/inbox/` for TeAka audit (scrub secrets first)
