@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "pick", "gitrefs", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -69,6 +69,8 @@ Actions:
   codex  - Codex/Cloak audit -> scratch\codex_audit.txt
   cursor        - Link cloud agents + runtime -> scratch\cursor_cloud_runtime.json
   cursorinstall - Cursor.exe paths, shortcuts, duplicate Codex warning
+  pick          - Which Codex/Cloak EV should use (scores running PIDs)
+  gitrefs       - Git remotes + tracked EV path docs in this repo only
   all           - pull + cursor + codex + fing (in that order)
   help   - this text
 
@@ -128,6 +130,12 @@ switch ($Action) {
     }
     "cursorinstall" {
         Run-Script "cursor_install_check.ps1" @("-SaveTo", (Join-Path $scratch "cursor_install_check.txt"))
+    }
+    "pick" {
+        Run-Script "ev_pick_canonical_stack.ps1" @("-SaveTo", (Join-Path $scratch "ev_canonical_choice.json"))
+    }
+    "gitrefs" {
+        Run-Script "ev_git_repos_check.ps1" @()
     }
     "all" {
         $cursorArgs = @("-AppendClockLog")
