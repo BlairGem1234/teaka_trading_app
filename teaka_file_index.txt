@@ -1,42 +1,42 @@
-E:\EV_Files\teaka_trading_app\api clients\auth.py
-E:\EV_Files\teaka_trading_app\api clients\ev_keys.json
-E:\EV_Files\teaka_trading_app\api clients\fastapi.server.py
-E:\EV_Files\teaka_trading_app\Config\backtest_config.json
-E:\EV_Files\teaka_trading_app\Config\ev_keys.json
-E:\EV_Files\teaka_trading_app\integration_pipeline\model_config.json
-E:\EV_Files\teaka_trading_app\integration_pipeline\sample_training_data.json
-E:\EV_Files\teaka_trading_app\integration_pipeline\tensorflow.py
-E:\EV_Files\teaka_trading_app\integration_pipeline\train_model.js
-E:\EV_Files\teaka_trading_app\ml models\sklearn model\.py
-E:\EV_Files\teaka_trading_app\ml models\sklearn model\evaluate.py
-E:\EV_Files\teaka_trading_app\ml models\sklearn model\sklearn.model.py
-E:\EV_Files\teaka_trading_app\ml models\sklearn model\train.model.py
-E:\EV_Files\teaka_trading_app\ml models\backtestEngine_1.ts
-E:\EV_Files\teaka_trading_app\ml models\backtestEngine.ts
-E:\EV_Files\teaka_trading_app\ml models\Backtester.ts
-E:\EV_Files\teaka_trading_app\ml models\BacktesterTest.spec.ts
-E:\EV_Files\teaka_trading_app\ml models\BacktestFunction.ts
-E:\EV_Files\teaka_trading_app\ml models\BacktestHistorical.ts
-E:\EV_Files\teaka_trading_app\ml models\BacktestInterval.ts
-E:\EV_Files\teaka_trading_app\ml models\BacktestSummary.ts
-E:\EV_Files\teaka_trading_app\model_output\Algoithms\classifier.py
-E:\EV_Files\teaka_trading_app\model_output\Algoithms\dqn_agent.py
-E:\EV_Files\teaka_trading_app\model_output\Algoithms\train.rl.py
-E:\EV_Files\teaka_trading_app\model_output\BacktestDate.ts
-E:\EV_Files\teaka_trading_app\model_output\q_learning_trader.py
-E:\EV_Files\teaka_trading_app\ui hooks\ssl\index.html
-E:\EV_Files\teaka_trading_app\ui hooks\main.js
-E:\EV_Files\teaka_trading_app\ui hooks\web ui_index.html
-E:\EV_Files\teaka_trading_app\app.py
-E:\EV_Files\teaka_trading_app\ev_ollama_auto_bind.py
-E:\EV_Files\teaka_trading_app\ev_ollama_bridge.py
-E:\EV_Files\teaka_trading_app\ev_remote_server.py
-E:\EV_Files\teaka_trading_app\ev_virtual_brain.json
-E:\EV_Files\teaka_trading_app\ev.remote.server.py
-E:\EV_Files\teaka_trading_app\index.ts
-E:\EV_Files\teaka_trading_app\init_db.py
-E:\EV_Files\teaka_trading_app\market_screener_table.html
-E:\EV_Files\teaka_trading_app\riskAdjuster.ts
-E:\EV_Files\teaka_trading_app\riskManagementService.ts
-E:\EV_Files\teaka_trading_app\sql_scripts.py
-E:\EV_Files\teaka_trading_app\train_model.py
+C:\EV_Files\teaka_trading_app\api clients\auth.py
+C:\EV_Files\teaka_trading_app\api clients\ev_keys.json
+C:\EV_Files\teaka_trading_app\api clients\fastapi.server.py
+C:\EV_Files\teaka_trading_app\Config\backtest_config.json
+C:\EV_Files\teaka_trading_app\Config\ev_keys.json
+C:\EV_Files\teaka_trading_app\integration_pipeline\model_config.json
+C:\EV_Files\teaka_trading_app\integration_pipeline\sample_training_data.json
+C:\EV_Files\teaka_trading_app\integration_pipeline\tensorflow.py
+C:\EV_Files\teaka_trading_app\integration_pipeline\train_model.js
+C:\EV_Files\teaka_trading_app\ml models\sklearn model\.py
+C:\EV_Files\teaka_trading_app\ml models\sklearn model\evaluate.py
+C:\EV_Files\teaka_trading_app\ml models\sklearn model\sklearn.model.py
+C:\EV_Files\teaka_trading_app\ml models\sklearn model\train.model.py
+C:\EV_Files\teaka_trading_app\ml models\backtestEngine_1.ts
+C:\EV_Files\teaka_trading_app\ml models\backtestEngine.ts
+C:\EV_Files\teaka_trading_app\ml models\Backtester.ts
+C:\EV_Files\teaka_trading_app\ml models\BacktesterTest.spec.ts
+C:\EV_Files\teaka_trading_app\ml models\BacktestFunction.ts
+C:\EV_Files\teaka_trading_app\ml models\BacktestHistorical.ts
+C:\EV_Files\teaka_trading_app\ml models\BacktestInterval.ts
+C:\EV_Files\teaka_trading_app\ml models\BacktestSummary.ts
+C:\EV_Files\teaka_trading_app\model_output\Algoithms\classifier.py
+C:\EV_Files\teaka_trading_app\model_output\Algoithms\dqn_agent.py
+C:\EV_Files\teaka_trading_app\model_output\Algoithms\train.rl.py
+C:\EV_Files\teaka_trading_app\model_output\BacktestDate.ts
+C:\EV_Files\teaka_trading_app\model_output\q_learning_trader.py
+C:\EV_Files\teaka_trading_app\ui hooks\ssl\index.html
+C:\EV_Files\teaka_trading_app\ui hooks\main.js
+C:\EV_Files\teaka_trading_app\ui hooks\web ui_index.html
+C:\EV_Files\teaka_trading_app\app.py
+C:\EV_Files\teaka_trading_app\ev_ollama_auto_bind.py
+C:\EV_Files\teaka_trading_app\ev_ollama_bridge.py
+C:\EV_Files\teaka_trading_app\ev_remote_server.py
+C:\EV_Files\teaka_trading_app\ev_virtual_brain.json
+C:\EV_Files\teaka_trading_app\ev.remote.server.py
+C:\EV_Files\teaka_trading_app\index.ts
+C:\EV_Files\teaka_trading_app\init_db.py
+C:\EV_Files\teaka_trading_app\market_screener_table.html
+C:\EV_Files\teaka_trading_app\riskAdjuster.ts
+C:\EV_Files\teaka_trading_app\riskManagementService.ts
+C:\EV_Files\teaka_trading_app\sql_scripts.py
+C:\EV_Files\teaka_trading_app\train_model.py

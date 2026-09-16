@@ -27,5 +27,5 @@ model = Sequential([
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 model.fit(X_train, y_train, epochs=50, batch_size=2, verbose=1)
-model.save("E:/EV_Files/teaka_trading_app/qtrader_model.h5")
+model.save("C:/EV_Files/teaka_trading_app/qtrader_model.h5")
 print("? Model training complete and saved.")

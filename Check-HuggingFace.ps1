@@ -4,11 +4,10 @@
 # DO NOT PASTE THIS FILE INTO THE POWERSHELL PROMPT.
 # Pasting pieces causes "Missing closing }" errors.
 #
-# This file is NOT on E:\ until you download the PR branch or save it.
-# Save it to C:\EV_Operator\Check-HuggingFace.ps1 then run:
+# Save/run from C:\EV_Operator. Get-CheckHuggingFace.ps1 creates the C: folders
+# and copies this file there if it is missing.
+#   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\EV_Operator\Get-CheckHuggingFace.ps1"
 #   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\EV_Operator\Check-HuggingFace.ps1"
-# Or run Get-CheckHuggingFace.ps1 to download it.
-# Do not paste this file into the prompt.
 
 [CmdletBinding()]
 param(
@@ -19,8 +18,8 @@ if (-not $PSCommandPath) {
     Write-Host ''
     Write-Host 'Do not paste this script into the PowerShell prompt.' -ForegroundColor Yellow
     Write-Host 'That is what caused the Missing closing } error.'
-    Write-Host 'The file is not on E:\ yet. Save it, then run:'
-    Write-Host '  powershell -NoProfile -ExecutionPolicy Bypass -File "C:\EV_Operator\Check-HuggingFace.ps1"'
+    Write-Host 'This file must live on C:. Run the downloader first:'
+    Write-Host '  powershell -NoProfile -ExecutionPolicy Bypass -File "C:\EV_Operator\Get-CheckHuggingFace.ps1"'
     return
 }
 
