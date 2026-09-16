@@ -47,7 +47,7 @@ The Notepad Git audit reveals your local private and upstream repository layout 
     * `evos_dropbox_runtime_bind_manifest_v1.json`
 * **`Ev-EVBot-Operator`** (`C:\Users\Blair\EV_Git\Ev-EVBot-Operator`): `https://github.com/BlairGem1234/Ev.git` — Dedicated branch/worktree for Operator shell & EVBot.
 * **`Ev-fuzzy-on-main`** (`C:\Users\Blair\EV_Git\Ev-fuzzy-on-main`): `https://github.com/BlairGem1234/Ev.git` — Fuzzy logic & Firemind cluster modules (`scikit-fuzzy`, fractional integration).
-* **`GEMBot29`** (`C:\Users\Blair\EV_Git\GEMBot29`): `https://github.com/blairgem/GEMBot29.git` — GEMBot LLM & Discord/Telegram integration core.
+* **`GEMBot29`** (`C:\Users\Blair\EV_Git\GEMBot29`): active `origin` `https://github.com/BlairGem1234/Ev.git`; preserved `legacy-origin` `https://github.com/blairgem/GEMBot29.git` — GEMBot LLM & Discord/Telegram integration core (subtree of Ev).
 * **`GPT_AI_Workspace`** (`C:\Users\Blair\EV_Git\GPT_AI_Workspace`): `https://github.com/BlairGem1234/GPT_AI_Workspace.git` — GPT interaction logs, prompt workflows, and memory traces.
 * **`Pc-5000-curser-`** (`C:\Users\Blair\EV_Git\Pc-5000-curser-.git`): `https://github.com/BlairGem1234/Pc-5000-curser-.git` — PC5000 workstation specific Cursor agent states and diagnostics.
 
