@@ -11,7 +11,7 @@ You track **one machine (PC5000 / Blair PC)** through **many git roots**. They a
 | `C:\Users\Blair\EV_Git\Ev` | BlairGem1234/Ev | **Primary operator / PC5000** |
 | `...\Ev-EVBot-Operator`, `...\Ev-fuzzy-on-main` | same Ev remote | Extra worktrees — pick one primary |
 | `...\teaka_trading_app` | BlairGem1234/teaka_trading_app | Recovery fork + handoff scripts |
-| `...\teaka_trading_app_CANONICAL`, `\_tmp_teaka_github_main` | BlairGem/teaka_trading_app | Upstream mirrors |
+| `...\teaka_trading_app_CANONICAL`, `\_tmp_teaka_github_main` | BlairGem1234/teaka_trading_app | Upstream mirrors |
 | `...\GEMBot29` | blairgem/GEMBot29 | Legacy sidecar |
 | `...\GPT_AI_Workspace` | BlairGem1234/GPT_AI_Workspace | Personal GPT workspace git |
 | `...\Pc-5000-curser-` | BlairGem1234/Pc-5000-curser- | PC5000 + Cursor ops |
