@@ -1,23 +1,31 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Read-only by default. Rebind legacy BlairGem git remotes on BLAIRSPC to BlairGem1234.
+  Read-only by default. Rebind live git remotes on BLAIRSPC to BlairGem1234.
 
 .DESCRIPTION
   Covers every known EV/TeAka clone the cloud agent cannot see.
-  - NEVER rewrites GEMBot29 (BlairGem1234/GEMBot29 is 404).
-  - NEVER deletes clone folders.
-  - NEVER rewrites git history, logs, or transcripts.
-  - TeAka mirror remotes that still say BlairGem/teaka_trading_app are safe:
-    GitHub already 301s them to BlairGem1234/teaka_trading_app.
+
+  Verified topology:
+    C:\Users\Blair\EV_Git\GEMBot29
+      origin        = https://github.com/BlairGem1234/Ev.git
+      legacy-origin = https://github.com/blairgem/GEMBot29.git
+    D:\Dropbox\Starforge
+      origin        = https://github.com/BlairGem1234/Ev.git
+      legacy-origin = https://github.com/BlairGem/starforge.git
+
+  GEMBot29 and Starforge are subtree/legacy working copies of Ev.
+  Do NOT create BlairGem1234/GEMBot29 or BlairGem1234/starforge.
+  Do NOT delete clones. Do NOT rewrite git history, logs, or transcripts.
+  Do NOT delete or retarget legacy-origin remotes.
 
   Dry-run (default):
     pwsh -NoProfile -File scripts\rebind_pc_git_owner.ps1
 
-  Apply remote URL changes only:
+  Apply live origin URL changes only (never touches legacy-origin):
     pwsh -NoProfile -File scripts\rebind_pc_git_owner.ps1 -ApplyRemotes
 
-  Also rewrite text files in each clone (skips GEMBot29 strings):
+  Also rewrite active text-file git destinations (skips legacy-origin lines):
     pwsh -NoProfile -File scripts\rebind_pc_git_owner.ps1 -ApplyRemotes -ApplyFiles
 #>
 [CmdletBinding()]
@@ -29,21 +37,23 @@ param(
 $ErrorActionPreference = "Continue"
 
 $LiveTeaka = "C:\Users\Blair\EV_Git\teaka_trading_app"
+$EvUrl = "https://github.com/BlairGem1234/Ev.git"
 $Known = @(
-    @{ Path = "C:\Users\Blair\EV_Git\Ev";                    Expected = "https://github.com/BlairGem1234/Ev.git"; Skip = $false },
-    @{ Path = "C:\Users\Blair\EV_Git\GPT_AI_Workspace";      Expected = "https://github.com/BlairGem1234/GPT_AI_Workspace.git"; Skip = $false },
-    @{ Path = "C:\Users\Blair\EV_Git\teaka_trading_app";     Expected = "https://github.com/BlairGem1234/teaka_trading_app.git"; Skip = $false },
-    @{ Path = "C:\Users\Blair\EV_Git\MT_GREENLAND";          Expected = "https://github.com/BlairGem1234/MT_GREENLAND.git"; Skip = $false },
-    @{ Path = "C:\Users\Blair\EV_Git\Pc-5000-curser-";       Expected = "https://github.com/BlairGem1234/Pc-5000-curser-.git"; Skip = $false },
-    @{ Path = "C:\EV_Operator\Cursor";                       Expected = "https://github.com/BlairGem1234/Cursor_Master.git"; Skip = $false },
-    @{ Path = "C:\EV_Operator\Clock";                        Expected = "https://github.com/BlairGem1234/EV_Brain_Clock.git"; Skip = $false },
-    @{ Path = "C:\Users\Blair\EV_Git\teaka_trading_app_CANONICAL"; Expected = "https://github.com/BlairGem1234/teaka_trading_app.git"; Skip = $false },
-    @{ Path = "C:\Users\Blair\EV_Git_tmp_teaka_github_main";  Expected = "https://github.com/BlairGem1234/teaka_trading_app.git"; Skip = $false },
-    @{ Path = "C:\Users\Blair\EV_Git\GEMBot29";              Expected = $null; Skip = $true; Reason = "BlairGem1234/GEMBot29 returns 404; do not rebind" }
+    @{ Path = "C:\Users\Blair\EV_Git\Ev";                         Expected = $EvUrl; LegacyOrigin = $null },
+    @{ Path = "C:\Users\Blair\EV_Git\GPT_AI_Workspace";           Expected = "https://github.com/BlairGem1234/GPT_AI_Workspace.git"; LegacyOrigin = $null },
+    @{ Path = "C:\Users\Blair\EV_Git\teaka_trading_app";          Expected = "https://github.com/BlairGem1234/teaka_trading_app.git"; LegacyOrigin = $null },
+    @{ Path = "C:\Users\Blair\EV_Git\MT_GREENLAND";               Expected = "https://github.com/BlairGem1234/MT_GREENLAND.git"; LegacyOrigin = $null },
+    @{ Path = "C:\Users\Blair\EV_Git\Pc-5000-curser-";            Expected = "https://github.com/BlairGem1234/Pc-5000-curser-.git"; LegacyOrigin = $null },
+    @{ Path = "C:\EV_Operator\Cursor";                            Expected = "https://github.com/BlairGem1234/Cursor_Master.git"; LegacyOrigin = $null },
+    @{ Path = "C:\EV_Operator\Clock";                             Expected = "https://github.com/BlairGem1234/EV_Brain_Clock.git"; LegacyOrigin = $null },
+    @{ Path = "C:\Users\Blair\EV_Git\teaka_trading_app_CANONICAL"; Expected = "https://github.com/BlairGem1234/teaka_trading_app.git"; LegacyOrigin = $null },
+    @{ Path = "C:\Users\Blair\EV_Git_tmp_teaka_github_main";       Expected = "https://github.com/BlairGem1234/teaka_trading_app.git"; LegacyOrigin = $null },
+    @{ Path = "C:\Users\Blair\EV_Git\GEMBot29";                   Expected = $EvUrl; LegacyOrigin = "https://github.com/blairgem/GEMBot29.git" },
+    @{ Path = "D:\Dropbox\Starforge";                             Expected = $EvUrl; LegacyOrigin = "https://github.com/BlairGem/starforge.git" }
 )
 
-function Get-OriginUrl([string]$Repo) {
-    git -C $Repo remote get-url origin 2>$null
+function Get-RemoteUrl([string]$Repo, [string]$Name) {
+    git -C $Repo remote get-url $Name 2>$null
 }
 
 function Normalize-GitHubUrl([string]$Url) {
@@ -51,13 +61,13 @@ function Normalize-GitHubUrl([string]$Url) {
     return ($Url -replace '\.git$', '' -replace 'https://github.com/', '' -replace 'git@github.com:', '').Trim()
 }
 
-function Test-LegacyOwner([string]$Url) {
-    $n = Normalize-GitHubUrl $Url
-    return ($n -match '^(BlairGem|blairgem)/' -and $n -notmatch '^BlairGem1234/')
+function Test-UrlsEqual([string]$A, [string]$B) {
+    return (Normalize-GitHubUrl $A).ToLowerInvariant() -eq (Normalize-GitHubUrl $B).ToLowerInvariant()
 }
 
 Write-Host "=== PC GIT OWNER REBIND ===" -ForegroundColor Cyan
 Write-Host ("Mode: remotes={0} files={1}" -f $(if ($ApplyRemotes) {"APPLY"} else {"DRY-RUN"}), $(if ($ApplyFiles) {"APPLY"} else {"DRY-RUN"}))
+Write-Host "GEMBot29/Starforge active origin = BlairGem1234/Ev; legacy-origin preserved."
 Write-Host ""
 
 # --- 1. Remotes ---
@@ -68,22 +78,24 @@ foreach ($item in $Known) {
         Write-Host ("  MISSING  {0}" -f $p) -ForegroundColor DarkGray
         continue
     }
-    $url = Get-OriginUrl $p
-    if ($item.Skip) {
-        Write-Host ("  LEAVE    {0}" -f $p) -ForegroundColor Magenta
-        Write-Host ("           origin={0}" -f $url)
-        Write-Host ("           {0}" -f $item.Reason)
-        continue
+    $origin = Get-RemoteUrl $p "origin"
+    $legacy = Get-RemoteUrl $p "legacy-origin"
+    $originOk = Test-UrlsEqual $origin $item.Expected
+    Write-Host ("  {0}  {1}" -f $(if ($originOk) {"OK    "} else {"REBIND"}), $p)
+    Write-Host ("           origin={0}" -f $origin)
+    if ($item.LegacyOrigin) {
+        $legacyOk = Test-UrlsEqual $legacy $item.LegacyOrigin
+        Write-Host ("           legacy-origin={0} ({1})" -f $(if ($legacy) { $legacy } else { "<missing>" }), $(if ($legacyOk) {"preserve"} else {"expected $($item.LegacyOrigin)"}))
+        if ($ApplyRemotes -and -not $legacy) {
+            git -C $p remote add legacy-origin $item.LegacyOrigin
+            Write-Host "           ADDED missing legacy-origin (historical remote only)" -ForegroundColor Yellow
+        }
     }
-    $legacy = Test-LegacyOwner $url
-    $mark = if ($legacy) { "LEGACY" } else { "OK    " }
-    Write-Host ("  {0}  {1}" -f $mark, $p)
-    Write-Host ("           origin={0}" -f $url)
-    if ($legacy -and $item.Expected) {
-        Write-Host ("           proposed={0}" -f $item.Expected) -ForegroundColor Green
+    if (-not $originOk) {
+        Write-Host ("           proposed origin={0}" -f $item.Expected) -ForegroundColor Green
         if ($ApplyRemotes) {
             git -C $p remote set-url origin $item.Expected
-            Write-Host ("           SET origin -> {0}" -f (Get-OriginUrl $p)) -ForegroundColor Green
+            Write-Host ("           SET origin -> {0}" -f (Get-RemoteUrl $p "origin")) -ForegroundColor Green
         }
     }
 }
@@ -124,7 +136,7 @@ if (Test-Path -LiteralPath (Join-Path $LiveTeaka ".git")) {
 }
 
 # --- 3. File scan / optional rewrite ---
-Write-Host "`n[3] Text-file owner refs (skip GEMBot29 lines)" -ForegroundColor Yellow
+Write-Host "`n[3] Text-file owner refs (legacy-origin / history-only lines kept)" -ForegroundColor Yellow
 $fileScript = Join-Path $PSScriptRoot "rebind_blairgem1234_files.py"
 $scanRoots = @(
     "C:\Users\Blair\EV_Git\GPT_AI_Workspace",
@@ -134,6 +146,8 @@ $scanRoots = @(
     "C:\Users\Blair\EV_Git_tmp_teaka_github_main",
     "C:\Users\Blair\EV_Git\MT_GREENLAND",
     "C:\Users\Blair\EV_Git\Pc-5000-curser-",
+    "C:\Users\Blair\EV_Git\GEMBot29",
+    "D:\Dropbox\Starforge",
     "C:\EV_Operator\Cursor",
     "C:\EV_Operator\Clock"
 )
@@ -148,12 +162,13 @@ foreach ($root in $scanRoots) {
         if ($ApplyFiles) { $pyArgs += "--apply" }
         python $fileScript @pyArgs
     } else {
-        git -C $root grep -n -I -E "BlairGem/|github.com/BlairGem[^1]" -- "*.md" "*.py" "*.js" "*.json" "*.ps1" 2>$null |
-            Where-Object { $_ -notmatch "GEMBot29" } |
+        git -C $root grep -n -I -E "BlairGem/|blairgem/GEMBot29|github.com/BlairGem[^1]" -- "*.md" "*.py" "*.js" "*.json" "*.ps1" 2>$null |
             Select-Object -First 40
     }
 }
 
-Write-Host "`n[4] GEMBot29 left untouched on purpose" -ForegroundColor Magenta
-Write-Host "    Prove the real destination repo before any rewrite."
-Write-Host "`nDone. Clones were not deleted. History/logs were not rewritten."
+Write-Host "`n[4] Forbidden destinations (do not create)" -ForegroundColor Magenta
+Write-Host "    BlairGem1234/GEMBot29"
+Write-Host "    BlairGem1234/starforge"
+Write-Host "    Active git for those working copies is BlairGem1234/Ev."
+Write-Host "`nDone. Clones were not deleted. History/logs/legacy-origin were not rewritten."
