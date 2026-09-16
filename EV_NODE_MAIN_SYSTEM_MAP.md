@@ -12,7 +12,7 @@ EV Node / EV Stack (evstack/ev-node)
   ├── BlairGem1234/Ev (Private EV OS & Control)
   │     └── Brain recovery, Fuzzy Brain, Qwen traces, GeoNode / GeoBlockchain
   │
-  ├── blairgem/GEMBot29 (AI Swarm Gateway)
+  ├── BlairGem1234/Ev (AI Swarm Gateway; local clone GEMBot29)
   │     └── Qwen Flask gateway, Ollama split mode, agent interfaces
   │
   ├── BlairGem1234/GPT_AI_Workspace (Sync & Workspace)
