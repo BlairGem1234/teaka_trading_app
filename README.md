@@ -153,7 +153,7 @@ PRIVATE_EXCHANGE_API_ENABLED=true
 | **Strategy bots** | BoltBuddy `TradingStrategy` + strategy editor + auto-trading flag |
 | **Alert bots** | BoltBuddy `messaging.py`; this repo has Telegram alert stubs (`public/ev_alert_api.py`, `alert_routes.py.py`, `@teaka_trader_bot` notes) |
 | **TeAka Swarm** | Branding / daily summary path in this repo (`email_report.py`, `schedule_teaka_summary.ps1`, sign-off “Teaka Swarm Core”). Not a multi-agent source tree in Git. |
-| **GEMBot / EVBot** | Local EV control layer. Referenced here via `status_report.yaml`, `ev_ollama_*.py`, `ev_remote_server.py`, `Config/# Define the EV Shell Runtime Envir.txt`. Windows provenance: user `GEMBotSys`, vault `D:\Starforge\Vault`, bridge `E:\EV_Files\Bridge` / `D:\EV_Files\Bridge`. Private EV control repo is expected outside this fork (e.g. `BlairGem/Ev` when available). |
+| **GEMBot / EVBot** | Local EV control layer. Referenced here via `status_report.yaml`, `ev_ollama_*.py`, `ev_remote_server.py`, `Config/# Define the EV Shell Runtime Envir.txt`. Windows provenance: user `GEMBotSys`, vault `D:\Starforge\Vault`, bridge `E:\EV_Files\Bridge` / `D:\EV_Files\Bridge`. Private EV control repo is expected outside this fork (e.g. `BlairGem1234/Ev` when available). |
 | **QTrader / RL bots** | Sketches in `model_output/` + planned tree in `integration_pipeline/QTrader.txt` — not wired to BoltBuddy or paper broker |
 | **Dashboard bot panel** | `templates/dashboard.html` still has a bot placeholder block |
 
@@ -241,7 +241,7 @@ python3 paper_trading/run_paper.py --ticks paper_trading/sample_ticks.csv
 ```text
 TeAkaTrader/teaka_trading_app   ← upstream of this recovery fork
 TeAkaTrader/BoltBuddy           ← full trading engine + strategy bots
-BlairGem/teaka_trading_app      ← this repo (audit / cleanup / paper rebuild)
+BlairGem1234/teaka_trading_app      ← this repo (audit / cleanup / paper rebuild)
 Local EV / GEMBot / Starforge   ← private control + swarm ops on PC5000 / GEMBotSys
 evstack/ev-node (external)      ← EV Stack / node framework (not vendored here)
 ```
