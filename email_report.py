@@ -1,3 +1,4 @@
+import os
 import smtplib
 from email.message import EmailMessage
 from generate_summary import generate_summary
@@ -5,10 +6,21 @@ from generate_summary import generate_summary
 def send_email():
     summary = generate_summary()
 
+    recipient = os.environ.get("TEAKA_REPORT_EMAIL_TO", "blairgem@outlook.com")
+    sender = os.environ.get("TEAKA_REPORT_EMAIL_FROM", recipient)
+    smtp_host = os.environ.get("TEAKA_SMTP_HOST", "smtp-mail.outlook.com")
+    smtp_port = int(os.environ.get("TEAKA_SMTP_PORT", "587"))
+    smtp_user = os.environ.get("TEAKA_SMTP_USER", sender)
+    smtp_password = os.environ.get("TEAKA_SMTP_PASSWORD")
+
+    if not smtp_password:
+        print("[Teaka Report] Email not sent: TEAKA_SMTP_PASSWORD not configured. Report generated locally.")
+        return
+
     msg = EmailMessage()
     msg["Subject"] = f"Teaka Trading – Daily Summary Report ({summary['date']})"
-    msg["From"] = "gee@teaka.trading"
-    msg["To"] = "gee@teaka.trading"
+    msg["From"] = sender
+    msg["To"] = recipient
 
     text = f"""
 🔥 DAILY TRADE SUMMARY – {summary['date']}
@@ -28,7 +40,13 @@ def send_email():
 
     msg.set_content(text)
 
-    with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
+    with smtplib.SMTP(smtp_host, smtp_port) as smtp:
         smtp.starttls()
-        smtp.login("gee@teaka.trading", "Success-25")  # ⚠️ Replace with App Password if needed
+        smtp.login(smtp_user, smtp_password)
         smtp.send_message(msg)
+
+
+if __name__ == "__main__":
+    send_email()
+
+
