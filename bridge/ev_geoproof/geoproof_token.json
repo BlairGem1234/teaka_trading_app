@@ -29,7 +29,7 @@
   ],
   "federation_note": "GeoProof is an EV GeoBlockchain token. It integrates with TeAka only through adapters — trading stays in TeAka, geospatial proof stays in EV Stack.",
   "related_repos": [
-    "BlairGem/Ev",
+    "BlairGem1234/Ev",
     "evstack/ev-node"
   ]
 }
