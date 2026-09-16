@@ -4,7 +4,7 @@ This branch records the working interpretation that EV Stack / EV Node should be
 
 ## Branch
 
-- Repository: `BlairGem/teaka_trading_app`
+- Repository: `BlairGem1234/teaka_trading_app`
 - Branch: `evstack-teaka-association`
 - Purpose: map Teaka to the EV Stack / EV Node framework layer
 
@@ -17,10 +17,10 @@ Teaka / teaka_trading_app
 EV Stack / evstack/ev-node
   = primary node / blockchain framework layer
 
-BlairGem/Ev
+BlairGem1234/Ev
   = private EV control, bridge, config, handoff, runtime evidence, GeoNode layer
 
-BlairGem/GPT_AI_Workspace
+BlairGem1234/GPT_AI_Workspace
   = GPT-side workspace and review layer
 ```
 
@@ -35,7 +35,7 @@ BlairGem/GPT_AI_Workspace
 
 Teaka should be treated as the app or product layer that may sit above, call into, or be supported by EV Stack.
 
-Do not assume Teaka already contains the EV Stack source. Prior indexed Git search did not find direct EV Node or evstack source inside `BlairGem/teaka_trading_app`.
+Do not assume Teaka already contains the EV Stack source. Prior indexed Git search did not find direct EV Node or evstack source inside `BlairGem1234/teaka_trading_app`.
 
 ## Clean integration options
 
@@ -60,15 +60,15 @@ Do not commit:
 ## Recommended final structure
 
 ```text
-BlairGem/teaka_trading_app
+BlairGem1234/teaka_trading_app
   app/product layer
   adapters/API clients only
 
-BlairGem/EV_Stack or BlairGem/Teaka_EV_Stack
+BlairGem1234/EV_Stack or BlairGem1234/Teaka_EV_Stack
   controlled BlairGem EV Stack integration repo
   upstream pointer/submodule/fork strategy
 
-BlairGem/Ev
+BlairGem1234/Ev
   private control + runtime evidence + bridge layer
 
 external upstream: evstack/ev-node
