@@ -20,8 +20,10 @@
       "status": "ACTIVE_CONTROL_LAYER"
     },
     "ai_swarm_and_gateway_layer": {
-      "repo": "blairgem/GEMBot29",
-      "url": "https://github.com/blairgem/GEMBot29.git",
+      "repo": "BlairGem1234/Ev",
+      "url": "https://github.com/BlairGem1234/Ev.git",
+      "local_clone": "C:\\Users\\Blair\\EV_Git\\GEMBot29",
+      "legacy_origin": "https://github.com/blairgem/GEMBot29.git",
       "role": "GEMBot gateway, Qwen Flask API (gembot_qwen_flask.py), Ollama bridge, agent interface",
       "status": "SWARM_GATEWAY"
     },

@@ -18,8 +18,10 @@ This document records the architectural and Git association between EV Stack, EV
 │ Ev-EVBot-Operator,     │                                               │
 │ Ev-fuzzy-on-main)      │                                               │
 ├────────────────────────┼───────────────────────────────────────────────┤
-│ blairgem/GEMBot29      │ First-party AI bridges (Qwen Flask gateway,   │
-│                        │ Ollama connectors, local agent tooling)       │
+│ BlairGem1234/Ev        │ First-party AI bridges (Qwen Flask gateway,   │
+│ (local GEMBot29 tree;  │ Ollama connectors, local agent tooling)       │
+│ legacy-origin          │                                               │
+│ blairgem/GEMBot29)     │                                               │
 ├────────────────────────┼───────────────────────────────────────────────┤
 │ BlairGem1234/          │ Phone/Scriptable sync, Google Drive admin     │
 │ GPT_AI_Workspace       │ wiring, Qwen 30B Ollama verification          │
@@ -41,7 +43,7 @@ A structured schema of all repos, endpoints, and paper parameters is tracked at:
 ## Integration Boundaries
 
 1. **Teaka Layer**:
-   - Resides in `BlairGem/teaka_trading_app`.
+   - Resides in `BlairGem1234/teaka_trading_app`.
    - Contains trading strategies, paper broker, order management, and UI.
    - Communicates with EV Node and EV Swarm via clean adapters (`ev_node.py` and `paper_trading/ev_swarm_adapter.py`).
 2. **EV Node / EV Stack Framework**:
