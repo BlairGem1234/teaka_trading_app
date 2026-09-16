@@ -11,13 +11,13 @@ You track **one machine (PC5000 / Blair PC)** through **many git roots**. They a
 | `C:\Users\Blair\EV_Git\Ev` | BlairGem1234/Ev | **Primary operator / PC5000** |
 | `...\Ev-EVBot-Operator`, `...\Ev-fuzzy-on-main` | same Ev remote | Extra worktrees — pick one primary |
 | `...\teaka_trading_app` | BlairGem1234/teaka_trading_app | Recovery fork + handoff scripts |
-| `...\teaka_trading_app_CANONICAL`, `\_tmp_teaka_github_main` | BlairGem/teaka_trading_app | Upstream mirrors |
-| `...\GEMBot29` | blairgem/GEMBot29 | Legacy sidecar |
+| `...\teaka_trading_app_CANONICAL`, `\_tmp_teaka_github_main` | BlairGem1234/teaka_trading_app | Upstream mirrors |
+| `...\GEMBot29` | BlairGem1234/Ev (legacy-origin blairgem/GEMBot29) | Legacy sidecar / Ev subtree |
 | `...\GPT_AI_Workspace` | BlairGem1234/GPT_AI_Workspace | Personal GPT workspace git |
 | `...\Pc-5000-curser-` | BlairGem1234/Pc-5000-curser- | PC5000 + Cursor ops |
 | `...\MT_GREENLAND`, Green-Earth demo | geo repos | Minerals / demo |
 | `D:\EV_Files\EV_Node` | evstack/ev-node | EV blockchain node |
-| `D:\Dropbox\Starforge` | BlairGem/starforge | Starforge vault git |
+| `D:\Dropbox\Starforge` | BlairGem1234/Ev (legacy-origin BlairGem/starforge) | Starforge vault git / Ev subtree |
 | `...\Clock` | BlairGem1234/EV_Brain_Clock | Cloak/clock git (timezone deps) |
 | `...\Cursor` | BlairGem1234/Cursor_Master | Cursor EV automation / shell rules |
 | `...\Git_Satellite_Brain` | (local) | **Add-on** to run The Brain (masher) — GitHub Operator helper, not a second brain |

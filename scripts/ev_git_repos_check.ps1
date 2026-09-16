@@ -24,7 +24,7 @@ git grep -l "EV_Operator\|EV_AI\|ev_devtools_cloak\|Codex" -- "*.md" "*.ps1" "*.
 
 Write-Host "`n[Private EV repo note]" -ForegroundColor Yellow
 Write-Host @"
-TeAka README says full EV control may live in a sibling repo (e.g. BlairGem/Ev) — not in this fork.
+TeAka README says full EV control may live in a sibling repo (e.g. BlairGem1234/Ev) — not in this fork.
 This script cannot read other GitHub repos until you:
   git clone https://github.com/BlairGem1234/<repo>.git C:\Users\blair\EV_Git\<repo>
 Cloud agents only see repos checked out in their VM unless you paste output.
