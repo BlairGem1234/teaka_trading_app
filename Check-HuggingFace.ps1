@@ -1,15 +1,29 @@
 # Check Hugging Face login, Codex vs Cursor tokens, cache/memory,
 # and Blairgem / BlairGem1234 identity mismatch.
 #
-# Run in Windows PowerShell:
-#   powershell -ExecutionPolicy Bypass -File .\Check-HuggingFace.ps1
+# DO NOT PASTE THIS FILE INTO THE POWERSHELL PROMPT.
+# Pasting pieces causes "Missing closing }" errors.
+#
+# Run the whole file:
+#   powershell -NoProfile -ExecutionPolicy Bypass -File "E:\EV_Files\teaka_trading_app\Check-HuggingFace.ps1"
+# Or double-click Check-HuggingFace.cmd
 # Optional:
-#   powershell -ExecutionPolicy Bypass -File .\Check-HuggingFace.ps1 -OpenLogin
+#   powershell -NoProfile -ExecutionPolicy Bypass -File "E:\EV_Files\teaka_trading_app\Check-HuggingFace.ps1" -OpenLogin
 
 [CmdletBinding()]
 param(
     [switch]$OpenLogin
 )
+
+if (-not $PSCommandPath) {
+    Write-Host ''
+    Write-Host 'Do not paste this script into the PowerShell prompt.' -ForegroundColor Yellow
+    Write-Host 'That is what caused the Missing closing } error.'
+    Write-Host 'Run the file instead:'
+    Write-Host '  powershell -NoProfile -ExecutionPolicy Bypass -File "E:\EV_Files\teaka_trading_app\Check-HuggingFace.ps1"'
+    Write-Host 'Or double-click Check-HuggingFace.cmd in the Teaka folder.'
+    return
+}
 
 $ErrorActionPreference = 'Continue'
 
