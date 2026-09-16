@@ -4,11 +4,11 @@
 # DO NOT PASTE THIS FILE INTO THE POWERSHELL PROMPT.
 # Pasting pieces causes "Missing closing }" errors.
 #
-# Run the whole file:
-#   powershell -NoProfile -ExecutionPolicy Bypass -File "E:\EV_Files\teaka_trading_app\Check-HuggingFace.ps1"
-# Or double-click Check-HuggingFace.cmd
-# Optional:
-#   powershell -NoProfile -ExecutionPolicy Bypass -File "E:\EV_Files\teaka_trading_app\Check-HuggingFace.ps1" -OpenLogin
+# This file is NOT on E:\ until you download the PR branch or save it.
+# Save it to C:\EV_Operator\Check-HuggingFace.ps1 then run:
+#   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\EV_Operator\Check-HuggingFace.ps1"
+# Or run Get-CheckHuggingFace.ps1 to download it.
+# Do not paste this file into the prompt.
 
 [CmdletBinding()]
 param(
@@ -19,9 +19,8 @@ if (-not $PSCommandPath) {
     Write-Host ''
     Write-Host 'Do not paste this script into the PowerShell prompt.' -ForegroundColor Yellow
     Write-Host 'That is what caused the Missing closing } error.'
-    Write-Host 'Run the file instead:'
-    Write-Host '  powershell -NoProfile -ExecutionPolicy Bypass -File "E:\EV_Files\teaka_trading_app\Check-HuggingFace.ps1"'
-    Write-Host 'Or double-click Check-HuggingFace.cmd in the Teaka folder.'
+    Write-Host 'The file is not on E:\ yet. Save it, then run:'
+    Write-Host '  powershell -NoProfile -ExecutionPolicy Bypass -File "C:\EV_Operator\Check-HuggingFace.ps1"'
     return
 }
 
