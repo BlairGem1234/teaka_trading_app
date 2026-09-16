@@ -86,15 +86,15 @@ function Invoke-CurlJson {
 Write-Host @"
 Use it like this (braces never go raw on the command line):
 
-  `$body = @{ command = 'status_check' }
-  Invoke-CurlJson -Uri 'http://127.0.0.1:8080/' -Body `$body
+  curl.exe -sS -m 5 http://127.0.0.1:8080/
+  `$body = '{"command":"status_check"}'
+  Invoke-CurlJson -Uri 'http://127.0.0.1:8080/command' -Body `$body
 
-Or a literal JSON string in a here-string:
+GET / is public. POST belongs on /command (POST / returns 405).
+Literal JSON in a PowerShell variable (never raw braces on the line):
 
-  `$json = @'
-  {"command":"status_check"}
-  '@
-  & curl.exe -sS -X POST 'http://127.0.0.1:8080/' -H 'Content-Type: application/json' --data-binary `$json
+  `$body = '{"command":"status_check"}'
+  & curl.exe -sS -m 5 -X POST 'http://127.0.0.1:8080/command' -H 'Content-Type: application/json' --data-binary `$body
 
 Never paste:  curl --data '{ ... }'
 Never paste:  curl ... | sh
