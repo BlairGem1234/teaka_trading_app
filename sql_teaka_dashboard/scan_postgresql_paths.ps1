@@ -1,10 +1,11 @@
 # 🔧 Create PostgreSQL Scanner Script and Open in Notepad
-$scriptPath = "E:\EV_Files\Tools\scan_postgresql_paths.ps1"
+$scriptPath = "C:\EV_Files\Tools\scan_postgresql_paths.ps1"
+New-Item -ItemType Directory -Force -Path (Split-Path $scriptPath) | Out-Null
 
 $scriptContent = @'
 Write-Host "`n🔍 Scanning for PostgreSQL folders and executables..." -ForegroundColor Cyan
 
-$drives = @("C:\", "D:\", "E:\")
+$drives = @("C:\", "D:\")
 $keywords = @("PostgreSQL", "pgadmin", "psql.exe", "pg_ctl.exe", "pg_hba.conf", "postgresql.conf")
 
 foreach ($drive in $drives) {
