@@ -81,7 +81,7 @@ if (-not $found) {
     if ($gh) {
         Write-Host "Downloading with gh to $dest"
         New-Item -ItemType Directory -Force -Path $operatorDir | Out-Null
-        & gh api $apiPath -H 'Accept: application/vnd.github.raw' --output $dest
+        & gh api $apiPath -H 'Accept: application/vnd.github.raw' > $dest
         if (Test-UsableScript $dest) {
             $found = $dest
             Write-Host "[OK]  downloaded $dest"
