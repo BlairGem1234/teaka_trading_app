@@ -150,3 +150,16 @@ Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 47s
 ## 14. EV node check-only (no start)
 
 `scripts/PASTE_WSL_EV_NODE_CHECK.txt` and `scripts/ev_node_check_only.sh` / `.ps1` GET `127.0.0.1:26657/status`. They do not launch ev-node. `DOWN` means the node is not live — leave it down.
+
+## 15. Nanle `cargo test` compile on Blairspc — 22 Sep 2026
+
+Same crate, `CARGO_TARGET_DIR=/tmp/starforge-target`. Test profile **compiled**:
+
+```text
+Finished `test` profile [unoptimized + debuginfo] target(s) in 8m 19s
+Running tests/deployment_preparation_e2e.rs
+Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 03s
+Running tests/deployment_error_handling.rs
+```
+
+Paste did **not** include `test result: ok` or `FAILED`. `Refresh index: 100% (636/636)` is git index refresh, not a cargo verdict. Do not treat this as tests passed. Still Nanle StarForge, not EV GEMBot, not ev-node.
