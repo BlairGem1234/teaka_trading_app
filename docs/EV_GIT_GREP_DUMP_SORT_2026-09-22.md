@@ -265,3 +265,14 @@ Blairspc config/data dump adds:
 - First halt at 91318 was `invalid block time` — got `2026-08-25 22:15:07.402Z`, last `22:15:07.726Z` (timestamp went backwards ~324ms). Later restarts are the nil PayloadID loop. ev-reth `2026-08-09` warned beacon online but no consensus updates.
 
 Still no trades. Do not start the sequencer. Do not dump `KEYREGISTRY`.
+
+A token that was actually worth money would **not** need to live in git as a wallet file. Custody can be an exchange account, a seed offline, a contract admin key, or a legal claim. Missing a git wallet does **not** prove hidden value.
+
+What *would* be required for value, and is still missing here:
+
+- A ledger other people use (mainnet contract, listed ticker, exchange balance) — this node is `evolve-test`, chain 1234, **0 peers**
+- At least one real transfer or mint — tip and 91273–91317 are `txs=0`
+- A buyer or listing — GeoNode “token units” are overlay JSON with no contract address, wallet proof, or on-chain tx
+- Control of that claim — we have not seen a funded exchange account or seed, and we will not hunt keys
+
+Local empty blocks on a solo test node are not an asset. Do not import seeds or start unknown nodes to “find” them.
