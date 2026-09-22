@@ -186,3 +186,15 @@ Blairspc HEAD is `f2298dc` `master` = `origin/master` (PR #718 `feat/ai_document
 - `src/utils/mod.rs` — modified, not shown in the trimmed diff
 
 Keep those on **local branch** `local/cargo-check-fixes`. Do **not** `git push origin master` to Nanle-code/StarForge. Pastes: `scripts/PASTE_WSL_NANLE_GIT_COMMIT_LOCAL.txt` and `scripts/PASTE_GITBASH_NANLE_GIT_COMMIT_LOCAL.txt`.
+
+## 17. GEMBot29 Git Bash (Blairspc) — inspect only, already pasted
+
+Path: `C:\Users\Blair\EV_Git\GEMBot29` branch `main` HEAD `d3944c2` Initial EV AI repository.
+
+- `origin` and `legacy-origin` are both `https://github.com/blairgem/GEMBot29.git`. Do not set-url unless asked to rebind.
+- Tracked tree includes Python `Lib/` stdlib. That is git noise, not GEMBot app source.
+- `ollama_bridge_flask.py` is **untracked**. Leave it untracked.
+- Do **not** `git add` `Lib/site-packages`, `Scripts/activate`, `pyvenv.cfg`, `set_dropbox_token_log.txt`, or `*.bak_*`.
+- `scripts/test_nanle_git_sort_check_only.sh` lives in the Teaka repo, not GEMBot29. Do not run it here.
+
+Inspect paste: `scripts/PASTE_GITBASH_GEMBOT29_GIT_SORT.txt`. Crypto crate git is Nanle at `/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge`, not GEMBot29.
