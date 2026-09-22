@@ -201,7 +201,8 @@ PRIVATE_EXCHANGE_API_ENABLED=false
 ## Cloud Agent development environment
 
 The dashboard-managed Cursor Cloud Agent environment for this repo is bound to
-`github.com/BlairGem1234/teaka_trading_app` (not the legacy `BlairGem` owner).
+`github.com/BlairGem1234/teaka_trading_app`. Existing `BlairGem` routes may
+still be compatibility aliases and should not be broken blindly.
 It boots from a prebuilt snapshot and prepares the paper-safe surfaces
 automatically:
 
@@ -219,6 +220,21 @@ To reproduce the same setup locally, run the equivalent helper scripts:
 bash scripts/cloud_agent_install.sh   # install deps
 bash scripts/cloud_agent_start.sh     # start the paper-safe bridge
 ```
+
+## Git owner audit safety
+
+The PR #13 owner-audit scripts are read-only. They inspect local Git remotes
+and source references, print an `ev.gpt.notification.v1` JSON report, and can
+optionally create one new notification file in an explicitly supplied existing
+`outbox` directory.
+
+`BlairGem` paths are compatibility routes, not dead paths by default. Scripts
+that still use verified `BlairGem` aliases should keep access to the system.
+Some routes may redirect to `BlairGem1234`, while others such as `GEMBot29` or
+`Starforge` require separate mapping evidence. `GEMBot29` is preserved as a
+main-system route with unverified owner-mapping evidence. Any canonicalization,
+remote rewrite, or alias repair is `PROPOSED_ONLY` and requires Blair approval
+outside these scripts.
 
 The paper-trading path uses only the Python standard library and needs no
 install:
