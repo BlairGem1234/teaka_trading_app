@@ -193,6 +193,8 @@ Do **not** paste `PASTE_*_NANLE_GIT_COMMIT_LOCAL.txt` again. That was the pre-co
 
 Expected: `## master...origin/master [ahead 1]` and `9dfca15` on the `origin/master..HEAD` line.
 
+Blairspc later glued this chat into Git Bash. `??: command not found`, `syntax error near unexpected token '('`, `$:` / `bash::` / `.txt: command not found`, and `scripts/test_nanle_git_sort_check_only.sh: No such file or directory` are **not** git failures. `??` lines are `git status` untracked files from GEMBot29. The filename `tpsonedrive.live.comqt=allmyphotos&.txt` contains `&`, which started background job 1597; it already `Exit 127`. Same paste still printed the real Nanle result: origin `https://github.com/Nanle-code/StarForge.git`, `## master...origin/master [ahead 1]`, HEAD `9dfca15`. Git is sorted. Stop pasting chat. Do not push.
+
 ## 17. GEMBot29 Git Bash (Blairspc) — inspect only, already pasted
 
 Path: `C:\Users\Blair\EV_Git\GEMBot29` branch `main` HEAD `d3944c2` Initial EV AI repository.
