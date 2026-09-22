@@ -235,3 +235,5 @@ Blairspc then ran a read-only `eth_getBlockByNumber` on reth `:8545` (script sai
 | 91318 | `0x59e3e9f6…eaae550a` | `0x48ee6968…` | 2026-08-25T22:15:07Z | 0 | **0** |
 
 Head is 91318. Both tip blocks are empty. LocalDA is `running` at `172.16.0.3:7980` with **empty block production** (`blockTime=1000`). Ports: 7980/8545/8546/8551/9001/30303 listening; 7331 and 7676 stopped; sequencer `:26657` not listed. LocalDA RPC `Invalid request` at 2026-08-26 and 2026-09-22T21:09:16Z is a bad JSON-RPC call, not a trade. Do not start the sequencer. Do not reset.
+
+To check older blocks without starting the sequencer: WSL paste `scripts/PASTE_WSL_EV_TRADE_CHECK.txt` (reth `:8545` only). Send back `HEAD`, `SAMPLED`, `HITS` or `NO_TX_IN_SAMPLE`. Do not paste chat.
