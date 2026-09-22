@@ -68,9 +68,19 @@ done
 [[ ${#bin_lines[@]} -eq 4 ]] || fail "binlist paste must have exactly 4 lines, got ${#bin_lines[@]}"
 [[ "${bin_lines[3]}" == *"deployment_error_handling-"* ]] || fail "binlist paste must exec deployment_error_handling --list"
 
+RUNP="$ROOT/scripts/PASTE_WSL_CARGO_TEST_RUN.txt"
+[[ -f "$RUNP" ]] || fail "missing $RUNP"
+mapfile -t run_lines < "$RUNP"
+while [[ ${#run_lines[@]} -gt 0 && -z "${run_lines[-1]}" ]]; do
+  unset 'run_lines[-1]'
+done
+[[ ${#run_lines[@]} -eq 4 ]] || fail "run paste must have exactly 4 lines, got ${#run_lines[@]}"
+[[ "${run_lines[2]}" == *"--nocapture"* ]] || fail "run paste must use --nocapture"
+
 echo "OK: cargo test paste is 4 lines, /tmp target, two Nanle test bins only."
 echo "OK: cargo test --list paste captures EXIT."
 echo "OK: cargo test harness grep paste is 4 lines."
 echo "OK: cargo test head paste is 4 lines."
 echo "OK: cargo test main paste is 4 lines."
 echo "OK: cargo test bin --list paste is 4 lines."
+echo "OK: cargo test run paste is 4 lines."

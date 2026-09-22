@@ -168,4 +168,4 @@ Re-run those two bins with `scripts/PASTE_WSL_CARGO_TEST.txt`. Paste the lines t
 
 Blairspc re-run Finished in 2.00s, started both bins, then returned to the shell with **no** `running N tests` and **no** `test result:`. `--list` also printed no test names.
 
-`Cargo.toml:115 harness = false` is on `[[bench]] name = "benchmarks"` only, not the e2e tests. Grep found **no** `fn main` and **no** `26657` / `ev-node` / `std::process::exit` in those two files. They have 26 / 29 `#[test]` attrs and should use the default rustc harness. Silent cargo test is still unexplained. Next: `scripts/PASTE_WSL_CARGO_TEST_BINLIST.txt` runs `--list` on the built binary. Do not start ev-node.
+`Cargo.toml:115 harness = false` is on `[[bench]] name = "benchmarks"` only. Direct binary `--list` printed **29 tests, 0 benchmarks, EXIT:0** for `deployment_error_handling`. `cargo test --test A --test B` was dropping harness output. Next: `scripts/PASTE_WSL_CARGO_TEST_RUN.txt` runs both bins with `--nocapture`. Do not start ev-node.
