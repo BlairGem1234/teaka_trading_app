@@ -328,8 +328,8 @@ SCAN_URLS = [
     "https://api.openai.com/v1/chat/completions",
     "https://openrouter.ai/api/v1/chat/completions",
     "https://api.qwen.ai/v1/generate",
-    "https://github.com/BlairGem/Ev",
-    "https://github.com/BlairGem/GPT_AI_Workspace",
+    "https://github.com/BlairGem1234/Ev",
+    "https://github.com/BlairGem1234/GPT_AI_Workspace",
     "https://example.com",
 ]
 

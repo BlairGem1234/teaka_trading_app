@@ -21,8 +21,8 @@ const urls = [
   "http://192.168.1.42:5050/status",
   "http://172.20.10.3:8080",
   "http://localhost:8000/v1/completions",
-  "https://github.com/BlairGem/Ev",
-  "https://github.com/BlairGem/GPT_AI_Workspace",
+  "https://github.com/BlairGem1234/Ev",
+  "https://github.com/BlairGem1234/GPT_AI_Workspace",
   "https://teaka.trading",
   "https://example.com",
 ];
