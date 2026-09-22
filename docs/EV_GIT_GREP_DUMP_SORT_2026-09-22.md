@@ -237,3 +237,21 @@ Blairspc then ran a read-only `eth_getBlockByNumber` on reth `:8545` (script sai
 Head is 91318. Both tip blocks are empty. LocalDA is `running` at `172.16.0.3:7980` with **empty block production** (`blockTime=1000`). Ports: 7980/8545/8546/8551/9001/30303 listening; 7331 and 7676 stopped; sequencer `:26657` not listed. LocalDA RPC `Invalid request` at 2026-08-26 and 2026-09-22T21:09:16Z is a bad JSON-RPC call, not a trade. Do not start the sequencer. Do not reset.
 
 To check older blocks without starting the sequencer: WSL paste `scripts/PASTE_WSL_EV_TRADE_CHECK.txt` (reth `:8545` only). Send back `HEAD`, `SAMPLED`, `HITS` or `NO_TX_IN_SAMPLE`. Do not paste chat.
+
+## 19. “Hidden” EV crypto / tokens — not in these logs
+
+The 6:17PM / 9:04PM sequencer dump is the **same crash**, not a hidden wallet.
+
+Every `payloadAttributes` has `"transactions":[]` and `suggestedFeeRecipient` all-zero. `nil PayloadID` means reth already has block 91318 (`0x59e3e9f6…`) and will not rebuild it with a new timestamp. That is an empty-block timestamp split on `evolve-test`, chain 1234. It is not a concealed token transfer.
+
+Names that look like crypto but are not coins:
+
+| Name | What it actually is |
+| --- | --- |
+| `.evm/data/evm-single/KEYREGISTRY` | BadgerDB internal file. Do not dump it. |
+| GeoNode “token” units / GEO-020 | Overlay JSON design. Not a deployed contract. |
+| `set_dropbox_token_log.txt` | Dropbox API log. Not a coin. |
+| LocalDA empty block production | DA heartbeats on `:7980`, not user txs. |
+| TeAka `paper_trading` | Virtual BTC-USDT fills. `live_trading_enabled: false`. |
+
+To scan the local reth for ERC20 `Transfer` logs without starting the sequencer: `scripts/PASTE_WSL_EV_HIDDEN_TOKEN_CHECK.txt`. Send back `GENESIS_TX`, `TRANSFER_LOGS` or `NO_TRANSFER_LOGS`. Do not cat genesis secrets. Do not start ev-node.
