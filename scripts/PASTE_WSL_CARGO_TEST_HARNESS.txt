@@ -1,0 +1,4 @@
+cd /mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge
+grep -n harness Cargo.toml
+grep -n -A12 deployment_error_handling Cargo.toml
+grep -n -A12 deployment_preparation_e2e Cargo.toml

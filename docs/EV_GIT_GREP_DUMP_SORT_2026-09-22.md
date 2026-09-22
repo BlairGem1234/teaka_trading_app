@@ -166,4 +166,4 @@ Paste did **not** include `test result: ok` or `FAILED`. `Refresh index: 100% (6
 
 Re-run those two bins with `scripts/PASTE_WSL_CARGO_TEST.txt`. Paste the lines that say `test result:`.
 
-Blairspc re-run Finished in 2.00s, started both bins, then returned to the shell with **no** `running N tests` and **no** `test result:`. Next step is `scripts/PASTE_WSL_CARGO_TEST_LIST.txt` (`--list` plus `EXIT:$?`) to see if those files use the rustc test harness.
+Blairspc re-run Finished in 2.00s, started both bins, then returned to the shell with **no** `running N tests` and **no** `test result:`. `--list` also printed no test names and no `Unrecognized option` / `EXIT:` in the paste. Those bins are likely `harness = false` programs that exit silent. Next: `scripts/PASTE_WSL_CARGO_TEST_HARNESS.txt`.
