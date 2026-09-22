@@ -31,11 +31,11 @@ node_modules/
 build/
 dist/
 
-# Windows venv binaries (should not be in repo)
-*.exe
-
-# Compressed archives
-*.zip
+# Generated local Windows virtualenv binaries only.
+# Do not blanket-ignore *.exe or *.zip: EV Brain artifacts may use those forms.
+Scripts/*.exe
+.venv/Scripts/*.exe
+venv/Scripts/*.exe
 
 # Editors and OS
 .vscode/
