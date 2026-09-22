@@ -55,10 +55,6 @@ function Write-EvNotification {
             if ([System.IO.Path]::GetFileName($full).ToLowerInvariant() -ne "outbox") { throw "gpt outbox directory name must be outbox" }
             $name = "{0}_{1}.json" -f ([DateTime]::UtcNow.ToString("yyyyMMddTHHmmssZ")), $Report.notification_id
             $destination = Join-Path $full $name
-            $json = $Report | ConvertTo-Json -Depth 10
-            $bytes = [System.Text.Encoding]::UTF8.GetBytes($json + [Environment]::NewLine)
-            $stream = [System.IO.File]::Open($destination, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
-            try { $stream.Write($bytes, 0, $bytes.Length) } finally { $stream.Dispose() }
             $Report.notification.outbox_created = $true
             $Report.notification.outbox_path = $destination
             $Report.writes_performed = @($Report.writes_performed) + [ordered]@{
@@ -66,6 +62,10 @@ function Write-EvNotification {
                 path = $destination
                 mode = "CREATE_NEW"
             }
+            $json = $Report | ConvertTo-Json -Depth 10
+            $bytes = [System.Text.Encoding]::UTF8.GetBytes($json + [Environment]::NewLine)
+            $stream = [System.IO.File]::Open($destination, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
+            try { $stream.Write($bytes, 0, $bytes.Length) } finally { $stream.Dispose() }
         } catch {
             $Report.notification.error = $_.Exception.Message
         }

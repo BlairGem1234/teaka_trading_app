@@ -16,7 +16,7 @@ from unittest import mock
 MODULE_NAME = "evbot.ev_ollama_brain_flask"
 
 
-def import_brain_with_log_dir(path: Path):
+def import_brain_with_log_dir(path: Path, extra_env: dict[str, str] | None = None):
     sys.modules.pop(MODULE_NAME, None)
     fake_requests = types.SimpleNamespace(get=lambda *a, **k: None, post=lambda *a, **k: None)
 
@@ -49,7 +49,10 @@ def import_brain_with_log_dir(path: Path):
         "requests": fake_requests,
         "flask": fake_flask,
     }
-    with mock.patch.dict(sys.modules, fake_modules), mock.patch.dict(os.environ, {"EVBOT_LOG_DIR": str(path)}, clear=False):
+    env = {"EVBOT_LOG_DIR": str(path)}
+    if extra_env:
+        env.update(extra_env)
+    with mock.patch.dict(sys.modules, fake_modules), mock.patch.dict(os.environ, env, clear=False):
         return importlib.import_module(MODULE_NAME)
 
 
@@ -82,8 +85,9 @@ class OllamaBrainFlaskTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             module = import_brain_with_log_dir(Path(td) / "missing_logs")
 
-            with self.assertRaises(SystemExit):
-                module.validate_port(8080)
+            for blocked in (8080, 8082):
+                with self.assertRaises(SystemExit):
+                    module.validate_port(blocked)
             self.assertEqual(module.validate_port(8081), 8081)
 
     def test_generation_options_are_bounded_and_model_is_case_insensitive(self) -> None:
@@ -99,6 +103,11 @@ class OllamaBrainFlaskTests(unittest.TestCase):
             self.assertLessEqual(options["num_predict"], module.MAX_NUM_PREDICT)
             with self.assertRaises(ValueError):
                 module.validate_generation_request({"model": "qwen3-coder:30b"})
+
+    def test_import_refuses_non_8081_port(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            with self.assertRaises(SystemExit):
+                import_brain_with_log_dir(Path(td) / "missing_logs", {"EV_OLLAMA_FLASK_PORT": "8082"})
 
 
 if __name__ == "__main__":

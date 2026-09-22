@@ -68,9 +68,12 @@ def _log(event: dict) -> None:
 
 
 def validate_port(port: int) -> int:
-    if int(port) == 8080:
-        raise SystemExit("Refusing to bind :8080 -- that is EV Command Bridge. Use EV_OLLAMA_FLASK_PORT=8081")
+    if int(port) != 8081:
+        raise SystemExit("Refusing to bind non-8081 port -- EV Command Bridge owns 8080 and this sidecar is fixed to 8081")
     return int(port)
+
+
+PORT = validate_port(PORT)
 
 
 def bounded_int(value, default: int, minimum: int, maximum: int) -> int:
