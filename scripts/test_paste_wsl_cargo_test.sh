@@ -50,7 +50,17 @@ done
 [[ ${#head_lines[@]} -eq 4 ]] || fail "head paste must have exactly 4 lines, got ${#head_lines[@]}"
 [[ "${head_lines[1]}" == 'ls -l tests' ]] || fail "head paste line 2 mismatch"
 
+MAINP="$ROOT/scripts/PASTE_WSL_CARGO_TEST_MAIN.txt"
+[[ -f "$MAINP" ]] || fail "missing $MAINP"
+mapfile -t main_lines < "$MAINP"
+while [[ ${#main_lines[@]} -gt 0 && -z "${main_lines[-1]}" ]]; do
+  unset 'main_lines[-1]'
+done
+[[ ${#main_lines[@]} -eq 4 ]] || fail "main paste must have exactly 4 lines, got ${#main_lines[@]}"
+[[ "${main_lines[1]}" == "sed -n '90,140p' Cargo.toml" ]] || fail "main paste line 2 mismatch"
+
 echo "OK: cargo test paste is 4 lines, /tmp target, two Nanle test bins only."
 echo "OK: cargo test --list paste captures EXIT."
 echo "OK: cargo test harness grep paste is 4 lines."
 echo "OK: cargo test head paste is 4 lines."
+echo "OK: cargo test main paste is 4 lines."
