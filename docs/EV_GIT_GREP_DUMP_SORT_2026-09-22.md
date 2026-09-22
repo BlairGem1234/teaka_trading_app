@@ -169,3 +169,20 @@ Re-run those two bins with `scripts/PASTE_WSL_CARGO_TEST.txt`. Paste the lines t
 Blairspc re-run Finished in 2.00s, started both bins, then returned to the shell with **no** `running N tests` and **no** `test result:`. `--list` also printed no test names.
 
 `Cargo.toml:115 harness = false` is on `[[bench]] name = "benchmarks"` only. Direct binary `--list` printed **29 tests, 0 benchmarks, EXIT:0** for `deployment_error_handling`. `cargo test --test A --test B` was dropping harness output. Next: `scripts/PASTE_WSL_CARGO_TEST_RUN.txt` runs both bins with `--nocapture`. Do not start ev-node.
+
+## 16. Nanle crypto git sort (check-only)
+
+Expected origin: `https://github.com/Nanle-code/StarForge.git`. Do not invent a StarForge GitHub repo. Do not rebind GEMBot29. Do not start ev-node.
+
+- Git Bash paste: `scripts/PASTE_GITBASH_NANLE_GIT_SORT.txt` (`/c/Users/Blair/...`)
+- WSL paste: `scripts/PASTE_WSL_NANLE_GIT_SORT.txt` (`/mnt/c/Users/Blair/...`)
+- Script: `scripts/nanle_git_sort_check_only.sh`
+
+Blairspc HEAD is `f2298dc` `master` = `origin/master` (PR #718 `feat/ai_documentation`). Uncommitted local compile fixes:
+
+- `Cargo.toml` / `Cargo.lock` — `thiserror = "1.0"`
+- `src/commands/mod.rs` — `pub mod ai_doc_qa;`
+- `src/utils/database.rs` — rusqlite `&Connection` not `&mut`
+- `src/utils/mod.rs` — modified, not shown in the trimmed diff
+
+Keep those on **local branch** `local/cargo-check-fixes`. Do **not** `git push origin master` to Nanle-code/StarForge. Pastes: `scripts/PASTE_WSL_NANLE_GIT_COMMIT_LOCAL.txt` and `scripts/PASTE_GITBASH_NANLE_GIT_COMMIT_LOCAL.txt`.
