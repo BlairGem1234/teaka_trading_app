@@ -226,3 +226,12 @@ Inventory + logs from 22 Sep 2026. This is **evolve-test**, not a live token, no
 Crash loop (6:13, 6:16–6:17, 9:04): EL is one block ahead; forkchoice rolls back to hash `0x48ee6968…` at 91317; sequencer rebuilds 91318 with a new timestamp; engine returns `status=VALID` and **nil PayloadID**; node treats that as critical and stops. Timestamp split: stored ExecMeta `1787696107` (2026-08-25T22:15:07Z) vs requested `1790111054` (2026-09-22T21:04:14Z). Reth engine log clip starts `2026-08-09T05:53:18Z`.
 
 **Trades:** this paste has no swap, fill, order, transfer, or wallet activity. Every failed 91318 payload is empty txs. DA data_entries=0. Earlier Ev git-grep also did not confirm a deployed contract, live token, wallet, or on-chain tx. 91317 local blocks exist; their contents are not in this dump. Do not start ev-node to go looking. Leave it down. Do not wipe `.evm`.
+
+Blairspc then ran a read-only `eth_getBlockByNumber` on reth `:8545` (script said READ ONLY / NO RESET / NO INIT). Confirmed:
+
+| Block | Hash | Parent | UTC | gasUsed | tx_count |
+| --- | --- | --- | --- | --- | --- |
+| 91317 | `0x48ee6968…c7db5757` | `0x1b6f29b8…c97e546` | 2026-08-25T22:15:07Z | 0 | **0** |
+| 91318 | `0x59e3e9f6…eaae550a` | `0x48ee6968…` | 2026-08-25T22:15:07Z | 0 | **0** |
+
+Head is 91318. Both tip blocks are empty. LocalDA is `running` at `172.16.0.3:7980` with **empty block production** (`blockTime=1000`). Ports: 7980/8545/8546/8551/9001/30303 listening; 7331 and 7676 stopped; sequencer `:26657` not listed. LocalDA RPC `Invalid request` at 2026-08-26 and 2026-09-22T21:09:16Z is a bad JSON-RPC call, not a trade. Do not start the sequencer. Do not reset.
