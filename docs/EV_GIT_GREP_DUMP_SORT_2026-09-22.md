@@ -146,3 +146,7 @@ Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 47s
 ```
 
 `CARGO_TARGET_DIR=/tmp/starforge-target` avoided NTFS `os error 5`. This is **check-only** of Nanle StarForge `v0.1.0`. It is not EV GEMBot, not a live token, and not `cargo build --release`. Ollama stays Windows **11434** / Docker **11435**. Do not run another cargo command unless asked.
+
+## 14. EV node check-only (no start)
+
+`scripts/PASTE_WSL_EV_NODE_CHECK.txt` and `scripts/ev_node_check_only.sh` / `.ps1` GET `127.0.0.1:26657/status`. They do not launch ev-node. `DOWN` means the node is not live — leave it down.
