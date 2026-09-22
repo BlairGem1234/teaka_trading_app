@@ -153,7 +153,7 @@ PRIVATE_EXCHANGE_API_ENABLED=true
 | **Strategy bots** | BoltBuddy `TradingStrategy` + strategy editor + auto-trading flag |
 | **Alert bots** | BoltBuddy `messaging.py`; this repo has Telegram alert stubs (`public/ev_alert_api.py`, `alert_routes.py.py`, `@teaka_trader_bot` notes) |
 | **TeAka Swarm** | Branding / daily summary path in this repo (`email_report.py`, `schedule_teaka_summary.ps1`, sign-off “Teaka Swarm Core”). Not a multi-agent source tree in Git. |
-| **GEMBot / EVBot** | Local EV control layer. Referenced here via `status_report.yaml`, `ev_ollama_*.py`, `ev_remote_server.py`, `Config/# Define the EV Shell Runtime Envir.txt`. Windows provenance: user `GEMBotSys`, vault `D:\Starforge\Vault`, bridge `E:\EV_Files\Bridge` / `D:\EV_Files\Bridge`. Private EV control repo is expected outside this fork (e.g. `BlairGem/Ev` when available). |
+| **GEMBot / EVBot** | Local EV control layer. Referenced here via `status_report.yaml`, `ev_ollama_*.py`, `ev_remote_server.py`, `Config/# Define the EV Shell Runtime Envir.txt`. Windows provenance: user `GEMBotSys`, vault `D:\Starforge\Vault`, bridge `E:\EV_Files\Bridge` / `D:\EV_Files\Bridge`. Private EV control repo is expected outside this fork (e.g. `BlairGem1234/Ev` when available). |
 | **QTrader / RL bots** | Sketches in `model_output/` + planned tree in `integration_pipeline/QTrader.txt` — not wired to BoltBuddy or paper broker |
 | **Dashboard bot panel** | `templates/dashboard.html` still has a bot placeholder block |
 
@@ -200,8 +200,11 @@ PRIVATE_EXCHANGE_API_ENABLED=false
 
 ## Cloud Agent development environment
 
-The dashboard-managed Cursor Cloud Agent environment for this repo boots from a
-prebuilt snapshot and prepares the paper-safe surfaces automatically:
+The dashboard-managed Cursor Cloud Agent environment for this repo is bound to
+`github.com/BlairGem1234/teaka_trading_app`. Existing `BlairGem` routes may
+still be compatibility aliases and should not be broken blindly.
+It boots from a prebuilt snapshot and prepares the paper-safe surfaces
+automatically:
 
 - **install:** `python3 -m pip install --user -r requirements.txt`
   (installs Flask, the bridge's only runtime dependency, into the user site).
@@ -217,6 +220,21 @@ To reproduce the same setup locally, run the equivalent helper scripts:
 bash scripts/cloud_agent_install.sh   # install deps
 bash scripts/cloud_agent_start.sh     # start the paper-safe bridge
 ```
+
+## Git owner audit safety
+
+The PR #13 owner-audit scripts are read-only. They inspect local Git remotes
+and source references, print an `ev.gpt.notification.v1` JSON report, and can
+optionally create one new notification file in an explicitly supplied existing
+`outbox` directory.
+
+`BlairGem` paths are compatibility routes, not dead paths by default. Scripts
+that still use verified `BlairGem` aliases should keep access to the system.
+Some routes may redirect to `BlairGem1234`, while others such as `GEMBot29` or
+`Starforge` require separate mapping evidence. `GEMBot29` is preserved as a
+main-system route with unverified owner-mapping evidence. Any canonicalization,
+remote rewrite, or alias repair is `PROPOSED_ONLY` and requires Blair approval
+outside these scripts.
 
 The paper-trading path uses only the Python standard library and needs no
 install:
@@ -241,7 +259,7 @@ python3 paper_trading/run_paper.py --ticks paper_trading/sample_ticks.csv
 ```text
 TeAkaTrader/teaka_trading_app   ← upstream of this recovery fork
 TeAkaTrader/BoltBuddy           ← full trading engine + strategy bots
-BlairGem/teaka_trading_app      ← this repo (audit / cleanup / paper rebuild)
+BlairGem1234/teaka_trading_app  ← this repo (audit / cleanup / paper rebuild)
 Local EV / GEMBot / Starforge   ← private control + swarm ops on PC5000 / GEMBotSys
 evstack/ev-node (external)      ← EV Stack / node framework (not vendored here)
 ```
