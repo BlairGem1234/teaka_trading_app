@@ -23,4 +23,14 @@ printf '%s\n' "${lines[@]}" | grep -qiE 'ev-node start|cargo build --release' &&
 [[ "${lines[2]}" == 'export CARGO_TARGET_DIR=/tmp/starforge-target' ]] || fail "line 3 must set /tmp target"
 [[ "${lines[3]}" == 'cargo test --test deployment_preparation_e2e --test deployment_error_handling -- --test-threads=1' ]] || fail "line 4 must be targeted cargo test"
 
+LIST="$ROOT/scripts/PASTE_WSL_CARGO_TEST_LIST.txt"
+[[ -f "$LIST" ]] || fail "missing $LIST"
+mapfile -t list_lines < "$LIST"
+while [[ ${#list_lines[@]} -gt 0 && -z "${list_lines[-1]}" ]]; do
+  unset 'list_lines[-1]'
+done
+[[ ${#list_lines[@]} -eq 4 ]] || fail "list paste must have exactly 4 lines, got ${#list_lines[@]}"
+[[ "${list_lines[3]}" == 'cargo test --test deployment_error_handling --test deployment_preparation_e2e -- --list ; echo EXIT:$?' ]] || fail "list paste line 4 mismatch"
+
 echo "OK: cargo test paste is 4 lines, /tmp target, two Nanle test bins only."
+echo "OK: cargo test --list paste captures EXIT."
