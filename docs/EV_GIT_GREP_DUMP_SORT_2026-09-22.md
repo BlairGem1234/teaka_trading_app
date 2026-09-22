@@ -206,3 +206,23 @@ Path: `C:\Users\Blair\EV_Git\GEMBot29` branch `main` HEAD `d3944c2` Initial EV A
 - `scripts/test_nanle_git_sort_check_only.sh` lives in the Teaka repo on this cloud agent, not GEMBot29. `No such file or directory` in GEMBot29 Git Bash is expected. Do not run Teaka `scripts/test_*.sh` there.
 
 Inspect paste: `scripts/PASTE_GITBASH_GEMBOT29_GIT_SORT.txt`. Hide venv noise: `scripts/PASTE_GITBASH_GEMBOT29_LEAVE_UNTRACKED.txt`. Crypto crate git is Nanle at `/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge`, not GEMBot29.
+
+## 18. Evolve test node dump (Blairspc) — no trades in this paste
+
+Inventory + logs from 22 Sep 2026. This is **evolve-test**, not a live token, not Nanle git, not GEMBot29.
+
+| Fact | Read |
+| --- | --- |
+| chain_id | `evolve-test` |
+| reth chainId | `0x4d2` = 1234 |
+| sequencer height | 91317 |
+| EL / reth blockNumber | `0x164b6` = 91318 |
+| peers | 0 |
+| DA cache | da_height=13, data_entries=0, header_entries=0; latest_da_height=205 |
+| fee recipient | all-zero |
+| crashing payloads | `"transactions":[]` |
+| home | `.evm/config/evnode.yaml`, `genesis.json`, Badger SST/vlog under `.evm/data/evm-single/` |
+
+Crash loop (6:13, 6:16–6:17, 9:04): EL is one block ahead; forkchoice rolls back to hash `0x48ee6968…` at 91317; sequencer rebuilds 91318 with a new timestamp; engine returns `status=VALID` and **nil PayloadID**; node treats that as critical and stops. Timestamp split: stored ExecMeta `1787696107` (2026-08-25T22:15:07Z) vs requested `1790111054` (2026-09-22T21:04:14Z). Reth engine log clip starts `2026-08-09T05:53:18Z`.
+
+**Trades:** this paste has no swap, fill, order, transfer, or wallet activity. Every failed 91318 payload is empty txs. DA data_entries=0. Earlier Ev git-grep also did not confirm a deployed contract, live token, wallet, or on-chain tx. 91317 local blocks exist; their contents are not in this dump. Do not start ev-node to go looking. Leave it down. Do not wipe `.evm`.
