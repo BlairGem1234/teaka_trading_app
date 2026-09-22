@@ -1,0 +1,4 @@
+cd /mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge
+git status -sb
+git log --oneline origin/master..HEAD
+git rev-parse HEAD origin/master
