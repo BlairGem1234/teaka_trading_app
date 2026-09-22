@@ -255,3 +255,13 @@ Names that look like crypto but are not coins:
 | TeAka `paper_trading` | Virtual BTC-USDT fills. `live_trading_enabled: false`. |
 
 To scan the local reth for ERC20 `Transfer` logs without starting the sequencer: `scripts/PASTE_WSL_EV_HIDDEN_TOKEN_CHECK.txt`. Send back `GENESIS_TX`, `TRANSFER_LOGS` or `NO_TRANSFER_LOGS`. Do not cat genesis secrets. Do not start ev-node.
+
+Blairspc config/data dump adds:
+
+- Raft is empty: `node_id`, `raft_addr`, and `peers` blank; `bootstrap: false`; dir `/root/.evnode/raft`. Solo test node, not a cluster hiding bags.
+- `pruning_mode: disabled` — stored blocks are not being pruned away.
+- SST/vlog/MANIFEST under `data/evm-single/` are Badger files, not wallets.
+- Executor log `10:14–10:15PM`: heights **91273 through 91317** all `produced block ... txs=0`.
+- First halt at 91318 was `invalid block time` — got `2026-08-25 22:15:07.402Z`, last `22:15:07.726Z` (timestamp went backwards ~324ms). Later restarts are the nil PayloadID loop. ev-reth `2026-08-09` warned beacon online but no consensus updates.
+
+Still no trades. Do not start the sequencer. Do not dump `KEYREGISTRY`.
