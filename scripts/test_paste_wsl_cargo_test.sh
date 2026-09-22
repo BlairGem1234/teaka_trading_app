@@ -59,8 +59,18 @@ done
 [[ ${#main_lines[@]} -eq 4 ]] || fail "main paste must have exactly 4 lines, got ${#main_lines[@]}"
 [[ "${main_lines[1]}" == "sed -n '90,140p' Cargo.toml" ]] || fail "main paste line 2 mismatch"
 
+BINLIST="$ROOT/scripts/PASTE_WSL_CARGO_TEST_BINLIST.txt"
+[[ -f "$BINLIST" ]] || fail "missing $BINLIST"
+mapfile -t bin_lines < "$BINLIST"
+while [[ ${#bin_lines[@]} -gt 0 && -z "${bin_lines[-1]}" ]]; do
+  unset 'bin_lines[-1]'
+done
+[[ ${#bin_lines[@]} -eq 4 ]] || fail "binlist paste must have exactly 4 lines, got ${#bin_lines[@]}"
+[[ "${bin_lines[3]}" == *"deployment_error_handling-"* ]] || fail "binlist paste must exec deployment_error_handling --list"
+
 echo "OK: cargo test paste is 4 lines, /tmp target, two Nanle test bins only."
 echo "OK: cargo test --list paste captures EXIT."
 echo "OK: cargo test harness grep paste is 4 lines."
 echo "OK: cargo test head paste is 4 lines."
 echo "OK: cargo test main paste is 4 lines."
+echo "OK: cargo test bin --list paste is 4 lines."
