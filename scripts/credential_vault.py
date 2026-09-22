@@ -10,7 +10,7 @@ Usage:
     export VAULT_PASSPHRASE="your-strong-passphrase"
 
     # Encrypt a credential
-    python scripts/credential_vault.py encrypt KUCOIN_API_KEY "683b30f36025980001ef4bde"
+    python scripts/credential_vault.py encrypt KUCOIN_API_KEY "<kucoin-api-key>"
 
     # Decrypt a credential
     python scripts/credential_vault.py decrypt KUCOIN_API_KEY
@@ -20,6 +20,9 @@ Usage:
 
     # Export all as env vars (for sourcing)
     python scripts/credential_vault.py export
+
+This vault does not clean repository files. Use scripts/credential_cleaner.py
+for report-first credential cleanup that requires Blair approval before writing.
 """
 
 from __future__ import annotations
