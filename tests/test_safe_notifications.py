@@ -79,7 +79,9 @@ class SafeNotificationTests(unittest.TestCase):
             self.assertTrue(second["notification"]["outbox_created"])
             self.assertEqual(len(files_after_first), 1)
             self.assertEqual(len(files_after_second), 2)
-            self.assertTrue(files_after_first[0].read_text(encoding="utf-8"))
+            stored = json.loads(files_after_first[0].read_text(encoding="utf-8"))
+            self.assertTrue(stored["notification"]["outbox_created"])
+            self.assertEqual(stored["writes_performed"][0]["mode"], "CREATE_NEW")
 
     def test_unreadable_text_file_is_reported_not_rewritten(self) -> None:
         with tempfile.TemporaryDirectory() as td:

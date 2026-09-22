@@ -144,6 +144,13 @@ function Write-EvNotification {
         }
         $name = "{0}_{1}.json" -f ([DateTime]::UtcNow.ToString("yyyyMMddTHHmmssZ")), $Report.notification_id
         $destination = Join-Path $full $name
+        $Report.notification.outbox_created = $true
+        $Report.notification.outbox_path = $destination
+        $Report.writes_performed = @($Report.writes_performed) + [ordered]@{
+            type = "append_only_notification"
+            path = $destination
+            mode = "CREATE_NEW"
+        }
         $json = $Report | ConvertTo-Json -Depth 10
         $bytes = [System.Text.Encoding]::UTF8.GetBytes($json + [Environment]::NewLine)
         $stream = [System.IO.File]::Open($destination, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write)
@@ -151,13 +158,6 @@ function Write-EvNotification {
             $stream.Write($bytes, 0, $bytes.Length)
         } finally {
             $stream.Dispose()
-        }
-        $Report.notification.outbox_created = $true
-        $Report.notification.outbox_path = $destination
-        $Report.writes_performed = @($Report.writes_performed) + [ordered]@{
-            type = "append_only_notification"
-            path = $destination
-            mode = "CREATE_NEW"
         }
     } catch {
         $Report.notification.error = $_.Exception.Message
@@ -169,7 +169,7 @@ $Report = New-EvNotification -SourcePr 13 -SourceScript (Split-Path -Leaf $PSCom
 foreach ($item in $Known) {
     $finding = Get-RepoFinding $item
     Add-Finding $Report $finding
-    if ($finding.expected_remote -or $finding.classification -eq "UNVERIFIED") {
+    if ($finding.expected_remote -or $finding.classification -eq "UNVERIFIED" -or $finding.classification -eq "MAIN_SYSTEM_UNVERIFIED_MAPPING") {
         Add-Proposal $Report ([ordered]@{
             operation = "verify_git_remote_alias_compatibility"
             target = $finding.path

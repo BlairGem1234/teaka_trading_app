@@ -213,9 +213,6 @@ def append_notification(report: dict, outbox: Path | None) -> dict:
             raise ValueError("gpt outbox directory name must be outbox")
         filename = f"{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}_{report['notification_id']}.json"
         destination = outbox / filename
-        with open(destination, "x", encoding="utf-8") as handle:
-            json.dump(report, handle, indent=2, sort_keys=True)
-            handle.write("\n")
         note["outbox_created"] = True
         note["outbox_path"] = str(destination)
         report["writes_performed"].append(
@@ -225,6 +222,9 @@ def append_notification(report: dict, outbox: Path | None) -> dict:
                 "mode": "CREATE_NEW",
             }
         )
+        with open(destination, "x", encoding="utf-8") as handle:
+            json.dump(report, handle, indent=2, sort_keys=True)
+            handle.write("\n")
     except Exception as exc:
         note["error"] = str(exc)
     return report
