@@ -193,7 +193,7 @@ Do **not** paste `PASTE_*_NANLE_GIT_COMMIT_LOCAL.txt` again. That was the pre-co
 
 Expected: `## master...origin/master [ahead 1]` and `9dfca15` on the `origin/master..HEAD` line.
 
-Blairspc later glued this chat into Git Bash. `??: command not found`, `syntax error near unexpected token '('`, `$:` / `bash::` / `.txt: command not found`, and `scripts/test_nanle_git_sort_check_only.sh: No such file or directory` are **not** git failures. `??` lines are `git status` untracked files from GEMBot29. The filename `tpsonedrive.live.comqt=allmyphotos&.txt` contains `&`, which started background job 1597; it already `Exit 127`. Same paste still printed the real Nanle result: origin `https://github.com/Nanle-code/StarForge.git`, `## master...origin/master [ahead 1]`, HEAD `9dfca15`. Git is sorted. Stop pasting chat. Do not push.
+Blairspc glued this chat into Git Bash twice. `??: command not found`, `syntax error near unexpected token '('`, `$:` / `bash::` / `.txt: command not found`, `d354ef8: command not found`, `291c076: command not found`, and `scripts/test_nanle_git_sort_check_only.sh: No such file or directory` are **not** git failures. `??` lines are GEMBot29 untracked files. The `&` in `tpsonedrive.live.comqt=allmyphotos&.txt` started jobs 1597 and 1846; both already `Exit 127`. SHA lines were typed as commands, not `git checkout`. Same dumps still printed origin `https://github.com/Nanle-code/StarForge.git`, `## master...origin/master [ahead 1]`, HEAD `9dfca15`. The prompt is a clean Nanle `(master)` shell. Git is sorted. Give no further paste. Do not push.
 
 ## 17. GEMBot29 Git Bash (Blairspc) — inspect only, already pasted
 
