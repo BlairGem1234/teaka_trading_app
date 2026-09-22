@@ -163,3 +163,5 @@ Running tests/deployment_error_handling.rs
 ```
 
 Paste did **not** include `test result: ok` or `FAILED`. `Refresh index: 100% (636/636)` is git index refresh, not a cargo verdict. Do not treat this as tests passed. Still Nanle StarForge, not EV GEMBot, not ev-node.
+
+Re-run those two bins with `scripts/PASTE_WSL_CARGO_TEST.txt`. Paste the lines that say `test result:`.
