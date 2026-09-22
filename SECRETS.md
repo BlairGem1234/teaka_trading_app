@@ -1,7 +1,21 @@
 # TeAka Trading App — Secrets & Credentials
 
 All credentials are loaded from **environment variables only**.
-Copy `.env.example` → `.env` and fill in your values. Never commit `.env`.
+Copy `.env.example` to `.env` and fill in your local values. Never commit `.env`.
+
+---
+
+## Cleaner Rule
+
+Credential cleanup is report-first by default.
+
+Use `scripts/credential_cleaner.py` to inspect files for committed-looking credentials. It does not change files unless both of these are present:
+
+```bash
+python scripts/credential_cleaner.py --apply --approve Blair <paths>
+```
+
+Protected EV Brain artifacts are skipped by default, including `.zip`, `.exe`, and paths containing `brain`, `ev_brain`, or `ev_ai`. The cleaner is for credentials and small text config files, not Brain archives or runtime binaries.
 
 ---
 
@@ -9,13 +23,10 @@ Copy `.env.example` → `.env` and fill in your values. Never commit `.env`.
 
 | Variable | Where to get it | Used by |
 |----------|----------------|---------|
-| `TELEGRAM_BOT_TOKEN` | @BotFather → `/newbot` | `alert_routes.py.py`, `public/ev_alert_api.py`, `trading_stack/messaging.py` |
+| `TELEGRAM_BOT_TOKEN` | @BotFather -> `/newbot` | `alert_routes.py.py`, `public/ev_alert_api.py`, `trading_stack/messaging.py` |
 | `TELEGRAM_CHAT_ID` | `curl https://api.telegram.org/bot<TOKEN>/getUpdates` | Same as above |
 
-**Bot name:** `@teaka_trader_bot`
-**Token from repo history (ROTATE THIS):** `7711152546:AAFAf-5JT1yKg7c6gsk6p3UWYqiy249BPUc`
-
-> This token was previously hardcoded in source files and must be rotated via @BotFather → `/revoke`.
+If a token was ever committed to Git history, rotate it via @BotFather before use.
 
 ---
 
@@ -28,24 +39,12 @@ Copy `.env.example` → `.env` and fill in your values. Never commit `.env`.
 | `KUCOIN_API_KEY` | KuCoin (primary) | `broker_apis.py`, `ccxt_integration.py`, `futures_trading.py` |
 | `KUCOIN_SECRET_KEY` | KuCoin | Same |
 | `KUCOIN_PASSPHRASE` | KuCoin | Same |
-
-**KuCoin keys from EV Stack (ROTATE THESE — they were in upstream git history):**
-- API Key: `683b30f36025980001ef4bde`
-- Secret: `bde878ab-03b8-4ea2-923f-1c0d98880009`
-- Passphrase: `evbot-80`
-| `BINANCE_API_KEY` | Binance (backup) | `ccxt_integration.py` (auto-initialized) |
+| `BINANCE_API_KEY` | Binance (backup) | `ccxt_integration.py` |
 | `BINANCE_SECRET_KEY` | Binance | Same |
 
-`ccxt_integration.py` supports 10 exchanges total. Optional ones (add env vars if needed):
+`ccxt_integration.py` supports 10 exchanges total. Optional ones can be configured with env vars when needed.
 
-| Variable pattern | Exchange |
-|-----------------|----------|
-| `COINBASE_API_KEY` / `_SECRET_KEY` | Coinbase |
-| `KRAKEN_API_KEY` / `_SECRET_KEY` | Kraken |
-| `OKX_API_KEY` / `_SECRET_KEY` / `_PASSPHRASE` | OKX |
-| `BYBIT_API_KEY` / `_SECRET_KEY` | Bybit |
-
-Exchanges without credentials still work for **public data** (prices, OHLCV, order books).
+Exchanges without credentials still work for public data such as prices, OHLCV, and order books.
 
 ### Forex
 
@@ -60,9 +59,9 @@ Exchanges without credentials still work for **public data** (prices, OHLCV, ord
 |----------|---------|---------|
 | `IB_API_KEY` | Interactive Brokers | `broker_apis.py` |
 | `IB_ACCOUNT_ID` | Interactive Brokers | Same |
-| `ALPACA_API_KEY` | Alpaca (TSLA, AAPL, etc.) | `alpaca_integration.py`, `config.py` |
+| `ALPACA_API_KEY` | Alpaca | `alpaca_integration.py`, `config.py` |
 | `ALPACA_SECRET_KEY` | Alpaca | Same |
-| `ALPACA_BASE_URL` | Alpaca (default: paper API) | Same |
+| `ALPACA_BASE_URL` | Alpaca paper/live base URL | Same |
 
 ---
 
@@ -71,15 +70,15 @@ Exchanges without credentials still work for **public data** (prices, OHLCV, ord
 | Variable | Purpose | Used by |
 |----------|---------|---------|
 | `DISCORD_WEBHOOK_URL` | Discord alert channel | `trading_stack/messaging.py` |
-| `TEAKA_BIND_HOST` | Bridge bind address (default `0.0.0.0`) | `connect_python.py` |
-| `TEAKA_BIND_PORT` | Bridge port (default `5050`) | `connect_python.py` |
+| `TEAKA_BIND_HOST` | Bridge bind address | `connect_python.py` |
+| `TEAKA_BIND_PORT` | Bridge port | `connect_python.py` |
 | `TEAKA_BRAIN_FILE` | Custom brain JSON path | `connect_python.py` |
 
 ---
 
 ## Safety Gates
 
-Live trading requires **all three** to be set:
+Live trading requires all three to be set:
 
 ```text
 TEAKA_MODE=live
@@ -94,7 +93,7 @@ Paper mode (default) needs no exchange credentials.
 ## Cursor Cloud Agent Secrets
 
 If running as a Cursor Cloud Agent, add secrets at:
-**Cursor Dashboard → Cloud Agents → Secrets**
+**Cursor Dashboard -> Cloud Agents -> Secrets**
 
 Required for this repo:
 - `TELEGRAM_BOT_TOKEN`
