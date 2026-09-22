@@ -178,14 +178,13 @@ Expected origin: `https://github.com/Nanle-code/StarForge.git`. Do not invent a 
 - WSL paste: `scripts/PASTE_WSL_NANLE_GIT_SORT.txt` (`/mnt/c/Users/Blair/...`)
 - Script: `scripts/nanle_git_sort_check_only.sh`
 
-Blairspc HEAD is `f2298dc` `master` = `origin/master` (PR #718 `feat/ai_documentation`). Uncommitted local compile fixes:
+Blairspc Git Bash 22 Sep: `master` is **ahead 1** of `origin/master`.
 
-- `Cargo.toml` / `Cargo.lock` — `thiserror = "1.0"`
-- `src/commands/mod.rs` — `pub mod ai_doc_qa;`
-- `src/utils/database.rs` — rusqlite `&Connection` not `&mut`
-- `src/utils/mod.rs` — modified, not shown in the trimmed diff
+- HEAD `9dfca15` `fix: restore StarForge compile and deployment tests`
+- `origin/master` `f2298dc` Merge pull request #718 from kali-el/feat/ai_documentation
+- origin `https://github.com/Nanle-code/StarForge.git`
 
-Keep those on **local branch** `local/cargo-check-fixes`. Do **not** `git push origin master` to Nanle-code/StarForge. Pastes: `scripts/PASTE_WSL_NANLE_GIT_COMMIT_LOCAL.txt` and `scripts/PASTE_GITBASH_NANLE_GIT_COMMIT_LOCAL.txt`.
+The compile fixes are already a local commit on `master`. Do **not** `git push origin master` unless opening an upstream PR to Nanle-code. Do not invent a BlairGem StarForge repo.
 
 ## 17. GEMBot29 Git Bash (Blairspc) — inspect only, already pasted
 
