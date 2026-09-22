@@ -131,3 +131,18 @@ That is `git grep` matching the word `log`, not new runtime evidence.
 ## Paste-safe WSL cargo (Nanle crate only)
 
 Use the four lines in `scripts/PASTE_WSL_CARGO_CHECK.txt`. Do not paste markdown, comments, or chat sentences into Ubuntu.
+
+## 13. Verified on Blairspc — 22 Sep 2026
+
+Host: `blair@Blairspc` in `/mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge`
+
+First paste mixed in chat prose (`This is still **Nanle StarForge**…`) and bash died with `syntax error near unexpected token '('` / `'one'`.
+
+Clean four-line paste then produced:
+
+```text
+Checking starforge v0.1.0 (/mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge)
+Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 47s
+```
+
+`CARGO_TARGET_DIR=/tmp/starforge-target` avoided NTFS `os error 5`. This is **check-only** of Nanle StarForge `v0.1.0`. It is not EV GEMBot, not a live token, and not `cargo build --release`. Ollama stays Windows **11434** / Docker **11435**. Do not run another cargo command unless asked.
