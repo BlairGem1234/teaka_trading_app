@@ -1,0 +1,4 @@
+source "$HOME/.cargo/env"
+cd /mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge
+export CARGO_TARGET_DIR=/tmp/starforge-target
+cargo test --test deployment_preparation_e2e --test deployment_error_handling -- --test-threads=1

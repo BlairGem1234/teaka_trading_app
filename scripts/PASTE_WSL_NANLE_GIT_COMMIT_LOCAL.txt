@@ -1,0 +1,5 @@
+cd /mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge
+git checkout -b local/cargo-check-fixes
+git add Cargo.toml Cargo.lock src/commands/mod.rs src/utils/database.rs src/utils/mod.rs
+git commit -m "Local cargo check: thiserror, rusqlite Connection, ai_doc_qa mods"
+git status -sb

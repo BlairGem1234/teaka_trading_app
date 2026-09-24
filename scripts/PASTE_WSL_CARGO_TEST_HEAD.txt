@@ -1,0 +1,4 @@
+cd /mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge
+ls -l tests
+sed -n '1,80p' tests/deployment_error_handling.rs
+sed -n '1,80p' tests/deployment_preparation_e2e.rs

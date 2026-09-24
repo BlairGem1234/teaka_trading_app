@@ -1,0 +1,4 @@
+cd /c/Users/Blair/EV_Git/GEMBot29
+git remote -v
+git status -sb
+git log -3 --oneline --decorate
