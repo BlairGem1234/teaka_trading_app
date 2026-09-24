@@ -276,3 +276,17 @@ What *would* be required for value, and is still missing here:
 - Control of that claim — we have not seen a funded exchange account or seed, and we will not hunt keys
 
 Local empty blocks on a solo test node are not an asset. Do not import seeds or start unknown nodes to “find” them.
+
+## 20. Search result — no EV wallet, no EV token in this evidence
+
+TeAka git (`BlairGem1234/teaka_trading_app`) on 24 Sep 2026:
+
+| Asked for | Found |
+| --- | --- |
+| Wallet file / keystore / seed | **None.** `SECURITY.md` forbids committing them. `Config/ev_keys.json` is paper mode only (`live_trading_enabled: false`), KuCoin env *names* for a future live mode, no keys. |
+| Ethereum address in git | **None** except the all-zero fee recipient already in node logs. |
+| EV token contract / ticker | **None.** No ERC20 address, no listed EV coin. GeoNode “token units” are overlay JSON. |
+| Local node coinbase | Crash logs use `suggestedFeeRecipient` `0x000…000`. That is the zero address, not a funded wallet. |
+| Local chain | `evolve-test` / reth `1234`, 0 peers, empty txs. Not a market. |
+
+Do not dump `.evm/data/evm-single/KEYREGISTRY`, genesis secrets, or OneDrive seeds. Read-only RPC (reth already up): `scripts/PASTE_WSL_EV_WALLET_CHECK.txt` (`eth_accounts`, `eth_coinbase`, `eth_chainId`). Send back those JSON lines. Do not start ev-node.
