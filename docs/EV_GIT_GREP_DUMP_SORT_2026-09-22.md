@@ -290,3 +290,14 @@ TeAka git (`BlairGem1234/teaka_trading_app`) on 24 Sep 2026:
 | Local chain | `evolve-test` / reth `1234`, 0 peers, empty txs. Not a market. |
 
 Do not dump `.evm/data/evm-single/KEYREGISTRY`, genesis secrets, or OneDrive seeds. Read-only RPC (reth already up): `scripts/PASTE_WSL_EV_WALLET_CHECK.txt` (`eth_accounts`, `eth_coinbase`, `eth_chainId`). Send back those JSON lines. Do not start ev-node.
+
+Blairspc Git Bash 24 Sep ran that paste:
+
+- `eth_accounts` → `[]` (no unlocked wallet)
+- `eth_coinbase` → `unimplemented`
+- `eth_chainId` → `0x4d2` (1234, `evolve-test`)
+- `DONE_READ_ONLY`
+
+## 21. Dropbox Starforge commit test is not the EV wallet
+
+Path: `/d/iCloud/iCloudDrive/Dropbox 3/Starforge` commit `54d317108a8afd9fc023c6841560e6bfaafe2e17`. Safe blob/python/json read of **19** committed files, 0 failures. Tree is `Python_Env` stdlib, `Vault` chat/clock JSON, README, a ps1. `__hello__.py` / `beer.py` are CPython demos, not tokens. This is **not** Nanle-code/StarForge (no `Cargo.toml`). Not a wallet. Do not recurse iCloud/Dropbox. D: stays map-first, no repair. Git was not changed.
