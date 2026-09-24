@@ -1,0 +1,4 @@
+ls -d /c/EV_Brain /c/EV_AI /c/EV_Files /c/EV_AI/Operator 2>/dev/null
+git -C '/d/iCloud/iCloudDrive/Dropbox 3/Starforge' grep -a -oE '0x[a-fA-F0-9]{40}' 54d317108a8afd9fc023c6841560e6bfaafe2e17 -- ':!Python_Env' || echo NO_ADDR
+ls /c/EV_Brain/*wallet* /c/EV_Brain/*keystore* /c/EV_AI/*wallet* /c/EV_AI/*keystore* 2>/dev/null || echo NO_KEYSTORE_NAME
+echo DONE_READ_ONLY

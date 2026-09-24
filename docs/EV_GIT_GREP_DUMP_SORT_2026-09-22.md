@@ -301,3 +301,13 @@ Blairspc Git Bash 24 Sep ran that paste:
 ## 21. Dropbox Starforge commit test is not the EV wallet
 
 Path: `/d/iCloud/iCloudDrive/Dropbox 3/Starforge` commit `54d317108a8afd9fc023c6841560e6bfaafe2e17`. Safe blob/python/json read of **19** committed files, 0 failures. Tree is `Python_Env` stdlib, `Vault` chat/clock JSON, README, a ps1. `__hello__.py` / `beer.py` are CPython demos, not tokens. This is **not** Nanle-code/StarForge (no `Cargo.toml`). Not a wallet. Do not recurse iCloud/Dropbox. D: stays map-first, no repair. Git was not changed.
+
+## 22. Correct places (names and public 0x only)
+
+reth `eth_accounts`, TeAka git, and `Python_Env` are the wrong class of place for a custodial wallet. Next check, no secret dump, no iCloud recurse:
+
+- `C:\EV_Brain`, `C:\EV_AI` — runtime dirs; list names matching wallet/keystore only
+- Dropbox Starforge commit `54d3171` **excluding** `Python_Env` — `git grep` for public `0x` + 40 hex in Vault JSON
+- Do not cat `KEYREGISTRY`, genesis private fields, or seeds
+
+Paste: `scripts/PASTE_GITBASH_EV_WALLET_PLACES.txt`. Send back directory names, any `0x…` lines, or `NO_ADDR` / `NO_KEYSTORE_NAME`.
