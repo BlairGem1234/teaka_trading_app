@@ -5,7 +5,11 @@ import os
 app = Flask(__name__)
 
 # Memory File Path
-BRAIN_FILE = "E:\\EV_Files\\ev_virtual_brain.json"
+BRAIN_FILE = "C:\\EV_Files\\ev_virtual_brain.json"
+if not os.path.exists(BRAIN_FILE):
+    alt = "C:\\EV_Operator\\ev_virtual_brain.json"
+    if os.path.exists(alt):
+        BRAIN_FILE = alt
 
 # Load Brain Memory (if available)
 def load_brain():

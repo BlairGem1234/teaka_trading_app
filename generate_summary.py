@@ -21,7 +21,7 @@ def generate_summary():
         "notes": "System stable. No anomalies."
     }
 
-    folder = "E:/EV_Files/teaka_trading_app/daily_reports/"
+    folder = "C:/EV_Files/teaka_trading_app/daily_reports/"
     archive = os.path.join(folder, "archive")
     os.makedirs(archive, exist_ok=True)
 

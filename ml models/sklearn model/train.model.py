@@ -3,7 +3,7 @@ from sklearn.ensemble import RandomForestClassifier  # or your model
 import pandas as pd
 
 # Load data
-df = pd.read_csv("E:/EV_Files/teaka_trading_app/data/market_data.csv")
+df = pd.read_csv("C:/EV_Files/teaka_trading_app/data/market_data.csv")
 
 features = df.drop("target", axis=1)
 target = df["target"]

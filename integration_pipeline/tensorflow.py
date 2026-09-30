@@ -25,5 +25,5 @@ model.compile(optimizer='adam', loss='mean_squared_error')
 model.fit(inputs, outputs, epochs=200, verbose=1)
 
 # Save the model
-os.makedirs("E:/EV_Files/teaka_trading_app/model_output", exist_ok=True)
-model.save("E:/EV_Files/teaka_trading_app/model_output")
+os.makedirs("C:/EV_Files/teaka_trading_app/model_output", exist_ok=True)
+model.save("C:/EV_Files/teaka_trading_app/model_output")
