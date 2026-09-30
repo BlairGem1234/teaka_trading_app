@@ -27,10 +27,10 @@ Teaka / teaka_trading_app
   = app, product, and trading layer
   = should call into or sit above EV Node through adapters or API clients
 
-BlairGem/Ev
+BlairGem1234/Ev
   = private EV control, bridge, config, handoff, runtime evidence, and GeoNode layer
 
-BlairGem/GPT_AI_Workspace
+BlairGem1234/GPT_AI_Workspace
   = GPT-side workspace and review layer
 ```
 
@@ -51,25 +51,25 @@ Teaka should not contain a blind full copy of upstream `evstack/ev-node` or loca
 
 Recommended approach:
 
-1. Create or use a dedicated BlairGem EV Stack repo, preferably `BlairGem/EV_Stack` or `BlairGem/Teaka_EV_Stack`.
+1. Create or use a dedicated BlairGem EV Stack repo, preferably `BlairGem1234/EV_Stack` or `BlairGem1234/Teaka_EV_Stack`.
 2. Pull upstream `evstack/ev-node` into that repo by fork, mirror, or submodule strategy.
 3. Keep Teaka connected by adapter or API client references.
-4. Keep `BlairGem/Ev` as the private control and runtime evidence repo.
+4. Keep `BlairGem1234/Ev` as the private control and runtime evidence repo.
 
-Do not pull the full upstream source directly into `BlairGem/teaka_trading_app` unless a deliberate vendor decision is made.
+Do not pull the full upstream source directly into `BlairGem1234/teaka_trading_app` unless a deliberate vendor decision is made.
 
 ## Preferred structure
 
 ```text
-BlairGem/EV_Stack or BlairGem/Teaka_EV_Stack
+BlairGem1234/EV_Stack or BlairGem1234/Teaka_EV_Stack
   upstream link: evstack/ev-node
   role: controlled main EV Stack integration repo
 
-BlairGem/teaka_trading_app
+BlairGem1234/teaka_trading_app
   role: app, product, and trading layer
   integration: adapters or API clients into EV Stack
 
-BlairGem/Ev
+BlairGem1234/Ev
   role: private EV control, runtime evidence, and bridge layer
 
 external upstream: evstack/ev-node
