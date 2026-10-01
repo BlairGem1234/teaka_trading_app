@@ -1,5 +1,70 @@
-cd /c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge
-git checkout -b local/cargo-check-fixes
-git add Cargo.toml Cargo.lock src/commands/mod.rs src/utils/database.rs src/utils/mod.rs
-git commit -m "Local cargo check: thiserror, rusqlite Connection, ai_doc_qa mods"
+# OPTIONAL LOCAL WRITE HELPER: preview first; never pushes or installs anything.
+# Paste this WHOLE block in Bash. Press Enter (or EOF) to leave Git unchanged.
+# Only type the displayed COMMIT <full HEAD> after reviewing the five-file diff.
+(
+set -euo pipefail
+export GIT_OPTIONAL_LOCKS=0
+fail() { printf 'STOP: %s\n' "$*" >&2; exit 1; }
+repo='/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge'
+branch='local/cargo-check-fixes'
+files=(Cargo.toml Cargo.lock src/commands/mod.rs src/utils/database.rs src/utils/mod.rs)
+# Reject inherited Git routing overrides: this helper must target this directory.
+for key in ${!GIT_@}; do
+  case "$key" in
+    GIT_DIR|GIT_WORK_TREE|GIT_INDEX_FILE|GIT_COMMON_DIR|GIT_OBJECT_DIRECTORY|GIT_ALTERNATE_OBJECT_DIRECTORIES|GIT_NAMESPACE)
+      fail "Unset $key before using this helper." ;;
+  esac
+done
+cd -- "$repo" || fail 'Repository directory is unavailable.'
+start_branch=$(git symbolic-ref --quiet --short HEAD) || fail 'Detached HEAD; inspect manually.'
+head=$(git rev-parse --verify HEAD)
+preflight() {
+  [[ "$(cd -- "$(git rev-parse --show-toplevel)" && pwd -P)" == "$(pwd -P)" ]] || fail 'Not the expected repository root.'
+  case "$(git remote get-url origin)" in
+    https://github.com/Nanle-code/StarForge.git|git@github.com:Nanle-code/StarForge.git) ;;
+    *) fail 'Unexpected origin; inspect the repository manually.' ;;
+  esac
+  [[ "$(git rev-parse --verify HEAD)" == "$head" ]] || fail 'HEAD changed since preview.'
+  [[ "$(git symbolic-ref --quiet --short HEAD)" == "$start_branch" ]] || fail 'Branch changed since preview.'
+  for marker in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD rebase-merge rebase-apply sequencer; do
+    [[ ! -e "$(git rev-parse --git-path "$marker")" ]] || fail 'Another Git operation is in progress.'
+  done
+  if git show-ref --verify --quiet "refs/heads/$branch"; then
+    fail 'Local helper branch already exists; inspect it instead of rerunning.'
+  fi
+  git diff --cached --quiet --exit-code || fail 'Index is not empty; preserve and review staged work first.'
+  for file in "${files[@]}"; do
+    [[ -f "$file" && ! -L "$file" ]] || fail "Missing or symlinked file: $file"
+    git ls-files --error-unmatch -- "$file" >/dev/null || fail "File is not tracked: $file"
+  done
+  git diff --quiet --exit-code -- . \
+    ':(exclude)Cargo.toml' ':(exclude)Cargo.lock' ':(exclude)src/commands/mod.rs' \
+    ':(exclude)src/utils/database.rs' ':(exclude)src/utils/mod.rs' \
+    || fail 'Tracked changes outside the five compile-fix files; inspect manually.'
+  if git diff --quiet --exit-code -- "${files[@]}"; then
+    fail 'No uncommitted compile-file changes; nothing to save.'
+  fi
+}
+preflight
+preview=$(git diff --no-ext-diff --no-textconv --binary -- "${files[@]}")
+printf 'PREVIEW ONLY: %s on %s at %s\n' "$repo" "$start_branch" "$head"
+printf '%s\n' "$preview"
+printf '\nOptional: create %s and commit ONLY these five tracked files locally.\n' "$branch"
+printf 'No automatic push. Existing Git commit hooks may run.\n'
+printf 'To proceed, type COMMIT %s; otherwise press Enter: ' "$head"
+confirmation=''
+IFS= read -r confirmation || true
+if [[ "$confirmation" != "COMMIT $head" ]]; then
+  printf '\nPreview finished; no Git writes requested.\n'
+  exit 0
+fi
+# Recheck after the prompt so stale pasted confirmations cannot bypass the guards.
+preflight
+[[ "$(git diff --no-ext-diff --no-textconv --binary -- "${files[@]}")" == "$preview" ]] \
+  || fail 'Files changed since preview; run a fresh preview.'
+git checkout -b "$branch"
+# --only limits the commit even if unrelated changes are staged concurrently.
+# A failed commit is left for manual inspection; never reset or discard work.
+git commit --only -m "Local cargo check: thiserror, rusqlite Connection, ai_doc_qa mods" -- "${files[@]}"
 git status -sb
+)

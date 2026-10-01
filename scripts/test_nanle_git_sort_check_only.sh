@@ -36,11 +36,11 @@ COMMIT_WSL="$ROOT/scripts/PASTE_WSL_NANLE_GIT_COMMIT_LOCAL.txt"
 COMMIT_GB="$ROOT/scripts/PASTE_GITBASH_NANLE_GIT_COMMIT_LOCAL.txt"
 [[ -f "$COMMIT_WSL" ]] || fail "missing $COMMIT_WSL"
 [[ -f "$COMMIT_GB" ]] || fail "missing $COMMIT_GB"
-grep -q 'git checkout -b local/cargo-check-fixes' "$COMMIT_WSL" || fail "wsl commit paste missing local branch"
-if grep -q 'git push' "$COMMIT_WSL"; then
-  fail "commit paste must not push"
-fi
-grep -q 'git add Cargo.toml Cargo.lock src/commands/mod.rs src/utils/database.rs src/utils/mod.rs' "$COMMIT_WSL" || fail "commit paste must add only the five compile-fix files"
+for helper in "$COMMIT_WSL" "$COMMIT_GB"; do
+  bash -n "$helper" || fail "local commit helper failed bash -n"
+done
+python3 "$ROOT/scripts/test_nanle_commit_local.py"
+NANLE_TEST_PLATFORM=GITBASH python3 "$ROOT/scripts/test_nanle_commit_local.py"
 
 NOPUSH_GB="$ROOT/scripts/PASTE_GITBASH_NANLE_GIT_NOPUSH.txt"
 NOPUSH_WSL="$ROOT/scripts/PASTE_WSL_NANLE_GIT_NOPUSH.txt"
@@ -63,4 +63,4 @@ echo "OK: Nanle git sort pastes are 4 lines, check-only, Git Bash + WSL."
 echo "OK: local commit pastes do not push to Nanle origin."
 echo "OK: nopush pastes list origin/master..HEAD only."
 echo "OK: GEMBot29 leave-untracked paste does not git add."
-echo "STALE: do not paste COMMIT_LOCAL; Blairspc HEAD is already 9dfca15 on master."
+echo "OK: optional local commit helpers preview by default and require fresh confirmation."

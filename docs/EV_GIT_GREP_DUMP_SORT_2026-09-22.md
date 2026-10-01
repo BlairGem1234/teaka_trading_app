@@ -184,14 +184,18 @@ Blairspc Git Bash 22 Sep: `master` is **ahead 1** of `origin/master`.
 - `origin/master` `f2298dc` Merge pull request #718 from kali-el/feat/ai_documentation
 - origin `https://github.com/Nanle-code/StarForge.git`
 
-The compile fixes are already a local commit on `master`. Do **not** `git push origin master` unless opening an upstream PR to Nanle-code. Do not invent a BlairGem StarForge repo.
+In that 22 Sep output, the compile fixes were already a local commit on `master`; this is historical evidence, not a check of the current PC. Do **not** `git push origin master` unless opening an upstream PR to Nanle-code. Do not invent a BlairGem StarForge repo.
 
-Do **not** paste `PASTE_*_NANLE_GIT_COMMIT_LOCAL.txt` again. That was the pre-commit helper. Confirm the unpushed commit only with:
+The retained `PASTE_*_NANLE_GIT_COMMIT_LOCAL.txt` files are **optional local-write helpers**, separate from the check-only scripts above. They now show a read-only preview by default. Paste the whole block in Bash, review the exact diff, and press Enter to leave Git unchanged. Only a fresh `COMMIT <full HEAD>` confirmation creates `local/cargo-check-fixes` and commits the five tracked compile-fix files. Do not use them merely to confirm an existing commit.
+
+They stop on a missing/wrong repository, a detached HEAD, an existing helper branch, an active Git operation, any staged changes, tracked changes outside the five files, missing/untracked/symlinked target files, or no remaining changes. Harmless untracked files are left alone. They recheck HEAD, branch and diff after confirmation. They never push, change remotes, or reinstall. Existing commit hooks can run; if branch creation succeeds but committing fails, inspect the preserved branch/work manually. Do not edit concurrently while committing. The origin check is a local configuration check, not proof of repository authenticity.
+
+Confirm existing unpushed commits with:
 
 - Git Bash: `scripts/PASTE_GITBASH_NANLE_GIT_NOPUSH.txt`
 - WSL: `scripts/PASTE_WSL_NANLE_GIT_NOPUSH.txt`
 
-Expected: `## master...origin/master [ahead 1]` and `9dfca15` on the `origin/master..HEAD` line.
+Historical expected output: `## master...origin/master [ahead 1]` and `9dfca15` on the `origin/master..HEAD` line. Current output must be checked, not assumed.
 
 Blairspc glued this chat into Git Bash twice. `??: command not found`, `syntax error near unexpected token '('`, `$:` / `bash::` / `.txt: command not found`, `d354ef8: command not found`, `291c076: command not found`, and `scripts/test_nanle_git_sort_check_only.sh: No such file or directory` are **not** git failures. `??` lines are GEMBot29 untracked files. The `&` in `tpsonedrive.live.comqt=allmyphotos&.txt` started jobs 1597 and 1846; both already `Exit 127`. SHA lines were typed as commands, not `git checkout`. Same dumps still printed origin `https://github.com/Nanle-code/StarForge.git`, `## master...origin/master [ahead 1]`, HEAD `9dfca15`. The prompt is a clean Nanle `(master)` shell. Git is sorted. Give no further paste. Do not push.
 
