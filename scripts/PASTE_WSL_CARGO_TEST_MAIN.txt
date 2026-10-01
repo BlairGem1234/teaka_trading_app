@@ -1,0 +1,4 @@
+cd /mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge
+sed -n '90,140p' Cargo.toml
+grep -n 'fn main' tests/deployment_error_handling.rs tests/deployment_preparation_e2e.rs
+grep -n '26657\|ev-node\|std::process::exit' tests/deployment_error_handling.rs tests/deployment_preparation_e2e.rs

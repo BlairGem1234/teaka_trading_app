@@ -1,0 +1,4 @@
+cd /mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge
+grep -n 'test_runner\|wasm_bindgen_test\|target_arch\|#!\[' tests/deployment_error_handling.rs tests/deployment_preparation_e2e.rs
+find /tmp/starforge-target/debug/deps -maxdepth 1 -type f -name 'deployment_error_handling-*' ! -name '*.d' ! -name '*.rmeta'
+find /tmp/starforge-target/debug/deps -maxdepth 1 -type f -name 'deployment_error_handling-*' ! -name '*.d' ! -name '*.rmeta' -exec {} --list \; ; echo EXIT:$?

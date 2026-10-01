@@ -1,0 +1,4 @@
+cd /mnt/c/Users/Blair/EV_Git/_Upstream/StarForge/Blockchain/Nanle-code-StarForge
+export CARGO_TARGET_DIR=/tmp/starforge-target
+find /tmp/starforge-target/debug/deps -maxdepth 1 -type f -name 'deployment_error_handling-*' ! -name '*.d' ! -name '*.rmeta' -exec {} --nocapture \; ; echo EXIT_ERR:$?
+find /tmp/starforge-target/debug/deps -maxdepth 1 -type f -name 'deployment_preparation_e2e-*' ! -name '*.d' ! -name '*.rmeta' -exec {} --nocapture \; ; echo EXIT_PREP:$?

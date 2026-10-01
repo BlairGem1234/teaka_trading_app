@@ -1,0 +1,4 @@
+ss -lptn 2>/dev/null | grep 26657 || true
+curl -sS --max-time 3 http://127.0.0.1:26657/status || echo DOWN
+curl -sS --max-time 3 http://127.0.0.1:26657/health || echo HEALTH_DOWN
+docker ps --filter name=ev-node --filter name=evolve --filter name=cometbft --format "{{.Names}} {{.Status}} {{.Ports}}"

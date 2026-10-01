@@ -1,0 +1,4 @@
+cd /c/Users/Blair/EV_Git/GEMBot29
+git ls-files ollama_bridge_flask.py
+git status -sb --untracked-files=no
+git remote get-url origin
