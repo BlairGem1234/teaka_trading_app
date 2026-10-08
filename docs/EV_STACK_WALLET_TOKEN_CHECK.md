@@ -24,6 +24,23 @@ D:\Starforge\Vault\
 
 Do not recurse OneDrive/iCloud. Do not dump `KEYREGISTRY` or seeds. D: is map-first, no repair.
 
+## Git this agent can actually read (8 Oct 2026)
+
+Readable: `BlairGem1234/teaka_trading_app` (this clone). Searched current tree, `main`, `ev-geo-blockchain-organisation`, and `evstack-teaka-association`.
+
+| Looked for | Result |
+| --- | --- |
+| `0x` + 40 hex (public address) | **None** in source (only later paste scripts) |
+| Keystore / wallet file | **None** |
+| GeoProof / `GPROOF` | Spec only in `bridge/ev_geoproof/` — not a trading token, no contract |
+| `BlairGem1234/Ev` or `BlairGem/Ev` | **Not on GitHub** for this token (404). Federation map still names `BlairGem/Ev` as the private control/signer layer. |
+| `blairgem/GEMBot29` | Not visible to this GitHub token |
+| `evstack/ev-node` | Public **framework**, not Blair’s wallet |
+
+Git policy on `ev-geo-blockchain-organisation`: “Exchange keys, wallet secrets, API tokens and private credentials must not be stored in Git.” EV Node map: keep signer keys and chain state out of Teaka.
+
+A funded EV wallet, if it exists, is **not in this git**. It would be local signer files or the private Ev repo this account cannot see.
+
 ## Next PC check (names and public 0x only)
 
 Git Bash paste: `scripts/PASTE_GITBASH_EV_STACK_PLACES.txt`. Send back directory names, `NO_KEYSTORE_NAME`, any `0x` lines, or `NO_ADDR`.
