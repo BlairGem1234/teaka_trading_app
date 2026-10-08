@@ -15,7 +15,10 @@ fi
 if printf '%s\n' "${lines[@]}" | grep -qiE 'cat |KEYREGISTRY|private key|mnemonic'; then
   fail "paste must not dump secrets"
 fi
-grep -q '/e/EV_Files' "$PASTE" || fail "must check E:/EV_Files"
-grep -q '/d/Starforge' "$PASTE" || fail "must check D:/Starforge"
+grep -q '/c/EV_Files' "$PASTE" || fail "must check C:/EV_Files"
+if grep -q '/e/EV_Files' "$PASTE"; then
+  fail "paste must not use E:/EV_Files"
+fi
+grep -q '/c/EV_Brain' "$PASTE" || fail "must check C:/EV_Brain"
 grep -qF '0x[a-fA-F0-9]{40}' "$PASTE" || fail "must search public 0x addresses only"
 echo "OK: EV stack places paste is 4 lines, names and 0x addresses only."

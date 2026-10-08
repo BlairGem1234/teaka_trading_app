@@ -12,14 +12,14 @@ This TeAka recovery fork is **not** the full Windows EV tree. README and runtime
 | KuCoin env slots labeled from EV Stack | Exchange API access for TeAka trading | **Not** an on-chain wallet. Rotate anything that was ever committed. |
 | `ev_virtual_brain.json` `token` field | String `STARFORGE_PHASE3_ACTIVATED` | Status flag, not a coin |
 
-Related repos named in the GeoProof spec: `BlairGem1234/Ev`, `evstack/ev-node`. Local CS paths from README / runtime env:
+Related repos named in the GeoProof spec: `BlairGem1234/Ev`, `evstack/ev-node`. README still *names* old `E:\EV_Files` paths. PC check uses **C:** (user request 8 Oct 2026):
 
 ```text
-E:\EV_Files\
-E:\EV_Files\Bridge\
-E:\EV_Files\ev_virtual_brain.json
+C:\EV_Files\
+C:\EV_Files\Bridge\
+C:\EV_Brain\
+C:\EV_AI\
 D:\Starforge\Vault\
-D:\EV_Files\Tools\
 ```
 
 Do not recurse OneDrive/iCloud. Do not dump `KEYREGISTRY` or seeds. D: is map-first, no repair.
