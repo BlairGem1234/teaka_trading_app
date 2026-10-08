@@ -1,0 +1,4 @@
+ls -d /e/EV_Files /e/EV_Files/Bridge /d/EV_Files /d/Starforge /d/Starforge/Vault 2>/dev/null
+ls /e/EV_Files/*wallet* /e/EV_Files/*keystore* /d/Starforge/*wallet* /d/EV_Files/*wallet* 2>/dev/null || echo NO_KEYSTORE_NAME
+grep -a -h -oE '0x[a-fA-F0-9]{40}' /e/EV_Files/ev_virtual_brain.json /e/EV_Files/ev_brain_state.json 2>/dev/null || echo NO_ADDR
+echo DONE_READ_ONLY
