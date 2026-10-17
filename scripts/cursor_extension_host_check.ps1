@@ -108,16 +108,23 @@ foreach ($root in $logRoots) {
     $main = Join-Path $root "main.log"
     if (Test-Path $main) { $mainLogs += Get-Item $main }
 }
-$mainLogs = $mainLogs | Sort-Object LastWriteTime -Descending | Select-Object -Unique -First 3
+$mainLogs = @($mainLogs | Sort-Object LastWriteTime -Descending | Select-Object -Unique)
+$activeLog = $mainLogs | Select-Object -First 1
+$olderLogs = @($mainLogs | Select-Object -Skip 1 -First 2)
 
-if (-not $mainLogs) {
+if (-not $activeLog) {
     Add-Line "  No main.log found under %APPDATA%\Cursor\logs (open Cursor once, then re-run)."
 } else {
-    foreach ($ml in $mainLogs) {
+    $ageMin = [math]::Round(((Get-Date) - $activeLog.LastWriteTime).TotalMinutes, 1)
+    Add-Line ("  ACTIVE log session (newest write): {0}" -f $activeLog.FullName)
+    Add-Line ("  Log last write: {0} ({1} min ago)" -f $activeLog.LastWriteTime, $ageMin)
+    Add-Line "  (Older Cursor sessions are listed below only as one-line refs — not mixed into counts.)"
+    Add-Line ""
+    foreach ($ml in @($activeLog)) {
         Add-Line ("  Log: {0} ({1})" -f $ml.FullName, $ml.LastWriteTime)
         $tail = Get-Content -LiteralPath $ml.FullName -Tail $LogTailLines -ErrorAction SilentlyContinue
         $exits = @($tail | Select-String "Extension host with pid \d+ exited")
-        Add-Line ("    In last {0} lines: {1} extension-host exit line(s)" -f $LogTailLines, $exits.Count)
+        Add-Line ("    In last {0} lines of ACTIVE session: {1} extension-host exit line(s)" -f $LogTailLines, $exits.Count)
         if ($exits.Count -gt 0) {
             Add-Line "    Last 5:"
             $exits | Select-Object -Last 5 | ForEach-Object { Add-Line ("      $($_.Line.Trim())") }
@@ -131,6 +138,9 @@ if (-not $mainLogs) {
         if ($traceFail) {
             Add-Line ("    Tracing errors: $($traceFail.Count) in tail (telemetry — usually harmless)")
         }
+    }
+    foreach ($old in $olderLogs) {
+        Add-Line ("  Older session (ignored for counts): {0}  mtime={1}" -f $old.FullName, $old.LastWriteTime)
     }
 }
 

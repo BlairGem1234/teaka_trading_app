@@ -11,7 +11,7 @@
 #   pwsh -NoProfile -File C:\Users\blair\EV_Git\teaka_trading_app\scripts\run_local_handoff.ps1 -Action all
 
 param(
-    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "cursorext", "pick", "gitrefs", "gembot", "evlink", "federation", "cbrain", "coremap", "evcommand", "phonebrain", "docker", "stack", "pullscratch", "help")]
+    [ValidateSet("menu", "all", "pull", "fing", "codex", "cursor", "cursorinstall", "cursorext", "checknow", "pick", "gitrefs", "gembot", "evlink", "federation", "cbrain", "coremap", "evcommand", "phonebrain", "docker", "stack", "pullscratch", "help")]
     [string]$Action = "menu",
     [switch]$SkipPull,
     [switch]$OpenAgentLinks
@@ -70,6 +70,7 @@ Actions:
   cursor        - Link cloud agents + runtime -> scratch\cursor_cloud_runtime.json
   cursorinstall - Cursor.exe paths, shortcuts, duplicate Codex warning
   cursorext     - Extension-host log churn + Chrome fake Cursor shortcuts -> scratch\cursor_extension_host_check.txt
+  checknow      - Fresh NOW snapshot (ports, docker, evcommand, cursorext) -> scratch\system_check_now.json
   pick          - Which Codex/Cloak EV should use (scores running PIDs)
   gitrefs       - Git remotes + tracked EV path docs in this repo only
   gembot        - Find GemBot/EV_Link + Ev repo -> scratch\gembot_repo_check.txt
@@ -102,7 +103,7 @@ if ($Action -eq "help") {
 
 $pullActions = @(
     "menu", "all", "fing", "codex", "cursor",
-    "stack", "pullscratch", "docker", "federation", "cbrain", "coremap", "evcommand", "phonebrain", "evlink"
+    "stack", "pullscratch", "docker", "federation", "cbrain", "coremap", "evcommand", "phonebrain", "evlink", "checknow"
 )
 if (-not $SkipPull -and $Action -in $pullActions) {
     try {
@@ -181,6 +182,9 @@ switch ($Action) {
     }
     "cursorext" {
         Run-Script "cursor_extension_host_check.ps1" @("-SaveTo", (Join-Path $scratch "cursor_extension_host_check.txt"))
+    }
+    "checknow" {
+        Run-Script "check_system_now.ps1" @("-SkipPull")
     }
     "pick" {
         Run-Script "ev_pick_canonical_stack.ps1" @("-SaveTo", (Join-Path $scratch "ev_canonical_choice.json"))
